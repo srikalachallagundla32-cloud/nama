@@ -14,3 +14,6 @@ api/data/traces.jsonl
 api/data/reports.jsonl
 # os
 .DS_Store
+
+# generated multilingual dictionaries (reproducible via npm ingest-wiktionary)
+api/data/corpus/wik/
