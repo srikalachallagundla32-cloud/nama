@@ -20,3 +20,5 @@ api/data/corpus/wik/
 
 # large Wiktionary intermediates (regenerate: node api/scripts/ingest-wiktionary.mjs "Lang:code")
 api/data/corpus/wik/
+# assembled dictionary (33MB+, rebuild: node api/scripts/ingest-wiktionary.mjs then npm --prefix api run ingest)
+api/data/corpus/dictionary.jsonl

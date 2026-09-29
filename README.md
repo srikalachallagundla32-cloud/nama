@@ -67,8 +67,17 @@ mode. Secrets live in `.env` (git-ignored) or the host's secret store — never 
 
 ## Data
 - **597** curated names (75 languages, 9 regions, 51 source books) — the site's fast path.
-- **Corpus:** ~1,558 passages (Homer, Hesiod — public domain) + ~35.5k dictionary entries
-  (Telugu, Sanskrit, Ancient Greek) from Wiktionary. One pipeline adds any language.
+- **Corpus:** ~1,558 passages (Homer, Hesiod — public domain, committed) + a **~220k-entry
+  multilingual dictionary** across 15 languages (Telugu, Hindi, Tamil, Sanskrit, Latin,
+  Greek, Old Norse, Irish, Arabic, Persian, Hebrew, Swahili, Yoruba, Hawaiian…) from
+  Wiktionary. One pipeline adds any language.
+
+The dictionary (~33 MB) is **not committed** — rebuild it for the coin path:
+
+```bash
+node api/scripts/ingest-wiktionary.mjs "Telugu:te" "Sanskrit:sa" "Latin:la"  # + any languages
+npm --prefix api run ingest                                                  # assemble the corpus
+```
 
 ## Status
 Working prototype under active development. The claude.ai artifact is a **preview only**

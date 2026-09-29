@@ -62,6 +62,8 @@ async function main() {
     grc: 'eu', la: 'eu', non: 'eu', ang: 'eu', el: 'eu', it: 'eu', es: 'eu', fr: 'eu', de: 'eu', ga: 'eu', cy: 'eu', fi: 'eu',
     ar: 'wa', fa: 'wa', he: 'wa', tr: 'wa', akk: 'wa', sux: 'wa', egy: 'af', am: 'af', sw: 'af', yo: 'af', ha: 'af',
     zh: 'ea', lzh: 'ea', ja: 'ea', ko: 'ea', th: 'sea', vi: 'sea', id: 'sea', haw: 'pac', mi: 'pac', qu: 'ams', nah: 'ams' };
+  const MAX_PER_LANG = 30000;
+  const INFLECTION = /^(inflection|inflected form|genitive|dative|accusative|ablative|vocative|nominative|locative|instrumental|plural|singular|comparative|superlative|feminine|masculine|neuter|definite|indefinite|construct form|oblique|absolutive) of\b|\b(first|second|third)[- ]person\b|\b(past|present) participle of\b|\bverbal noun of\b|\balternative (form|spelling) of\b|\bmisspelling of\b|\bromanization of\b|\bsynonym of\b/i;
   const wikDir = join(CORPUS_DIR, 'wik');
   if (existsSync(wikDir)) {
     for (const f of readdirSync(wikDir).filter((n) => n.endsWith('.jsonl')).sort()) {
@@ -70,17 +72,19 @@ async function main() {
       if (!rows.length) continue;
       const srcId = `wiktionary-${code}`;
       sources.push({ id: srcId, kind: 'dictionary', title: `Wiktionary (${code})`, year: 2024, textLanguage: 'en', originalLanguage: code, region: LANG_REGION[code] ?? 'eu', license: 'cc-by-sa', url: 'https://www.wiktionary.org/' });
-      let n = 0;
+      let n = 0, skippedForm = 0;
       for (const l of rows) {
+        if (n >= MAX_PER_LANG) break;                     // keep any one language from swamping the corpus
         let r: { word: string; roman: string | null; gloss: string; pos?: string };
         try { r = JSON.parse(l); } catch { continue; }
         const head = (r.roman ?? r.word ?? '').trim(); const gloss = (r.gloss ?? '').trim();
         if (!head || !gloss) continue;
+        if (INFLECTION.test(gloss)) { skippedForm++; continue; }   // drop declensions/conjugations, keep lemmas
         dict.push({ headword: head.slice(0, 60), lang: code, gloss: gloss.slice(0, 300), source: srcId,
           ...(r.word && r.word !== head ? { script: r.word.slice(0, 80) } : {}), ...(r.roman ? { roman: r.roman.slice(0, 60) } : {}), ...(r.pos ? { pos: r.pos.slice(0, 24) } : {}) });
         n++;
       }
-      console.log(`${srcId}: ${n} entries`);
+      console.log(`${srcId}: ${n} entries${skippedForm ? ` (skipped ${skippedForm} inflected forms)` : ''}${n >= MAX_PER_LANG ? ' [capped]' : ''}`);
     }
   }
 

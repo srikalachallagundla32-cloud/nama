@@ -39,12 +39,111 @@
   "book": "homer"
  },
  {
+  "id": "wiktionary-ar",
+  "kind": "dictionary",
+  "title": "Wiktionary (ar)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "ar",
+  "region": "wa",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-el",
+  "kind": "dictionary",
+  "title": "Wiktionary (el)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "el",
+  "region": "eu",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-fa",
+  "kind": "dictionary",
+  "title": "Wiktionary (fa)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "fa",
+  "region": "wa",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-ga",
+  "kind": "dictionary",
+  "title": "Wiktionary (ga)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "ga",
+  "region": "eu",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
   "id": "wiktionary-grc",
   "kind": "dictionary",
   "title": "Wiktionary (grc)",
   "year": 2024,
   "textLanguage": "en",
   "originalLanguage": "grc",
+  "region": "eu",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-haw",
+  "kind": "dictionary",
+  "title": "Wiktionary (haw)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "haw",
+  "region": "pac",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-he",
+  "kind": "dictionary",
+  "title": "Wiktionary (he)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "he",
+  "region": "wa",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-hi",
+  "kind": "dictionary",
+  "title": "Wiktionary (hi)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "hi",
+  "region": "sa",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-la",
+  "kind": "dictionary",
+  "title": "Wiktionary (la)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "la",
+  "region": "eu",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-non",
+  "kind": "dictionary",
+  "title": "Wiktionary (non)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "non",
   "region": "eu",
   "license": "cc-by-sa",
   "url": "https://www.wiktionary.org/"
@@ -61,6 +160,28 @@
   "url": "https://www.wiktionary.org/"
  },
  {
+  "id": "wiktionary-sw",
+  "kind": "dictionary",
+  "title": "Wiktionary (sw)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "sw",
+  "region": "af",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-ta",
+  "kind": "dictionary",
+  "title": "Wiktionary (ta)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "ta",
+  "region": "sa",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
   "id": "wiktionary-te",
   "kind": "dictionary",
   "title": "Wiktionary (te)",
@@ -68,6 +189,17 @@
   "textLanguage": "en",
   "originalLanguage": "te",
   "region": "sa",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-yo",
+  "kind": "dictionary",
+  "title": "Wiktionary (yo)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "yo",
+  "region": "af",
   "license": "cc-by-sa",
   "url": "https://www.wiktionary.org/"
  }
