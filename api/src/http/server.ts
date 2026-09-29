@@ -230,6 +230,52 @@ export function buildApp(d: AppDeps): FastifyInstance {
     try { return await d.generate.generate(req.body, trace); } finally { trace.end(200); }
   });
 
+  /* ---------- names coined from real dictionary words (meaning search; no model, always cited) */
+  app.post<{ Body: { q: string; lang?: string; region?: string; count?: number } }>('/api/coin', {
+    onRequest: [limit('read')],
+    schema: {
+      body: { type: 'object', additionalProperties: false, required: ['q'], properties: {
+        q: { type: 'string', minLength: 2, maxLength: 200 },
+        lang: { type: 'string', enum: langEnum }, region: { type: 'string', enum: regionEnum },
+        count: { type: 'integer', minimum: 1, maximum: 24, default: 12 },
+      } },
+      response: {
+        200: { type: 'object', properties: {
+          items: { type: 'array', maxItems: 24, items: { type: 'object', required: ['name', 'meaning', 'language', 'status', 'source'], properties: {
+            name: { type: 'string' }, script: { type: 'string' }, meaning: { type: 'string' }, language: { type: 'string' },
+            pos: { type: 'string' }, status: { type: 'string', enum: ['attested_word', 'coined_word'] }, trust: { type: 'string' },
+            note: { type: 'string' },
+            source: { type: 'object', properties: { title: { type: 'string' }, license: { type: 'string' }, url: { type: 'string' } } },
+          } } },
+        } },
+        400: errorOut, 429: errorOut, 503: errorOut,
+      },
+    },
+  }, async (req, reply) => {
+    if (!d.corpus || d.corpus.dictSize === 0) return sendError(reply, err(503, 'corpus_not_loaded', 'The dictionaries are not loaded yet.'));
+    const attested = /^(the )?name of\b|^n\.? of\b|used as a (given )?name|a (male|female) given name|a surname/i;
+    const seen = new Set<string>(); const items: Record<string, unknown>[] = [];
+    for (const { entry } of d.corpus.searchDictionary(req.body.q, { lang: req.body.lang, region: req.body.region }, (req.body.count ?? 12) * 3)) {
+      const roman = (entry.roman ?? entry.headword).trim();
+      const name = roman.charAt(0).toUpperCase() + roman.slice(1);
+      const key = name.toLowerCase(); if (seen.has(key)) continue; seen.add(key);
+      const src = d.corpus.sources.get(entry.source);
+      const isName = attested.test(entry.gloss);
+      const langName = store.data.LANG[entry.lang] ?? entry.lang;
+      items.push({
+        name, ...(entry.script ? { script: entry.script } : {}), meaning: entry.gloss, language: entry.lang, ...(entry.pos ? { pos: entry.pos } : {}),
+        status: isName ? 'attested_word' : 'coined_word',
+        trust: src?.license === 'public-domain' ? 'trusted' : 'community',
+        note: isName
+          ? `Recorded in ${langName} as a name meaning "${entry.gloss}".`
+          : `A ${langName} word meaning "${entry.gloss}", offered as a name — say it aloud to a speaker of the language before choosing.`,
+        source: { title: src?.title ?? entry.source, license: src?.license ?? 'unknown', ...(src?.url ? { url: src.url } : {}) },
+      });
+      if (items.length >= (req.body.count ?? 12)) break;
+    }
+    return { items };
+  });
+
   /* ---------- one error format, no internals leaked */
   app.setNotFoundHandler((req, reply) => sendError(reply, err(404, 'not_found', 'There is nothing at this address.')));
   app.setErrorHandler((e: Error & { statusCode?: number; code?: string; validation?: unknown }, req, reply) => {

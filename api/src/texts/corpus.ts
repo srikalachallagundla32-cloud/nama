@@ -32,11 +32,14 @@ export const PassageSchema = z.object({
 }).strict();
 
 export const DictEntrySchema = z.object({
-  headword: z.string().min(1).max(60),
+  headword: z.string().min(1).max(60),             // the romanized/searchable form, used as the coined name
   lang: z.string().min(2).max(8),
   gloss: z.string().min(1).max(300),
   source: z.string(),
   ref: z.string().max(80).optional(),
+  script: z.string().max(80).optional(),           // the word in its native script (Devanagari, hanzi, Greek…)
+  roman: z.string().max(60).optional(),            // explicit romanization when it differs from headword
+  pos: z.string().max(24).optional(),              // part of speech (kept for context, never used to exclude)
 }).strict();
 
 export type Source = z.infer<typeof SourceSchema>;
@@ -52,6 +55,8 @@ export class Corpus {
   readonly dictionary = new Map<string, DictEntry>();     // key: fold(headword)|lang
   readonly version: string;
   private tf = new Map<string, Map<string, number>>(); private dl = new Map<string, number>(); private idf = new Map<string, number>(); private avg = 1;
+  // meaning index over dictionary glosses (so "moonlight" finds words that mean moonlight)
+  private dkeys: string[] = []; private dtf = new Map<string, Map<string, number>>(); private ddl = new Map<string, number>(); private didf = new Map<string, number>(); private davg = 1;
 
   constructor(sources: Source[], passages: Passage[], dict: DictEntry[]) {
     const problems: string[] = [];
@@ -79,6 +84,18 @@ export class Corpus {
     this.avg = this.dl.size ? [...this.dl.values()].reduce((a, b) => a + b, 0) / this.dl.size : 1;
     const N = this.passages.size;
     for (const [t, c] of df) this.idf.set(t, Math.log(1 + (N - c + 0.5) / (c + 0.5)));
+
+    // build the dictionary meaning index over glosses
+    const ddf = new Map<string, number>();
+    for (const [key, e] of this.dictionary) {
+      const m = new Map<string, number>();
+      for (const t of tokens(e.gloss)) m.set(t, (m.get(t) ?? 0) + 1);
+      this.dkeys.push(key); this.dtf.set(key, m); this.ddl.set(key, [...m.values()].reduce((a, b) => a + b, 0));
+      for (const t of m.keys()) ddf.set(t, (ddf.get(t) ?? 0) + 1);
+    }
+    this.davg = this.ddl.size ? [...this.ddl.values()].reduce((a, b) => a + b, 0) / this.ddl.size : 1;
+    const DN = this.dkeys.length;
+    for (const [t, c] of ddf) this.didf.set(t, Math.log(1 + (DN - c + 0.5) / (c + 0.5)));
   }
 
   get empty() { return this.passages.size === 0; }
@@ -97,6 +114,22 @@ export class Corpus {
   }
 
   lookup(word: string, lang: string): DictEntry | undefined { return this.dictionary.get(fold(word) + '|' + lang); }
+
+  get dictSize() { return this.dkeys.length; }
+
+  /** Search dictionary words by MEANING (their English gloss). Powers the coined-name path. */
+  searchDictionary(q: string, f: { lang?: string; region?: string } = {}, k = 12): { entry: DictEntry; score: number }[] {
+    const qt = tokens(q); if (!qt.length) return [];
+    const out: { entry: DictEntry; score: number }[] = [];
+    for (const key of this.dkeys) {
+      const e = this.dictionary.get(key)!;
+      if (f.lang && e.lang !== f.lang) continue;
+      const m = this.dtf.get(key)!; let score = 0;
+      for (const t of qt) { const tf = m.get(t) ?? 0; if (tf) score += this.didf.get(t)! * tf * 2.2 / (tf + 1.2 * (0.25 + 0.75 * this.ddl.get(key)! / this.davg)); }
+      if (score > 0) out.push({ entry: e, score: Math.round(score * 1000) / 1000 });
+    }
+    return out.sort((a, b) => b.score - a.score || a.entry.headword.localeCompare(b.entry.headword)).slice(0, k);
+  }
 
   /** Keyword search over passages, with optional filters by source, original language or region. */
   search(q: string, f: { source?: string; lang?: string; region?: string } = {}, k = 6): { id: string; score: number }[] {

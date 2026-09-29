@@ -17,3 +17,6 @@ api/data/reports.jsonl
 
 # generated multilingual dictionaries (reproducible via npm ingest-wiktionary)
 api/data/corpus/wik/
+
+# large Wiktionary intermediates (regenerate: node api/scripts/ingest-wiktionary.mjs "Lang:code")
+api/data/corpus/wik/

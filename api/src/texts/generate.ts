@@ -139,16 +139,20 @@ export class GenerateService {
 
       let item: GeneratedName;
       if (kind === 'found') {
-        // Certify the claim we actually make: this name literally appears in this passage.
-        const idx = fold(passage.text).indexOf(key);
-        if (idx < 0) { reject('name_not_in_passage'); continue; }
+        // 1) the quoted words must really be in the passage (punctuation/whitespace tolerant)
+        let idx = fold(passage.text).indexOf(fold(squash(fromText)));
+        if (idx < 0 && !looseIncludes(passage.text, fromText)) { reject('words_not_in_passage'); continue; }
+        // 2) the name must appear within those quoted words
+        if (!fold(fromText).includes(key) && !looseIncludes(fromText, name)) { reject('name_not_in_quoted_words'); continue; }
+        if (idx < 0) idx = fold(passage.text).indexOf(key);
         const dict = corpus.lookup(name, src.originalLanguage);
-        item = { name, status: 'found_in_text', quote: contextAround(passage.text, idx, name.length), source, note: 'This name appears in the text. Read the passage: a name can belong to a hero or a villain.' };
+        item = { name, status: 'found_in_text', quote: contextAround(passage.text, idx < 0 ? 0 : idx, Math.max(squash(fromText).length, name.length)), source, note: 'This name appears in the text. Read the passage: a name can belong to a hero or a villain.' };
         if (dict) { item.meaning = dict.gloss; item.meaningFrom = 'dictionary'; }
       } else {
         // Coined: the ROOT WORD must be in the passage, and carry a real dictionary meaning in its language.
-        const idx = fold(passage.text).indexOf(fold(squash(fromText)));
-        if (idx < 0) { reject('words_not_in_passage'); continue; }
+        let idx = fold(passage.text).indexOf(fold(squash(fromText)));
+        if (idx < 0 && !looseIncludes(passage.text, fromText)) { reject('words_not_in_passage'); continue; }
+        if (idx < 0) idx = 0;
         const wordLang = lang ?? src.originalLanguage;
         const dict = corpus.lookup(squash(fromText), wordLang);
         if (!dict) { reject('formed_without_dictionary_meaning'); continue; }
@@ -177,6 +181,12 @@ export function extractProperNames(passages: Passage[]): Proposal[] {
     }
   }
   return out;
+}
+
+/** Punctuation- and whitespace-insensitive containment: real words in order, tolerant of commas/quotes/line-wrap. */
+const stripPunct = (s: string) => fold(s).replace(/[^\p{L}\p{N} ]+/gu, ' ').replace(/\s+/g, ' ').trim();
+function looseIncludes(haystack: string, needle: string): boolean {
+  const n = stripPunct(needle); return n.length > 0 && stripPunct(haystack).includes(n);
 }
 
 function contextAround(text: string, idx: number, len: number): string {

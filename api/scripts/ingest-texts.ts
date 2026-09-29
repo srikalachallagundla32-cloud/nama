@@ -4,7 +4,7 @@
  * Dictionaries: a tab-separated file per dictionary, one "headword<TAB>gloss" per line, path in catalog 'file'.
  * Everything written is validated by the same schemas the server uses at startup.
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { CORPUS_DIR } from '../src/app.ts';
 import { Corpus, type DictEntry, type Passage, type Source } from '../src/texts/corpus.ts';
@@ -56,6 +56,34 @@ async function main() {
     for (const l of lines) { const [headword, gloss] = l.split('\t'); if (headword && gloss) dict.push({ headword: headword.trim(), lang: d.lang, gloss: gloss.trim().slice(0, 300), source: d.id }); }
     console.log(`${d.id}: ${lines.length} entries`);
   }
+  // Wiktionary dictionaries produced by ingest-wiktionary.mjs (data/corpus/wik/<code>.jsonl).
+  // One dictionary Source per language; entries carry native script + romanization + meaning.
+  const LANG_REGION: Record<string, string> = { te: 'sa', sa: 'sa', ta: 'sa', hi: 'sa', kn: 'sa', ml: 'sa', bn: 'sa', mr: 'sa',
+    grc: 'eu', la: 'eu', non: 'eu', ang: 'eu', el: 'eu', it: 'eu', es: 'eu', fr: 'eu', de: 'eu', ga: 'eu', cy: 'eu', fi: 'eu',
+    ar: 'wa', fa: 'wa', he: 'wa', tr: 'wa', akk: 'wa', sux: 'wa', egy: 'af', am: 'af', sw: 'af', yo: 'af', ha: 'af',
+    zh: 'ea', lzh: 'ea', ja: 'ea', ko: 'ea', th: 'sea', vi: 'sea', id: 'sea', haw: 'pac', mi: 'pac', qu: 'ams', nah: 'ams' };
+  const wikDir = join(CORPUS_DIR, 'wik');
+  if (existsSync(wikDir)) {
+    for (const f of readdirSync(wikDir).filter((n) => n.endsWith('.jsonl')).sort()) {
+      const code = f.replace(/\.jsonl$/, '');
+      const rows = readFileSync(join(wikDir, f), 'utf8').split('\n').filter((l) => l.trim());
+      if (!rows.length) continue;
+      const srcId = `wiktionary-${code}`;
+      sources.push({ id: srcId, kind: 'dictionary', title: `Wiktionary (${code})`, year: 2024, textLanguage: 'en', originalLanguage: code, region: LANG_REGION[code] ?? 'eu', license: 'cc-by-sa', url: 'https://www.wiktionary.org/' });
+      let n = 0;
+      for (const l of rows) {
+        let r: { word: string; roman: string | null; gloss: string; pos?: string };
+        try { r = JSON.parse(l); } catch { continue; }
+        const head = (r.roman ?? r.word ?? '').trim(); const gloss = (r.gloss ?? '').trim();
+        if (!head || !gloss) continue;
+        dict.push({ headword: head.slice(0, 60), lang: code, gloss: gloss.slice(0, 300), source: srcId,
+          ...(r.word && r.word !== head ? { script: r.word.slice(0, 80) } : {}), ...(r.roman ? { roman: r.roman.slice(0, 60) } : {}), ...(r.pos ? { pos: r.pos.slice(0, 24) } : {}) });
+        n++;
+      }
+      console.log(`${srcId}: ${n} entries`);
+    }
+  }
+
   const corpus = new Corpus(sources, passages, dict);          // validates before anything is written
   writeFileSync(join(CORPUS_DIR, 'sources.json'), JSON.stringify(sources, null, 1));
   writeFileSync(join(CORPUS_DIR, 'passages.jsonl'), passages.map((p) => JSON.stringify(p)).join('\n') + (passages.length ? '\n' : ''));

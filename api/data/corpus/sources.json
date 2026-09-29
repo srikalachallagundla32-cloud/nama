@@ -1,1 +1,74 @@
-[]
+[
+ {
+  "id": "hesiod-evelyn-white",
+  "kind": "text",
+  "title": "Hesiod, the Homeric Hymns and Homerica",
+  "translator": "Hugh G. Evelyn-White",
+  "year": 1914,
+  "textLanguage": "en",
+  "originalLanguage": "grc",
+  "region": "eu",
+  "license": "public-domain",
+  "url": "https://www.gutenberg.org/cache/epub/348/pg348.txt",
+  "book": "theogony"
+ },
+ {
+  "id": "iliad-butler",
+  "kind": "text",
+  "title": "The Iliad",
+  "translator": "Samuel Butler",
+  "year": 1898,
+  "textLanguage": "en",
+  "originalLanguage": "grc",
+  "region": "eu",
+  "license": "public-domain",
+  "url": "https://www.gutenberg.org/cache/epub/2199/pg2199.txt",
+  "book": "homer"
+ },
+ {
+  "id": "odyssey-butler",
+  "kind": "text",
+  "title": "The Odyssey",
+  "translator": "Samuel Butler",
+  "year": 1900,
+  "textLanguage": "en",
+  "originalLanguage": "grc",
+  "region": "eu",
+  "license": "public-domain",
+  "url": "https://www.gutenberg.org/cache/epub/1727/pg1727.txt",
+  "book": "homer"
+ },
+ {
+  "id": "wiktionary-grc",
+  "kind": "dictionary",
+  "title": "Wiktionary (grc)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "grc",
+  "region": "eu",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-sa",
+  "kind": "dictionary",
+  "title": "Wiktionary (sa)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "sa",
+  "region": "sa",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-te",
+  "kind": "dictionary",
+  "title": "Wiktionary (te)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "te",
+  "region": "sa",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ }
+]
