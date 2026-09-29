@@ -3,7 +3,8 @@ import { z } from 'zod';
 import { search } from '../domain/search.ts';
 import type { Store } from '../domain/store.ts';
 import type { Retriever } from '../rag/retriever.ts';
-import type { GenerateService } from '../texts/generate.ts';
+import { coinFromDictionary, type GenerateService } from '../texts/generate.ts';
+import type { Corpus } from '../texts/corpus.ts';
 import { MemoryTraceSink, Trace } from '../infra/index.ts';
 
 const TIMEOUT_MS = 3000;
@@ -21,7 +22,7 @@ async function guarded<T>(fn: () => T | Promise<T>) {
 }
 
 /** Every tool is read-only. Inputs use fixed lists taken from the data, so a model cannot ask for values that don't exist. */
-export function createMcpServer(store: Store, retriever: Retriever, gen?: GenerateService): McpServer {
+export function createMcpServer(store: Store, retriever: Retriever, gen?: GenerateService, corpus?: Corpus): McpServer {
   const D = store.data;
   const langs = Object.keys(D.LANG) as [string, ...string[]];
   const regions = Object.keys(D.REGIONS) as [string, ...string[]];
@@ -98,6 +99,13 @@ export function createMcpServer(store: Store, retriever: Retriever, gen?: Genera
     const r = await gen.generate({ q: a.query, count: a.count }, new Trace('mcp', crypto.randomUUID(), new MemoryTraceSink()));
     return { mode: r.mode, results: r.items };
   }));
+
+  if (corpus && corpus.dictSize > 0) server.registerTool('coin_from_words', {
+    title: 'Names coined from dictionary words',
+    description: 'Find real words in any loaded language whose meaning matches a request, offered as names — with native script, meaning, and a dictionary citation. Marks words the dictionary itself records as names (attested_word) vs. ordinary words offered as names (coined_word). Never invents a meaning.',
+    inputSchema: { query: z.string().min(2).max(200), language: z.enum(langs).optional(), region: z.enum(regions).optional(), limit: z.number().int().min(1).max(24).default(12) },
+    annotations: ro,
+  }, async (a) => guarded(() => ({ results: coinFromDictionary(corpus, store, { q: a.query, lang: a.language, region: a.region, count: a.limit }) })));
 
   return server;
 }

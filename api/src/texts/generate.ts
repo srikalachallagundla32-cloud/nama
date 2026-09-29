@@ -6,6 +6,39 @@ import { type Corpus, type Passage, fold, squash } from './corpus.ts';
 
 export const GEN_PROMPT_VERSION = 'textgen-2026-09-29.1';
 
+/** A name coined from (or attested as) a real dictionary word, always cited. Shared by /api/coin and MCP. */
+export type CoinedName = {
+  name: string; script?: string; meaning: string; language: string; pos?: string;
+  status: 'attested_word' | 'coined_word'; trust: string; note: string;
+  source: { title: string; license: string; url?: string };
+};
+const ATTESTED = /^(the )?name of\b|^n\.? of\b|used as a (given )?name|a (male|female) given name|a surname/i;
+
+/** Search dictionaries by meaning and shape the results into honestly-labeled name candidates. No model, always cited. */
+export function coinFromDictionary(corpus: Corpus, store: Store, opts: { q: string; lang?: string; region?: string; count?: number }): CoinedName[] {
+  const count = Math.min(Math.max(opts.count ?? 12, 1), 24);
+  const seen = new Set<string>(); const items: CoinedName[] = [];
+  for (const { entry } of corpus.searchDictionary(opts.q, { lang: opts.lang, region: opts.region }, count * 3)) {
+    const roman = (entry.roman ?? entry.headword).trim();
+    const name = roman.charAt(0).toUpperCase() + roman.slice(1);
+    const key = name.toLowerCase(); if (seen.has(key)) continue; seen.add(key);
+    const src = corpus.sources.get(entry.source);
+    const isName = ATTESTED.test(entry.gloss);
+    const langName = store.data.LANG[entry.lang] ?? entry.lang;
+    items.push({
+      name, ...(entry.script ? { script: entry.script } : {}), meaning: entry.gloss, language: entry.lang, ...(entry.pos ? { pos: entry.pos } : {}),
+      status: isName ? 'attested_word' : 'coined_word',
+      trust: src?.license === 'public-domain' ? 'trusted' : 'community',
+      note: isName
+        ? `Recorded in ${langName} as a name meaning "${entry.gloss}".`
+        : `A ${langName} word meaning "${entry.gloss}", offered as a name — say it aloud to a speaker of the language before choosing.`,
+      source: { title: src?.title ?? entry.source, license: src?.license ?? 'unknown', ...(src?.url ? { url: src.url } : {}) },
+    });
+    if (items.length >= count) break;
+  }
+  return items;
+}
+
 /** What the model is allowed to say: a name, which kind it is, and WHERE in which passage it comes from. Nothing else. */
 export const ProposalSchema = z.object({
   name: z.string().min(2).max(40),

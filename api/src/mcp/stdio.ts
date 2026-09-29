@@ -13,4 +13,4 @@ retriever.assertManifest(Retriever.readManifest(MANIFEST_PATH));
 const corpus = Corpus.fromDir(CORPUS_DIR);
 const key = process.env.ANTHROPIC_API_KEY;
 const gen = new GenerateService({ corpus, store, generator: key ? new AnthropicTextGenerator(key, process.env.ANTHROPIC_MODEL ?? 'claude-haiku-4-5-20251001') : undefined, llmTimeoutMs: 8000, languages: store.data.LANG });
-await createMcpServer(store, retriever, gen).connect(new StdioServerTransport());
+await createMcpServer(store, retriever, gen, corpus).connect(new StdioServerTransport());

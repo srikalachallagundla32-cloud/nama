@@ -5,7 +5,7 @@ import type { Config } from '../config.ts';
 import { search, type SearchParams } from '../domain/search.ts';
 import type { Store } from '../domain/store.ts';
 import { AskService } from '../rag/ask.ts';
-import type { GenerateService } from '../texts/generate.ts';
+import { coinFromDictionary, type GenerateService } from '../texts/generate.ts';
 import type { Corpus } from '../texts/corpus.ts';
 import type { Retriever } from '../rag/retriever.ts';
 import { IdempotencyStore, isSafeId, RateLimiter, Trace, type TraceSink, hashClient, scrubPII } from '../infra/index.ts';
@@ -253,27 +253,7 @@ export function buildApp(d: AppDeps): FastifyInstance {
     },
   }, async (req, reply) => {
     if (!d.corpus || d.corpus.dictSize === 0) return sendError(reply, err(503, 'corpus_not_loaded', 'The dictionaries are not loaded yet.'));
-    const attested = /^(the )?name of\b|^n\.? of\b|used as a (given )?name|a (male|female) given name|a surname/i;
-    const seen = new Set<string>(); const items: Record<string, unknown>[] = [];
-    for (const { entry } of d.corpus.searchDictionary(req.body.q, { lang: req.body.lang, region: req.body.region }, (req.body.count ?? 12) * 3)) {
-      const roman = (entry.roman ?? entry.headword).trim();
-      const name = roman.charAt(0).toUpperCase() + roman.slice(1);
-      const key = name.toLowerCase(); if (seen.has(key)) continue; seen.add(key);
-      const src = d.corpus.sources.get(entry.source);
-      const isName = attested.test(entry.gloss);
-      const langName = store.data.LANG[entry.lang] ?? entry.lang;
-      items.push({
-        name, ...(entry.script ? { script: entry.script } : {}), meaning: entry.gloss, language: entry.lang, ...(entry.pos ? { pos: entry.pos } : {}),
-        status: isName ? 'attested_word' : 'coined_word',
-        trust: src?.license === 'public-domain' ? 'trusted' : 'community',
-        note: isName
-          ? `Recorded in ${langName} as a name meaning "${entry.gloss}".`
-          : `A ${langName} word meaning "${entry.gloss}", offered as a name — say it aloud to a speaker of the language before choosing.`,
-        source: { title: src?.title ?? entry.source, license: src?.license ?? 'unknown', ...(src?.url ? { url: src.url } : {}) },
-      });
-      if (items.length >= (req.body.count ?? 12)) break;
-    }
-    return { items };
+    return { items: coinFromDictionary(d.corpus, store, req.body) };
   });
 
   /* ---------- one error format, no internals leaked */

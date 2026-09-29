@@ -142,3 +142,18 @@ test('MCP: names_from_texts returns quotes and sources', async () => {
   const data = JSON.parse((r.content as { text: string }[])[0]!.text);
   assert.equal(data.results[0].name, 'Kyllikki'); assert.equal(data.results[0].source.ref, 'Song 1');
 });
+
+test('MCP: coin_from_words offers dictionary words as names, with meaning and citation', async () => {
+  const { store, retriever, generate, corpus } = make();
+  const [a, b] = InMemoryTransport.createLinkedPair();
+  await createMcpServer(store, retriever, generate, corpus).connect(a);
+  const c = new Client({ name: 't', version: '1' }); await c.connect(b);
+  assert.ok((await c.listTools()).tools.map((t) => t.name).includes('coin_from_words'));
+  const r = await c.callTool({ name: 'coin_from_words', arguments: { query: 'moon', language: 'fi' } });
+  const data = JSON.parse((r.content as { text: string }[])[0]!.text);
+  const kuu = data.results.find((x: { name: string }) => x.name === 'Kuu');
+  assert.ok(kuu, 'coins Kuu from the Finnish word for moon');
+  assert.match(kuu.meaning, /moon/); assert.equal(kuu.language, 'fi');
+  assert.ok(kuu.status === 'coined_word' || kuu.status === 'attested_word');
+  assert.ok(kuu.source && kuu.source.title, 'carries a dictionary citation');
+});
