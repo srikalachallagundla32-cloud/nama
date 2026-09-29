@@ -1,0 +1,9 @@
+{
+  "index": "names_search_v1",
+  "embed_model": "none",
+  "embed_version": "bm25-v1",
+  "dimensions": null,
+  "built_from_data_hash": "set by your indexing job",
+  "built_at": "set by your indexing job",
+  "note": "Your indexing job writes this file. The query service and this harness refuse to run if their embedding model/version differs."
+}

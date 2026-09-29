@@ -1,0 +1,31 @@
+{
+  "name": "nama-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "mcp": "tsx src/mcp/stdio.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test test/*.test.ts",
+    "eval": "tsx eval/run.ts",
+    "eval:baseline": "tsx eval/run.ts --save-baseline",
+    "bench": "tsx scripts/bench.ts",
+    "build:index": "tsx scripts/build-index.ts",
+    "audit": "npm audit --audit-level=high",
+    "ingest": "tsx scripts/ingest-texts.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.31.0",
+    "fastify": "5.12.5",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.6.0"
+  }
+}

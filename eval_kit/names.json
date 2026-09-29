@@ -1,0 +1,2234 @@
+{
+ "langs": {
+  "sa": "Sanskrit",
+  "te": "Telugu",
+  "ta": "Tamil",
+  "kn": "Kannada",
+  "ml": "Malayalam",
+  "hi": "Hindi",
+  "ur": "Urdu & Persian",
+  "bn": "Bengali",
+  "mr": "Marathi",
+  "gu": "Gujarati",
+  "pa": "Punjabi",
+  "as": "Assamese",
+  "or": "Odia"
+ },
+ "themes": {
+  "moon": "moonlight & night",
+  "light": "light & dawn",
+  "rain": "rain & clouds",
+  "flowers": "flowers & trees",
+  "water": "rivers & the sea",
+  "sky": "stars, sky & wind",
+  "love": "love & tenderness",
+  "music": "music & sweetness",
+  "wisdom": "wisdom & learning",
+  "strength": "strength & courage",
+  "divine": "the divine",
+  "story": "heroines & heroes of old stories"
+ },
+ "names": [
+  {
+   "n": "Jyotsna",
+   "s": "ज्योत्स्ना",
+   "g": "f",
+   "l": "sa",
+   "m": "Moonlight",
+   "p": "JYOHT-snaa",
+   "t": [
+    "moon"
+   ],
+   "r": 2,
+   "e": 3,
+   "i": "English needs two words for this; Sanskrit and most Indian languages have one.",
+   "src": "Classical Sanskrit poetry"
+  },
+  {
+   "n": "Kaumudi",
+   "s": "कौमुदी",
+   "g": "f",
+   "l": "sa",
+   "m": "The light of the autumn full moon",
+   "p": "KOW-moo-dee",
+   "t": [
+    "moon"
+   ],
+   "r": 3,
+   "e": 2,
+   "i": "Not just any moonlight — the clear light of the autumn full moon, when the classical Kaumudi festival was held.",
+   "src": "Classical Sanskrit literature"
+  },
+  {
+   "n": "Chandrika",
+   "s": "चन्द्रिका",
+   "g": "f",
+   "l": "sa",
+   "m": "Moonlight",
+   "p": "CHUN-dri-kaa",
+   "t": [
+    "moon"
+   ],
+   "r": 2,
+   "e": 2
+  },
+  {
+   "n": "Kumudini",
+   "s": "कुमुदिनी",
+   "g": "f",
+   "l": "sa",
+   "m": "Night-blooming lotus",
+   "p": "koo-MOO-di-nee",
+   "t": [
+    "moon",
+    "flowers"
+   ],
+   "r": 3,
+   "e": 2,
+   "i": "The water-lily that opens to the moon, as the day-lotus opens to the sun — an old image for someone who comes alive at night."
+  },
+  {
+   "n": "Shashank",
+   "s": "शशांक",
+   "g": "m",
+   "l": "sa",
+   "m": "The moon",
+   "p": "shuh-SHAANK",
+   "t": [
+    "moon"
+   ],
+   "r": 1,
+   "e": 2,
+   "i": "Literally \"marked with a hare\" — where others see a man in the moon, Indian tradition sees a rabbit."
+  },
+  {
+   "n": "Nishith",
+   "s": "निशीथ",
+   "g": "m",
+   "l": "sa",
+   "m": "Midnight",
+   "p": "ni-SHEETH",
+   "t": [
+    "moon"
+   ],
+   "r": 3,
+   "e": 2
+  },
+  {
+   "n": "Nishant",
+   "s": "निशांत",
+   "g": "m",
+   "l": "sa",
+   "m": "The end of night; dawn",
+   "p": "ni-SHAANT",
+   "t": [
+    "light",
+    "moon"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Yamini",
+   "s": "यामिनी",
+   "g": "f",
+   "l": "sa",
+   "m": "Night",
+   "p": "YAA-mi-nee",
+   "t": [
+    "moon"
+   ],
+   "r": 2,
+   "e": 1,
+   "i": "From yāma, the night-watch — the night as something kept and watched through."
+  },
+  {
+   "n": "Usha",
+   "s": "उषा",
+   "g": "f",
+   "l": "sa",
+   "m": "Dawn",
+   "p": "OO-shaa",
+   "t": [
+    "light",
+    "divine"
+   ],
+   "r": 1,
+   "e": 1,
+   "i": "Ushas, the dawn goddess, is praised in more than twenty hymns of the Rigveda — one of its most beautiful figures.",
+   "src": "Rigveda"
+  },
+  {
+   "n": "Ahana",
+   "s": "अहना",
+   "g": "f",
+   "l": "sa",
+   "m": "First light of morning",
+   "p": "uh-huh-NAA",
+   "t": [
+    "light"
+   ],
+   "r": 3,
+   "e": 1,
+   "src": "Rigveda — a name for Dawn"
+  },
+  {
+   "n": "Arun",
+   "s": "अरुण",
+   "g": "m",
+   "l": "sa",
+   "m": "The red glow of dawn",
+   "p": "uh-ROON",
+   "t": [
+    "light"
+   ],
+   "r": 1,
+   "e": 1,
+   "i": "Aruna is the charioteer of the Sun — the red that arrives before the light does."
+  },
+  {
+   "n": "Mihir",
+   "s": "मिहिर",
+   "g": "m",
+   "l": "sa",
+   "m": "The sun",
+   "p": "MI-hir",
+   "t": [
+    "light"
+   ],
+   "r": 2,
+   "e": 1,
+   "src": "Also the name of the astronomer Varahamihira (6th century)"
+  },
+  {
+   "n": "Sandhya",
+   "s": "संध्या",
+   "g": "f",
+   "l": "sa",
+   "m": "Twilight",
+   "p": "SUNDH-yaa",
+   "t": [
+    "light",
+    "moon"
+   ],
+   "r": 1,
+   "e": 2,
+   "i": "Literally \"the joining\" — the moment where day meets night, treated as sacred and marked by prayer."
+  },
+  {
+   "n": "Vibha",
+   "s": "विभा",
+   "g": "f",
+   "l": "sa",
+   "m": "Radiance",
+   "p": "VI-bhaa",
+   "t": [
+    "light"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Kanti",
+   "s": "कान्ति",
+   "g": "f",
+   "l": "sa",
+   "m": "Glow, loveliness",
+   "p": "KAAN-ti",
+   "t": [
+    "light",
+    "love"
+   ],
+   "r": 2,
+   "e": 1,
+   "i": "In classical poetics, the particular glow beauty takes on when a person is loved."
+  },
+  {
+   "n": "Kiran",
+   "s": "किरण",
+   "g": "u",
+   "l": "sa",
+   "m": "Ray of light",
+   "p": "KI-run",
+   "t": [
+    "light"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Tejas",
+   "s": "तेजस्",
+   "g": "m",
+   "l": "sa",
+   "m": "Radiance, fiery energy",
+   "p": "TAY-jus",
+   "t": [
+    "light",
+    "strength"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Ojas",
+   "s": "ओजस्",
+   "g": "m",
+   "l": "sa",
+   "m": "Vital strength",
+   "p": "OH-jus",
+   "t": [
+    "strength"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Savitri",
+   "s": "सावित्री",
+   "g": "f",
+   "l": "sa",
+   "m": "Belonging to the sun",
+   "p": "SAA-vi-tree",
+   "t": [
+    "light",
+    "story",
+    "strength"
+   ],
+   "r": 2,
+   "e": 1,
+   "i": "Savitri followed Death himself and argued him into returning her husband Satyavan.",
+   "src": "Mahabharata, Vana Parva"
+  },
+  {
+   "n": "Anurag",
+   "s": "अनुराग",
+   "g": "m",
+   "l": "sa",
+   "m": "Love, deep affection",
+   "p": "uh-noo-RAAG",
+   "t": [
+    "love"
+   ],
+   "r": 1,
+   "e": 1,
+   "i": "Love as dyeing: the root means \"to color\". The heart slowly takes on the tint of the beloved, the way cloth does."
+  },
+  {
+   "n": "Lavanya",
+   "s": "लावण्य",
+   "g": "f",
+   "l": "sa",
+   "m": "Beauty, grace",
+   "p": "laa-VUN-yaa",
+   "t": [
+    "love"
+   ],
+   "r": 1,
+   "e": 2,
+   "i": "Literally \"saltiness\" — not perfect features, but the savour over them that makes a face alive."
+  },
+  {
+   "n": "Priyamvada",
+   "s": "प्रियंवदा",
+   "g": "f",
+   "l": "sa",
+   "m": "She who speaks kindly",
+   "p": "pri-yum-VUH-daa",
+   "t": [
+    "love",
+    "story"
+   ],
+   "r": 3,
+   "e": 3,
+   "src": "Kalidasa, Abhijnanashakuntalam — Shakuntala's friend"
+  },
+  {
+   "n": "Anasuya",
+   "s": "अनसूया",
+   "g": "f",
+   "l": "sa",
+   "m": "Free of envy",
+   "p": "uh-nuh-SOO-yaa",
+   "t": [
+    "wisdom",
+    "story"
+   ],
+   "r": 3,
+   "e": 2,
+   "src": "Wife of the sage Atri; also Shakuntala's friend in Kalidasa"
+  },
+  {
+   "n": "Maitreyi",
+   "s": "मैत्रेयी",
+   "g": "f",
+   "l": "sa",
+   "m": "Friendly, kind",
+   "p": "my-TRAY-yee",
+   "t": [
+    "wisdom",
+    "story"
+   ],
+   "r": 3,
+   "e": 2,
+   "i": "Offered wealth, she asked her husband Yajnavalkya instead: \"Will it make me immortal?\" His answer is one of the great passages of the Upanishads.",
+   "src": "Brihadaranyaka Upanishad 2.4"
+  },
+  {
+   "n": "Gargi",
+   "s": "गार्गी",
+   "g": "f",
+   "l": "sa",
+   "m": "Of the Garga family",
+   "p": "GAAR-gee",
+   "t": [
+    "wisdom",
+    "story"
+   ],
+   "r": 2,
+   "e": 1,
+   "i": "A philosopher who questioned Yajnavalkya in a royal debate so hard he warned her to stop before her head fell off.",
+   "src": "Brihadaranyaka Upanishad 3.6"
+  },
+  {
+   "n": "Lopamudra",
+   "s": "लोपामुद्रा",
+   "g": "f",
+   "l": "sa",
+   "m": "Name of a Vedic poet",
+   "p": "LOH-paa-mood-raa",
+   "t": [
+    "wisdom",
+    "story"
+   ],
+   "r": 4,
+   "e": 3,
+   "i": "One of the few women whose own verses survive in the Rigveda.",
+   "src": "Rigveda 1.179"
+  },
+  {
+   "n": "Ghosha",
+   "s": "घोषा",
+   "g": "f",
+   "l": "sa",
+   "m": "Sound, proclamation",
+   "p": "GHOH-shaa",
+   "t": [
+    "wisdom",
+    "music"
+   ],
+   "r": 4,
+   "e": 1,
+   "src": "Rigveda 10.39–40, hymns attributed to her"
+  },
+  {
+   "n": "Nachiketa",
+   "s": "नचिकेता",
+   "g": "m",
+   "l": "sa",
+   "m": "Name of a boy seeker",
+   "p": "nuh-chi-KAY-taa",
+   "t": [
+    "wisdom",
+    "story",
+    "strength"
+   ],
+   "r": 3,
+   "e": 2,
+   "i": "A boy who went to the house of Death, waited three days, and refused every gift until Death told him what happens after dying.",
+   "src": "Katha Upanishad"
+  },
+  {
+   "n": "Satyakam",
+   "s": "सत्यकाम",
+   "g": "m",
+   "l": "sa",
+   "m": "One who loves truth",
+   "p": "SUT-yuh-kaam",
+   "t": [
+    "wisdom",
+    "story"
+   ],
+   "r": 4,
+   "e": 2,
+   "i": "Asked his lineage, he told the teacher the plain truth that he didn't know his father — and was accepted for his honesty.",
+   "src": "Chandogya Upanishad 4.4"
+  },
+  {
+   "n": "Ritu",
+   "s": "ऋतु",
+   "g": "f",
+   "l": "sa",
+   "m": "Season",
+   "p": "RI-too",
+   "t": [
+    "sky"
+   ],
+   "r": 1,
+   "e": 1,
+   "i": "Sanskrit counts six seasons, not four — including a season of rains and one just before winter."
+  },
+  {
+   "n": "Ritvik",
+   "s": "ऋत्विक्",
+   "g": "m",
+   "l": "sa",
+   "m": "Priest who performs rites at the right season",
+   "p": "RIT-vik",
+   "t": [
+    "wisdom",
+    "divine"
+   ],
+   "r": 2,
+   "e": 2
+  },
+  {
+   "n": "Dhvani",
+   "s": "ध्वनि",
+   "g": "f",
+   "l": "sa",
+   "m": "Sound, resonance",
+   "p": "DHVUH-ni",
+   "t": [
+    "music"
+   ],
+   "r": 2,
+   "e": 2,
+   "i": "In Sanskrit poetics, the meaning a poem suggests beyond what it says — held to be the soul of poetry."
+  },
+  {
+   "n": "Pratibha",
+   "s": "प्रतिभा",
+   "g": "f",
+   "l": "sa",
+   "m": "Brilliance, a flash of genius",
+   "p": "pruh-TI-bhaa",
+   "t": [
+    "wisdom"
+   ],
+   "r": 1,
+   "e": 2
+  },
+  {
+   "n": "Anagha",
+   "s": "अनघा",
+   "g": "f",
+   "l": "sa",
+   "m": "Pure, without fault",
+   "p": "UH-nuh-ghaa",
+   "t": [
+    "divine"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Aranya",
+   "s": "अरण्य",
+   "g": "u",
+   "l": "sa",
+   "m": "Forest",
+   "p": "uh-RUN-yaa",
+   "t": [
+    "flowers"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Ila",
+   "s": "इला",
+   "g": "f",
+   "l": "sa",
+   "m": "The earth",
+   "p": "I-laa",
+   "t": [
+    "sky",
+    "divine"
+   ],
+   "r": 2,
+   "e": 1,
+   "src": "Rigveda — a goddess of speech and nourishment"
+  },
+  {
+   "n": "Tara",
+   "s": "तारा",
+   "g": "f",
+   "l": "sa",
+   "m": "Star",
+   "p": "TAA-raa",
+   "t": [
+    "sky"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Nakshatra",
+   "s": "नक्षत्र",
+   "g": "u",
+   "l": "sa",
+   "m": "Star, constellation",
+   "p": "NUK-shuh-truh",
+   "t": [
+    "sky"
+   ],
+   "r": 2,
+   "e": 3
+  },
+  {
+   "n": "Aditi",
+   "s": "अदिति",
+   "g": "f",
+   "l": "sa",
+   "m": "Boundless",
+   "p": "UH-di-ti",
+   "t": [
+    "sky",
+    "divine"
+   ],
+   "r": 1,
+   "e": 1,
+   "src": "Rigveda — mother of the gods"
+  },
+  {
+   "n": "Sameer",
+   "s": "समीर",
+   "g": "m",
+   "l": "sa",
+   "m": "Breeze",
+   "p": "suh-MEER",
+   "t": [
+    "sky"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Pavan",
+   "s": "पवन",
+   "g": "m",
+   "l": "sa",
+   "m": "Wind; the purifier",
+   "p": "PUH-vun",
+   "t": [
+    "sky"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Malay",
+   "s": "মলয়",
+   "g": "m",
+   "l": "bn",
+   "m": "The Malaya hills; the spring breeze",
+   "p": "MUH-loy",
+   "t": [
+    "sky",
+    "love"
+   ],
+   "r": 2,
+   "e": 1,
+   "i": "In old poetry, the sandal-scented wind from the Malaya hills is what stirs love in spring."
+  },
+  {
+   "n": "Megh",
+   "s": "मेघ",
+   "g": "m",
+   "l": "sa",
+   "m": "Cloud",
+   "p": "MAYGH",
+   "t": [
+    "rain"
+   ],
+   "r": 2,
+   "e": 1,
+   "i": "In Kalidasa's Meghaduta, an exiled lover sends a cloud as a messenger to his wife."
+  },
+  {
+   "n": "Varsha",
+   "s": "वर्षा",
+   "g": "f",
+   "l": "sa",
+   "m": "Rain",
+   "p": "VUR-shaa",
+   "t": [
+    "rain"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Shravan",
+   "s": "श्रवण",
+   "g": "m",
+   "l": "sa",
+   "m": "The monsoon month; also \"hearing\"",
+   "p": "SHRUH-vun",
+   "t": [
+    "rain",
+    "story"
+   ],
+   "r": 1,
+   "e": 2,
+   "src": "Shravan Kumar, the devoted son in the Ramayana"
+  },
+  {
+   "n": "Chakor",
+   "s": "चकोर",
+   "g": "m",
+   "l": "sa",
+   "m": "The moon-bird",
+   "p": "chuh-KOHR",
+   "t": [
+    "moon",
+    "love"
+   ],
+   "r": 3,
+   "e": 1,
+   "i": "A bird said to live only on moonbeams — the old image of a lover who can't stop looking at the beloved's face."
+  },
+  {
+   "n": "Mallika",
+   "s": "मल्लिका",
+   "g": "f",
+   "l": "sa",
+   "m": "Jasmine",
+   "p": "MUL-li-kaa",
+   "t": [
+    "flowers"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Malati",
+   "s": "मालती",
+   "g": "f",
+   "l": "sa",
+   "m": "A night-blooming jasmine",
+   "p": "MAA-luh-tee",
+   "t": [
+    "flowers",
+    "story"
+   ],
+   "r": 2,
+   "e": 1,
+   "src": "Heroine of Bhavabhuti's play Malatimadhava (8th century)"
+  },
+  {
+   "n": "Ketaki",
+   "s": "केतकी",
+   "g": "f",
+   "l": "mr",
+   "m": "Screwpine flower",
+   "p": "KAY-tuh-kee",
+   "t": [
+    "flowers"
+   ],
+   "r": 2,
+   "e": 1,
+   "i": "A powerfully fragrant flower — and in one legend, cursed by Shiva never to be offered to him for telling a lie."
+  },
+  {
+   "n": "Bakul",
+   "s": "বকুল",
+   "g": "u",
+   "l": "bn",
+   "m": "The bakula tree",
+   "p": "BOH-kool",
+   "t": [
+    "flowers"
+   ],
+   "r": 3,
+   "e": 1,
+   "i": "Old poets said the bakula tree would only flower if a woman sprinkled it with wine from her mouth."
+  },
+  {
+   "n": "Ashok",
+   "s": "अशोक",
+   "g": "m",
+   "l": "sa",
+   "m": "Without sorrow; the ashoka tree",
+   "p": "uh-SHOHK",
+   "t": [
+    "flowers"
+   ],
+   "r": 1,
+   "e": 1,
+   "i": "The ashoka tree was said to burst into bloom at the touch of a beautiful woman's foot."
+  },
+  {
+   "n": "Kadambari",
+   "s": "कादम्बरी",
+   "g": "f",
+   "l": "sa",
+   "m": "Name of a classical romance",
+   "p": "kaa-DUM-buh-ree",
+   "t": [
+    "story",
+    "flowers"
+   ],
+   "r": 3,
+   "e": 2,
+   "src": "Banabhatta's novel Kadambari (7th century)"
+  },
+  {
+   "n": "Sarayu",
+   "s": "सरयू",
+   "g": "f",
+   "l": "sa",
+   "m": "The river of Ayodhya",
+   "p": "suh-ruh-YOO",
+   "t": [
+    "water",
+    "story"
+   ],
+   "r": 3,
+   "e": 1,
+   "src": "Ramayana"
+  },
+  {
+   "n": "Kaveri",
+   "s": "कावेरी",
+   "g": "f",
+   "l": "sa",
+   "m": "The great river of the south",
+   "p": "KAA-vay-ree",
+   "t": [
+    "water"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Janhabi",
+   "s": "ଜାହ୍ନବୀ",
+   "g": "f",
+   "l": "or",
+   "m": "The Ganga",
+   "p": "JAAN-huh-bee",
+   "t": [
+    "water",
+    "divine"
+   ],
+   "r": 2,
+   "e": 2,
+   "i": "The river Ganga, called \"daughter of Jahnu\" — the sage who swallowed her and released her through his ear."
+  },
+  {
+   "n": "Ananya",
+   "s": "अनन्या",
+   "g": "f",
+   "l": "sa",
+   "m": "Unique; without another like her",
+   "p": "uh-NUN-yaa",
+   "t": [
+    "love"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Advait",
+   "s": "अद्वैत",
+   "g": "m",
+   "l": "sa",
+   "m": "Not-two; oneness",
+   "p": "UD-vyt",
+   "t": [
+    "wisdom"
+   ],
+   "r": 2,
+   "e": 2
+  },
+  {
+   "n": "Vedant",
+   "s": "वेदान्त",
+   "g": "m",
+   "l": "sa",
+   "m": "The culmination of the Vedas",
+   "p": "vay-DAANT",
+   "t": [
+    "wisdom"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Shaurya",
+   "s": "शौर्य",
+   "g": "m",
+   "l": "sa",
+   "m": "Valor",
+   "p": "SHOWR-yuh",
+   "t": [
+    "strength"
+   ],
+   "r": 1,
+   "e": 2
+  },
+  {
+   "n": "Veer",
+   "s": "वीर",
+   "g": "m",
+   "l": "sa",
+   "m": "Brave",
+   "p": "VEER",
+   "t": [
+    "strength"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Aryan",
+   "s": "आर्यन",
+   "g": "m",
+   "l": "sa",
+   "m": "Noble",
+   "p": "AAR-yun",
+   "t": [
+    "strength"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Arjun",
+   "s": "अर्जुन",
+   "g": "m",
+   "l": "sa",
+   "m": "Bright, shining white",
+   "p": "UR-joon",
+   "t": [
+    "story",
+    "strength"
+   ],
+   "r": 1,
+   "e": 1,
+   "src": "Mahabharata — the archer to whom Krishna speaks the Bhagavad Gita"
+  },
+  {
+   "n": "Rohan",
+   "s": "रोहन",
+   "g": "m",
+   "l": "sa",
+   "m": "Rising, ascending",
+   "p": "ROH-hun",
+   "t": [
+    "strength"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Neel",
+   "s": "नील",
+   "g": "m",
+   "l": "sa",
+   "m": "Blue",
+   "p": "NEEL",
+   "t": [
+    "sky"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Rishi",
+   "s": "ऋषि",
+   "g": "m",
+   "l": "sa",
+   "m": "Seer, sage",
+   "p": "RI-shi",
+   "t": [
+    "wisdom"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Dev",
+   "s": "देव",
+   "g": "m",
+   "l": "sa",
+   "m": "Divine, shining one",
+   "p": "DAYV",
+   "t": [
+    "divine",
+    "light"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Ishaan",
+   "s": "ईशान",
+   "g": "m",
+   "l": "sa",
+   "m": "Lord; the northeast",
+   "p": "ee-SHAAN",
+   "t": [
+    "divine"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Rudra",
+   "s": "रुद्र",
+   "g": "m",
+   "l": "sa",
+   "m": "The roarer; Shiva",
+   "p": "ROO-druh",
+   "t": [
+    "divine",
+    "strength"
+   ],
+   "r": 2,
+   "e": 2,
+   "src": "Rigveda — the storm god"
+  },
+  {
+   "n": "Isha",
+   "s": "ईशा",
+   "g": "f",
+   "l": "sa",
+   "m": "The divine; she who rules",
+   "p": "EE-shaa",
+   "t": [
+    "divine"
+   ],
+   "r": 1,
+   "e": 1,
+   "src": "Isha Upanishad takes its name from its first word"
+  },
+  {
+   "n": "Maya",
+   "s": "माया",
+   "g": "f",
+   "l": "sa",
+   "m": "Creative power",
+   "p": "MAA-yaa",
+   "t": [
+    "divine",
+    "wisdom"
+   ],
+   "r": 1,
+   "e": 1,
+   "i": "Often translated \"illusion\", but the older sense is the power that makes the one appear as many."
+  },
+  {
+   "n": "Leela",
+   "s": "लीला",
+   "g": "f",
+   "l": "sa",
+   "m": "Divine play",
+   "p": "LEE-laa",
+   "t": [
+    "divine",
+    "love"
+   ],
+   "r": 1,
+   "e": 1,
+   "i": "The idea that the world was made not out of need but for the joy of play."
+  },
+  {
+   "n": "Mira",
+   "s": "मीरा",
+   "g": "f",
+   "l": "hi",
+   "m": "After the poet-saint Mirabai",
+   "p": "MEE-raa",
+   "t": [
+    "music",
+    "divine",
+    "story"
+   ],
+   "r": 1,
+   "e": 1,
+   "src": "Mirabai, 16th-century devotional poet"
+  },
+  {
+   "n": "Asha",
+   "s": "आशा",
+   "g": "f",
+   "l": "sa",
+   "m": "Hope",
+   "p": "AA-shaa",
+   "t": [
+    "love"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Diya",
+   "s": "दिया",
+   "g": "f",
+   "l": "hi",
+   "m": "Lamp",
+   "p": "DI-yaa",
+   "t": [
+    "light"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Kavya",
+   "s": "काव्या",
+   "g": "f",
+   "l": "sa",
+   "m": "Poetry",
+   "p": "KAAV-yaa",
+   "t": [
+    "music",
+    "wisdom"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Rati",
+   "s": "रति",
+   "g": "f",
+   "l": "sa",
+   "m": "Delight",
+   "p": "RUH-ti",
+   "t": [
+    "love",
+    "story"
+   ],
+   "r": 3,
+   "e": 1,
+   "src": "Wife of Kamadeva, the god of love"
+  },
+  {
+   "n": "Smita",
+   "s": "स्मिता",
+   "g": "f",
+   "l": "sa",
+   "m": "Smiling",
+   "p": "SMI-taa",
+   "t": [
+    "love"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Sudha",
+   "s": "सुधा",
+   "g": "f",
+   "l": "sa",
+   "m": "Nectar",
+   "p": "SOO-dhaa",
+   "t": [
+    "music"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Madhur",
+   "s": "मधुर",
+   "g": "m",
+   "l": "sa",
+   "m": "Sweet, melodious",
+   "p": "MUH-dhoor",
+   "t": [
+    "music"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Damayanti",
+   "s": "दमयन्ती",
+   "g": "f",
+   "l": "sa",
+   "m": "She who subdues",
+   "p": "duh-muh-YUN-tee",
+   "t": [
+    "story",
+    "love"
+   ],
+   "r": 3,
+   "e": 2,
+   "i": "She chose King Nala over the gods themselves, and later found him again when he was lost and disguised.",
+   "src": "Mahabharata, Vana Parva"
+  },
+  {
+   "n": "Urvashi",
+   "s": "उर्वशी",
+   "g": "f",
+   "l": "sa",
+   "m": "A celestial dancer",
+   "p": "OOR-vuh-shee",
+   "t": [
+    "story",
+    "love"
+   ],
+   "r": 3,
+   "e": 2,
+   "src": "Rigveda 10.95 — the dialogue of Pururavas and Urvashi"
+  },
+  {
+   "n": "Shakuntala",
+   "s": "शकुन्तला",
+   "g": "f",
+   "l": "sa",
+   "m": "Protected by birds",
+   "p": "shuh-KOON-tuh-laa",
+   "t": [
+    "story",
+    "flowers"
+   ],
+   "r": 3,
+   "e": 2,
+   "i": "Abandoned as a baby and sheltered by birds — hence her name.",
+   "src": "Mahabharata; Kalidasa's play"
+  },
+  {
+   "n": "Malavika",
+   "s": "मालविका",
+   "g": "f",
+   "l": "sa",
+   "m": "Princess of Malwa",
+   "p": "MAA-luh-vi-kaa",
+   "t": [
+    "story"
+   ],
+   "r": 3,
+   "e": 2,
+   "src": "Kalidasa, Malavikagnimitram"
+  },
+  {
+   "n": "Chandni",
+   "s": "चाँदनी",
+   "g": "f",
+   "l": "hi",
+   "m": "Moonlight",
+   "p": "CHAAND-nee",
+   "t": [
+    "moon"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Saavan",
+   "s": "सावन",
+   "g": "m",
+   "l": "hi",
+   "m": "The monsoon month",
+   "p": "SAA-vun",
+   "t": [
+    "rain",
+    "love"
+   ],
+   "r": 2,
+   "e": 1,
+   "i": "The rainy month of swings, green bangles and songs of longing for someone far away."
+  },
+  {
+   "n": "Barkha",
+   "s": "बरखा",
+   "g": "f",
+   "l": "hi",
+   "m": "Rain",
+   "p": "BUR-khaa",
+   "t": [
+    "rain"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Rimjhim",
+   "s": "रिमझिम",
+   "g": "f",
+   "l": "hi",
+   "m": "Soft, steady rain",
+   "p": "RIM-jhim",
+   "t": [
+    "rain",
+    "music"
+   ],
+   "r": 3,
+   "e": 1,
+   "i": "The word sounds like what it describes — light rain pattering on and on."
+  },
+  {
+   "n": "Preet",
+   "s": "प्रीत",
+   "g": "u",
+   "l": "hi",
+   "m": "Love",
+   "p": "PREET",
+   "t": [
+    "love"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Kabir",
+   "s": "कबीर",
+   "g": "m",
+   "l": "hi",
+   "m": "Great",
+   "p": "kuh-BEER",
+   "t": [
+    "wisdom",
+    "music"
+   ],
+   "r": 1,
+   "e": 1,
+   "src": "Kabir, 15th-century poet-saint"
+  },
+  {
+   "n": "Sakhi",
+   "s": "सखी",
+   "g": "f",
+   "l": "mr",
+   "m": "Companion, dear friend",
+   "p": "SUH-khee",
+   "t": [
+    "love"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Mrunal",
+   "s": "मृणाल",
+   "g": "u",
+   "l": "mr",
+   "m": "Lotus stem",
+   "p": "mroo-NAAL",
+   "t": [
+    "flowers"
+   ],
+   "r": 1,
+   "e": 2
+  },
+  {
+   "n": "Mrinmayi",
+   "s": "मृण्मयी",
+   "g": "f",
+   "l": "mr",
+   "m": "Made of earth",
+   "p": "MRIN-muh-yee",
+   "t": [
+    "sky"
+   ],
+   "r": 2,
+   "e": 3
+  },
+  {
+   "n": "Chinmay",
+   "s": "चिन्मय",
+   "g": "m",
+   "l": "mr",
+   "m": "Full of consciousness",
+   "p": "CHIN-mye",
+   "t": [
+    "wisdom"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Tanmay",
+   "s": "तन्मय",
+   "g": "m",
+   "l": "mr",
+   "m": "Absorbed, wholly engrossed",
+   "p": "TUN-mye",
+   "t": [
+    "wisdom"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Vennela",
+   "s": "వెన్నెల",
+   "g": "f",
+   "l": "te",
+   "m": "Moonlight",
+   "p": "VEN-ne-laa",
+   "t": [
+    "moon"
+   ],
+   "r": 3,
+   "e": 1,
+   "i": "A native Telugu word, not borrowed from Sanskrit — moonlight mattered enough to get its own name."
+  },
+  {
+   "n": "Pallavi",
+   "s": "పల్లవి",
+   "g": "f",
+   "l": "te",
+   "m": "Tender new leaves; a song's refrain",
+   "p": "PUL-luh-vee",
+   "t": [
+    "flowers",
+    "music"
+   ],
+   "r": 1,
+   "e": 1,
+   "i": "In Carnatic music the pallavi is the opening line a song keeps coming back to."
+  },
+  {
+   "n": "Mounika",
+   "s": "మౌనిక",
+   "g": "f",
+   "l": "te",
+   "m": "Quiet, one who keeps silence",
+   "p": "MOW-ni-kaa",
+   "t": [
+    "wisdom"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Sravya",
+   "s": "శ్రావ్య",
+   "g": "f",
+   "l": "te",
+   "m": "Pleasant to hear",
+   "p": "SHRAAV-yaa",
+   "t": [
+    "music"
+   ],
+   "r": 1,
+   "e": 2
+  },
+  {
+   "n": "Sahithi",
+   "s": "సాహితి",
+   "g": "f",
+   "l": "te",
+   "m": "Literature",
+   "p": "SAA-hi-thee",
+   "t": [
+    "wisdom"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Sirisha",
+   "s": "శిరీష",
+   "g": "f",
+   "l": "te",
+   "m": "The shirisha flower",
+   "p": "si-REE-shaa",
+   "t": [
+    "flowers"
+   ],
+   "r": 1,
+   "e": 1,
+   "i": "A flower so delicate that Kalidasa used it as the measure of softness."
+  },
+  {
+   "n": "Chaitanya",
+   "s": "చైతన్య",
+   "g": "m",
+   "l": "te",
+   "m": "Consciousness",
+   "p": "chy-TUN-yuh",
+   "t": [
+    "wisdom"
+   ],
+   "r": 1,
+   "e": 2
+  },
+  {
+   "n": "Srujana",
+   "s": "సృజన",
+   "g": "f",
+   "l": "te",
+   "m": "Creation, creativity",
+   "p": "SROO-juh-naa",
+   "t": [
+    "wisdom"
+   ],
+   "r": 1,
+   "e": 2
+  },
+  {
+   "n": "Nila",
+   "s": "நிலா",
+   "g": "f",
+   "l": "ta",
+   "m": "Moon",
+   "p": "NI-laa",
+   "t": [
+    "moon"
+   ],
+   "r": 1,
+   "e": 1,
+   "i": "Also the word for moon in Malayalam."
+  },
+  {
+   "n": "Nilavan",
+   "s": "நிலவன்",
+   "g": "m",
+   "l": "ta",
+   "m": "Moon",
+   "p": "NI-luh-vun",
+   "t": [
+    "moon"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Mathi",
+   "s": "மதி",
+   "g": "u",
+   "l": "ta",
+   "m": "Moon; also intellect",
+   "p": "MUH-thi",
+   "t": [
+    "moon",
+    "wisdom"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Thendral",
+   "s": "தென்றல்",
+   "g": "f",
+   "l": "ta",
+   "m": "Gentle southern breeze",
+   "p": "THEN-drul",
+   "t": [
+    "sky",
+    "love"
+   ],
+   "r": 2,
+   "e": 2,
+   "i": "In Tamil poetry the soft wind from the south carries love — and restlessness with it."
+  },
+  {
+   "n": "Kurinji",
+   "s": "குறிஞ்சி",
+   "g": "f",
+   "l": "ta",
+   "m": "A flower that blooms once in twelve years",
+   "p": "koo-RIN-ji",
+   "t": [
+    "flowers",
+    "love"
+   ],
+   "r": 3,
+   "e": 2,
+   "i": "In ancient Tamil poetry each landscape stands for a mood of love. The kurinji hills stand for lovers meeting.",
+   "src": "Sangam poetry"
+  },
+  {
+   "n": "Iniya",
+   "s": "இனியா",
+   "g": "f",
+   "l": "ta",
+   "m": "Sweet",
+   "p": "I-ni-yaa",
+   "t": [
+    "music",
+    "love"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Anbu",
+   "s": "அன்பு",
+   "g": "u",
+   "l": "ta",
+   "m": "Love, tenderness",
+   "p": "UN-boo",
+   "t": [
+    "love"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Yazhini",
+   "s": "யாழினி",
+   "g": "f",
+   "l": "ta",
+   "m": "She who plays the yazh",
+   "p": "YAA-zhi-ni",
+   "t": [
+    "music"
+   ],
+   "r": 2,
+   "e": 2,
+   "i": "The yazh was an ancient Tamil harp, played in the Sangam age and lost for centuries."
+  },
+  {
+   "n": "Mugil",
+   "s": "முகில்",
+   "g": "u",
+   "l": "ta",
+   "m": "Cloud",
+   "p": "MOO-gil",
+   "t": [
+    "rain"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Aruvi",
+   "s": "அருவி",
+   "g": "f",
+   "l": "ta",
+   "m": "Waterfall",
+   "p": "UH-roo-vi",
+   "t": [
+    "water"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Kavin",
+   "s": "கவின்",
+   "g": "m",
+   "l": "ta",
+   "m": "Beauty, grace",
+   "p": "KUH-vin",
+   "t": [
+    "love"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Ezhil",
+   "s": "எழில்",
+   "g": "u",
+   "l": "ta",
+   "m": "Beauty",
+   "p": "EH-zhil",
+   "t": [
+    "love"
+   ],
+   "r": 2,
+   "e": 2
+  },
+  {
+   "n": "Ilango",
+   "s": "இளங்கோ",
+   "g": "m",
+   "l": "ta",
+   "m": "Young prince",
+   "p": "i-LUNG-goh",
+   "t": [
+    "story",
+    "strength"
+   ],
+   "r": 3,
+   "e": 1,
+   "src": "Ilango Adigal, author of the Tamil epic Silappadikaram"
+  },
+  {
+   "n": "Muthu",
+   "s": "முத்து",
+   "g": "u",
+   "l": "ta",
+   "m": "Pearl",
+   "p": "MOOTH-thoo",
+   "t": [
+    "water"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Selvi",
+   "s": "செல்வி",
+   "g": "f",
+   "l": "ta",
+   "m": "Prosperity",
+   "p": "SEL-vee",
+   "t": [
+    "divine"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Tamizh",
+   "s": "தமிழ்",
+   "g": "u",
+   "l": "ta",
+   "m": "The Tamil language",
+   "p": "THUH-mizh",
+   "t": [
+    "music",
+    "wisdom"
+   ],
+   "r": 2,
+   "e": 3,
+   "i": "Naming a child after the language itself — an old gloss for the word is \"sweetness\"."
+  },
+  {
+   "n": "Kani",
+   "s": "கனி",
+   "g": "f",
+   "l": "ta",
+   "m": "Ripe fruit; sweetness",
+   "p": "KUH-ni",
+   "t": [
+    "music"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Poongodi",
+   "s": "பூங்கொடி",
+   "g": "f",
+   "l": "ta",
+   "m": "Flowering vine",
+   "p": "POON-go-di",
+   "t": [
+    "flowers"
+   ],
+   "r": 3,
+   "e": 2
+  },
+  {
+   "n": "Valli",
+   "s": "வள்ளி",
+   "g": "f",
+   "l": "ta",
+   "m": "Creeper vine",
+   "p": "VUL-li",
+   "t": [
+    "flowers",
+    "divine",
+    "story"
+   ],
+   "r": 2,
+   "e": 1,
+   "i": "A girl of the hill tribes who guarded millet fields — and whom the god Murugan courted in disguise."
+  },
+  {
+   "n": "Kayal",
+   "s": "கயல்",
+   "g": "f",
+   "l": "ta",
+   "m": "Carp fish; beautiful eyes",
+   "p": "KUH-yul",
+   "t": [
+    "water",
+    "love"
+   ],
+   "r": 2,
+   "e": 1,
+   "i": "Tamil poets compared lovely eyes to the darting kayal fish; it was also the emblem of the Pandya kings."
+  },
+  {
+   "n": "Oviya",
+   "s": "ஓவியா",
+   "g": "f",
+   "l": "ta",
+   "m": "Painting; an artist",
+   "p": "OH-vi-yaa",
+   "t": [
+    "music"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Inchara",
+   "s": "ಇಂಚರ",
+   "g": "f",
+   "l": "kn",
+   "m": "Sweet, melodious sound",
+   "p": "IN-chuh-raa",
+   "t": [
+    "music"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Spoorthi",
+   "s": "ಸ್ಫೂರ್ತಿ",
+   "g": "f",
+   "l": "kn",
+   "m": "Inspiration",
+   "p": "SPOOR-thi",
+   "t": [
+    "wisdom"
+   ],
+   "r": 1,
+   "e": 2
+  },
+  {
+   "n": "Sinchana",
+   "s": "ಸಿಂಚನ",
+   "g": "f",
+   "l": "kn",
+   "m": "A light sprinkling of water",
+   "p": "SIN-chuh-naa",
+   "t": [
+    "rain",
+    "water"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Chaitra",
+   "s": "ಚೈತ್ರ",
+   "g": "f",
+   "l": "kn",
+   "m": "The first month of spring",
+   "p": "CHY-truh",
+   "t": [
+    "flowers"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Shiuli",
+   "s": "শিউলি",
+   "g": "f",
+   "l": "bn",
+   "m": "Night-flowering jasmine",
+   "p": "SHEU-li",
+   "t": [
+    "flowers",
+    "moon"
+   ],
+   "r": 3,
+   "e": 1,
+   "i": "It blooms after dark and drops at dawn, carpeting the ground white and orange — the flower of autumn and Durga Puja in Bengal."
+  },
+  {
+   "n": "Aparajita",
+   "s": "অপরাজিতা",
+   "g": "f",
+   "l": "bn",
+   "m": "Unconquered; the butterfly-pea flower",
+   "p": "uh-puh-RAA-ji-taa",
+   "t": [
+    "flowers",
+    "strength"
+   ],
+   "r": 2,
+   "e": 2
+  },
+  {
+   "n": "Jhinuk",
+   "s": "ঝিনুক",
+   "g": "f",
+   "l": "bn",
+   "m": "Oyster shell",
+   "p": "JHI-nook",
+   "t": [
+    "water"
+   ],
+   "r": 3,
+   "e": 1,
+   "i": "The shell that makes the pearl."
+  },
+  {
+   "n": "Shraboni",
+   "s": "শ্রাবণী",
+   "g": "f",
+   "l": "bn",
+   "m": "Born in the monsoon month",
+   "p": "SHRAA-boh-nee",
+   "t": [
+    "rain"
+   ],
+   "r": 2,
+   "e": 2
+  },
+  {
+   "n": "Charulata",
+   "s": "চারুলতা",
+   "g": "f",
+   "l": "bn",
+   "m": "Beautiful vine",
+   "p": "CHAA-roo-luh-taa",
+   "t": [
+    "flowers",
+    "story"
+   ],
+   "r": 3,
+   "e": 2,
+   "src": "Heroine of Tagore's Nastanirh, filmed by Satyajit Ray"
+  },
+  {
+   "n": "Rabi",
+   "s": "রবি",
+   "g": "m",
+   "l": "bn",
+   "m": "The sun",
+   "p": "ROH-bi",
+   "t": [
+    "light"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Mohona",
+   "s": "মোহনা",
+   "g": "f",
+   "l": "bn",
+   "m": "Where the river meets the sea",
+   "p": "MOH-hoh-naa",
+   "t": [
+    "water"
+   ],
+   "r": 3,
+   "e": 1
+  },
+  {
+   "n": "Jonaki",
+   "s": "জোনাকী",
+   "g": "f",
+   "l": "as",
+   "m": "Firefly",
+   "p": "JOH-naa-kee",
+   "t": [
+    "light",
+    "moon"
+   ],
+   "r": 2,
+   "e": 1,
+   "i": "From jon, moon. Jonaki was also the magazine that began modern Assamese literature."
+  },
+  {
+   "n": "Nilim",
+   "s": "নীলিম",
+   "g": "m",
+   "l": "as",
+   "m": "Blue, like the sky",
+   "p": "NEE-lim",
+   "t": [
+    "sky"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Ujas",
+   "s": "ઉજાસ",
+   "g": "m",
+   "l": "gu",
+   "m": "Light, the glow of dawn",
+   "p": "OO-jaas",
+   "t": [
+    "light"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Hetal",
+   "s": "હેતલ",
+   "g": "f",
+   "l": "gu",
+   "m": "Affectionate",
+   "p": "HAY-tul",
+   "t": [
+    "love"
+   ],
+   "r": 2,
+   "e": 1,
+   "i": "From het, the Gujarati word for affection."
+  },
+  {
+   "n": "Dhara",
+   "s": "ધારા",
+   "g": "f",
+   "l": "gu",
+   "m": "A stream; the earth",
+   "p": "DHAA-raa",
+   "t": [
+    "water"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Krupa",
+   "s": "કૃપા",
+   "g": "f",
+   "l": "gu",
+   "m": "Grace",
+   "p": "KROO-paa",
+   "t": [
+    "divine"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Jasleen",
+   "s": "ਜਸਲੀਨ",
+   "g": "f",
+   "l": "pa",
+   "m": "Absorbed in praise of God",
+   "p": "JUS-leen",
+   "t": [
+    "divine",
+    "music"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Simran",
+   "s": "ਸਿਮਰਨ",
+   "g": "f",
+   "l": "pa",
+   "m": "Remembrance",
+   "p": "SIM-run",
+   "t": [
+    "divine"
+   ],
+   "r": 1,
+   "e": 1,
+   "i": "In Sikh practice, the meditative remembering of God's name."
+  },
+  {
+   "n": "Navdeep",
+   "s": "ਨਵਦੀਪ",
+   "g": "u",
+   "l": "pa",
+   "m": "A new lamp",
+   "p": "NUV-deep",
+   "t": [
+    "light"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Manpreet",
+   "s": "ਮਨਪ੍ਰੀਤ",
+   "g": "u",
+   "l": "pa",
+   "m": "Love of the heart",
+   "p": "MUN-preet",
+   "t": [
+    "love"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Heer",
+   "s": "ਹੀਰ",
+   "g": "f",
+   "l": "pa",
+   "m": "Diamond",
+   "p": "HEER",
+   "t": [
+    "love",
+    "story"
+   ],
+   "r": 2,
+   "e": 1,
+   "src": "Heer Ranjha, Waris Shah's 18th-century Punjabi love epic"
+  },
+  {
+   "n": "Mahi",
+   "s": "ਮਾਹੀ",
+   "g": "u",
+   "l": "pa",
+   "m": "Beloved",
+   "p": "MAA-hee",
+   "t": [
+    "love"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Mahtab",
+   "s": "مہتاب",
+   "g": "u",
+   "l": "ur",
+   "m": "Moonlight",
+   "p": "mah-TAAB",
+   "t": [
+    "moon"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Noor",
+   "s": "نور",
+   "g": "u",
+   "l": "ur",
+   "m": "Light",
+   "p": "NOOR",
+   "t": [
+    "light",
+    "divine"
+   ],
+   "r": 1,
+   "e": 1
+  },
+  {
+   "n": "Sahar",
+   "s": "سحر",
+   "g": "f",
+   "l": "ur",
+   "m": "Dawn",
+   "p": "SEH-her",
+   "t": [
+    "light"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Shabnam",
+   "s": "شبنم",
+   "g": "f",
+   "l": "ur",
+   "m": "Dew",
+   "p": "SHUB-num",
+   "t": [
+    "water",
+    "moon"
+   ],
+   "r": 2,
+   "e": 1,
+   "i": "Literally \"night-moisture\" — what the night leaves behind."
+  },
+  {
+   "n": "Mehr",
+   "s": "مہر",
+   "g": "f",
+   "l": "ur",
+   "m": "Affection; also the sun",
+   "p": "MEHR",
+   "t": [
+    "love",
+    "light"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Rehan",
+   "s": "ریحان",
+   "g": "m",
+   "l": "ur",
+   "m": "Sweet basil",
+   "p": "ray-HAAN",
+   "t": [
+    "flowers"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Firdaus",
+   "s": "فردوس",
+   "g": "f",
+   "l": "ur",
+   "m": "Paradise; a garden",
+   "p": "fir-DOWS",
+   "t": [
+    "flowers",
+    "divine"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Gulnar",
+   "s": "گلنار",
+   "g": "f",
+   "l": "ur",
+   "m": "Pomegranate blossom",
+   "p": "gul-NAAR",
+   "t": [
+    "flowers"
+   ],
+   "r": 3,
+   "e": 1
+  },
+  {
+   "n": "Afreen",
+   "s": "آفرین",
+   "g": "f",
+   "l": "ur",
+   "m": "Praise; \"well done!\"",
+   "p": "aa-FREEN",
+   "t": [
+    "love"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Aftab",
+   "s": "آفتاب",
+   "g": "m",
+   "l": "ur",
+   "m": "The sun",
+   "p": "aaf-TAAB",
+   "t": [
+    "light"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Sitara",
+   "s": "ستارہ",
+   "g": "f",
+   "l": "ur",
+   "m": "Star",
+   "p": "si-TAA-raa",
+   "t": [
+    "sky"
+   ],
+   "r": 2,
+   "e": 1
+  },
+  {
+   "n": "Faiz",
+   "s": "فیض",
+   "g": "m",
+   "l": "ur",
+   "m": "Grace, bounty",
+   "p": "FAYZ",
+   "t": [
+    "divine",
+    "music"
+   ],
+   "r": 2,
+   "e": 1,
+   "src": "Faiz Ahmad Faiz, 20th-century Urdu poet"
+  }
+ ]
+}

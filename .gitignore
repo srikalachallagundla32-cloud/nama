@@ -1,0 +1,16 @@
+# dependencies
+node_modules/
+# secrets & local config
+.env
+.env.*
+!.env.example
+# build output (reproducible via site/build.py)
+site/dist/
+site/data/__pycache__/
+**/__pycache__/
+*.pyc
+# runtime logs
+api/data/traces.jsonl
+api/data/reports.jsonl
+# os
+.DS_Store

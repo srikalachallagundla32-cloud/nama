@@ -1,0 +1,4 @@
+[
+  {"id":"fixture-north","kind":"text","title":"Songs of the North (test fixture, invented text)","year":2026,"textLanguage":"en","originalLanguage":"fi","region":"eu","license":"test-fixture"},
+  {"id":"fixture-dict-fi","kind":"dictionary","title":"Tiny Finnish word list (test fixture)","year":2026,"textLanguage":"en","originalLanguage":"fi","region":"eu","license":"test-fixture"}
+]

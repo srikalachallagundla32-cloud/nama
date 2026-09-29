@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Naamkaran — RAG + MCP build checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Sanskrit&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F1F9; --card:#FFFFFF; --ink:#221D4E; --ink-soft:#5E5985; --line:#DCD8EC;
+  --marigold:#E39A12; --marigold-soft:#FBEBC8; --fast:#2F7D6D; --fast-soft:#DDEFEA;
+  --display:'Tiro Devanagari Sanskrit', Georgia, serif; --body:'Mukta','Segoe UI',system-ui,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#15122E;--card:#1F1B40;--ink:#EEECF8;--ink-soft:#AAA5CB;--line:#34305E;--marigold:#F3B23C;--marigold-soft:#3A2F1A;--fast:#6BC7B2;--fast-soft:#17332F;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#15122E;--card:#1F1B40;--ink:#EEECF8;--ink-soft:#AAA5CB;--line:#34305E;--marigold:#F3B23C;--marigold-soft:#3A2F1A;--fast:#6BC7B2;--fast-soft:#17332F;color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+:focus-visible{outline:3px solid var(--marigold);outline-offset:2px;border-radius:4px}
+.wrap{max-width:860px;margin:0 auto;padding:0 clamp(18px,4vw,36px) 60px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+.top-in{max-width:860px;margin:0 auto;padding:12px clamp(18px,4vw,36px);display:flex;align-items:center;gap:16px}
+.top-in b{font-family:var(--display);font-weight:400;font-size:1.2rem;white-space:nowrap}
+.bar{flex:1;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--marigold);width:0;transition:width .3s}
+.pct{font-weight:600;font-variant-numeric:tabular-nums;min-width:5.5em;text-align:right;font-size:.95rem}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(2rem,5vw,2.8rem);line-height:1.2;margin:40px 0 12px}
+.lede{color:var(--ink-soft);max-width:62ch;margin:0 0 28px}
+h2{font-family:var(--display);font-weight:400;font-size:1.6rem;margin:0}
+.save-note{font-size:.85rem;color:var(--ink-soft);margin:-16px 0 28px}
+
+/* lanes */
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 36px}
+@media (max-width:640px){.lanes{grid-template-columns:1fr}}
+.lane{border-radius:16px;padding:18px 20px;border:1px solid var(--line);background:var(--card)}
+.lane.fast{border-color:var(--fast)}
+.lane.smart{border-color:var(--marigold)}
+.lane h3{margin:0 0 2px;font-size:1.05rem}
+.lane .speed{font-weight:700;font-size:.9rem;margin-bottom:10px}
+.lane.fast .speed{color:var(--fast)} .lane.smart .speed{color:var(--marigold)}
+.flow{list-style:none;padding:0;margin:0;font-size:.93rem}
+.flow li{padding:6px 0 6px 18px;position:relative;border-top:1px dashed var(--line)}
+.flow li:first-child{border-top:0}
+.flow li::before{content:"";position:absolute;left:2px;top:15px;width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.5}
+.lane p.eg{margin:10px 0 0;font-size:.88rem;color:var(--ink-soft)}
+
+/* glossary */
+details.gloss{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 18px;margin-bottom:40px}
+details.gloss summary{cursor:pointer;font-weight:600;padding:10px 0}
+dl{margin:0 0 14px;display:grid;grid-template-columns:max-content 1fr;gap:8px 18px;font-size:.94rem}
+dt{font-weight:600} dd{margin:0;color:var(--ink-soft)}
+@media (max-width:560px){dl{grid-template-columns:1fr} dd{margin-bottom:6px}}
+
+/* phases */
+section.phase{margin:0 0 34px}
+.phase-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:6px;margin-bottom:4px}
+.phase-head .n{font-size:.9rem;color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap}
+.phase-intro{color:var(--ink-soft);font-size:.95rem;margin:8px 0 6px}
+.lane-tag{display:inline-block;font-size:.78rem;font-weight:600;border-radius:6px;padding:0 7px;margin-left:8px;vertical-align:middle}
+.lane-tag.fast{background:var(--fast-soft);color:var(--fast)} .lane-tag.smart{background:var(--marigold-soft);color:var(--ink)}
+ul.items{list-style:none;padding:0;margin:0}
+.item{display:grid;grid-template-columns:28px 1fr;gap:4px 10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.item input{width:20px;height:20px;margin:3px 0 0;accent-color:var(--ink);cursor:pointer}
+.item label{cursor:pointer;font-weight:500}
+.item .why{grid-column:2;font-size:.9rem;color:var(--ink-soft);margin:0}
+.item.done label{text-decoration:line-through;text-decoration-color:var(--ink-soft);color:var(--ink-soft)}
+code{font-size:.88em;background:var(--marigold-soft);padding:0 4px;border-radius:4px;word-break:break-word}
+.actions{display:flex;gap:10px;margin-top:30px}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 16px;cursor:pointer;font:inherit;font-weight:500;color:inherit}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in"><b>Build checklist</b><div class="bar" aria-hidden="true"><i id="barFill"></i></div><span class="pct" id="pct" aria-live="polite">0 done</span></div></header>
+<div class="wrap">
+  <h1>Naamkaran: fast search, grounded AI</h1>
+  <p class="lede">The site has two paths. The <b>fast path</b> answers every filter and "sounds like" search instantly, with no AI involved. The <b>smart path</b> uses RAG and an MCP server only when someone asks a free-form question. Keeping them separate is what makes the site feel fast.</p>
+  <p class="save-note" id="saveNote">Your ticks are saved.</p>
+
+  <div class="lanes">
+    <div class="lane fast">
+      <h3>Fast path — filters &amp; "sounds like"</h3>
+      <div class="speed">Target: results in under 100 ms</div>
+      <ol class="flow">
+        <li>Visitor picks gender, feeling, language</li>
+        <li>Browser filters a pre-built names file already downloaded</li>
+        <li>Phonetic keys were computed at build time, so matching is instant</li>
+        <li>List updates as they type</li>
+      </ol>
+      <p class="eg">"A girl's name that sounds like Mia" → Maya, Mira</p>
+    </div>
+    <div class="lane smart">
+      <h3>Smart path — RAG through MCP</h3>
+      <div class="speed">Target: first words in under 1.5 s, done in under 5 s</div>
+      <ol class="flow">
+        <li>Visitor types a question in plain words</li>
+        <li>MCP tool searches the names database by meaning</li>
+        <li>Claude answers using only the names it got back</li>
+        <li>Page shows those names from the verified data</li>
+      </ol>
+      <p class="eg">"A Telugu name about the first rain, for a boy, not too long"</p>
+    </div>
+  </div>
+
+  <details class="gloss">
+    <summary>What these words mean</summary>
+    <dl>
+      <dt>RAG</dt><dd>Retrieval-augmented generation. Before the AI answers, you look up relevant records in your own data and hand them to it, so it answers from facts you've checked instead of from memory.</dd>
+      <dt>MCP</dt><dd>Model Context Protocol. A standard way to give an AI model tools, like "search names". You build an MCP server once, and Claude (and other AI apps) can call its tools.</dd>
+      <dt>MCP tool</dt><dd>One function your server offers, with a name, a description, and a list of inputs. Example: <code>search_names(query, gender, language)</code>.</dd>
+      <dt>Embedding</dt><dd>A list of numbers representing the meaning of a piece of text. Texts with similar meanings get similar numbers, so "first rain" can find <i>Saavan</i>, the monsoon month, even though the words don't match.</dd>
+      <dt>Vector database</dt><dd>A database that stores embeddings and finds the closest ones quickly. For this project, Postgres with the <code>pgvector</code> add-on is enough.</dd>
+      <dt>Hybrid search</dt><dd>Combining ordinary keyword search with meaning search, then applying filters like gender and language.</dd>
+      <dt>Reranking</dt><dd>A second, more careful scoring pass over the top results to put the best ones first.</dd>
+      <dt>Grounding</dt><dd>Making sure every name the AI shows actually exists in your data, with your verified meaning.</dd>
+      <dt>Latency</dt><dd>How long a visitor waits. p95 means "95% of requests were at least this fast".</dd>
+      <dt>CDN</dt><dd>Content delivery network. Copies of your files stored near visitors around the world so they download quickly.</dd>
+    </dl>
+  </details>
+
+  <div id="phases"></div>
+
+  <div class="actions"><button class="btn" id="resetBtn" type="button">Clear all ticks</button></div>
+</div>
+
+<script>
+const PHASES=[
+ {t:'1. Build the names data', lane:'both', intro:'One clean, checked dataset feeds both paths. Everything else depends on this.', items:[
+  ['d1','Define one schema for every name','Fields: id, name, script, gender, language, meaning, story, source, rarity, ease, themes, phonetic key, syllables, verified.'],
+  ['d2','Add a verified flag and a reviewer note to each name','Only verified names appear on the site. Unverified ones wait for a native-speaker check.'],
+  ['d3','Record the source for every meaning','A dictionary, text, or reviewer — so anyone questioning a meaning can be answered.'],
+  ['d4','Compute phonetic keys and syllable counts in a build script','Doing this once at build time instead of in every visitor\'s browser keeps "sounds like" instant.'],
+  ['d5','Pre-compute the top 10 similar-sounding names for each name','The "names that sound similar" panel then needs no calculation at all.'],
+  ['d6','Give each data release a version number','Lets you change file names on each release so browsers never show stale data.'],
+ ]},
+ {t:'2. Make the fast path fast', lane:'fast', intro:'No AI here. This is what most visitors use most of the time.', items:[
+  ['f1','Ship the names as one compressed static JSON file','About 10,000 names with meanings compresses to roughly 300–600 KB. One download, then every search is local.'],
+  ['f2','Serve it from a CDN with a long cache and a versioned file name','Example: names.v12.json cached for a year. A new release gets a new name.'],
+  ['f3','Build small lookup indexes by language, gender and theme','Filtering then checks a short list instead of scanning every name.'],
+  ['f4','Move filtering into a Web Worker if the list passes ~20,000 names','A Web Worker runs code off the main thread so typing never stutters.'],
+  ['f5','Wait 100–150 ms after the last keystroke before searching','Called debouncing. Stops the list re-drawing on every letter.'],
+  ['f6','Show only the first 50 results and load more on scroll','Drawing thousands of rows is slower than searching them.'],
+  ['f7','Load fonts only for scripts on screen','Use font-display: swap so text appears immediately while fonts load.'],
+  ['f8','Measure with Lighthouse before and after each change','Aim for page load (LCP) under 2.5 s and response to taps (INP) under 200 ms.'],
+ ]},
+ {t:'3. Set up retrieval (the R in RAG)', lane:'smart', intro:'Finding the right names by meaning, before the AI says anything.', items:[
+  ['r1','Write one search document per name','Combine name, meaning, story, source and themes into one short paragraph. Names are small, so no splitting is needed.'],
+  ['r2','Pick one embedding model and use it for both names and questions','Mixing models makes the numbers incomparable and search quietly breaks.'],
+  ['r3','Store embeddings in Postgres with pgvector','Plenty for under a million names, and keeps names and vectors in one database.'],
+  ['r4','Store gender, language and rarity next to each vector','So you can filter before comparing meanings, not after.'],
+  ['r5','Use hybrid search: keywords + meaning + filters','Keyword search catches exact names; meaning search catches "first rain".'],
+  ['r6','Rerank the top 50 results down to the best 10','Improves the order a lot for little extra time.'],
+  ['r7','Re-embed only names whose text changed','Store a hash of each search document and compare on every release.'],
+ ]},
+ {t:'4. Build the MCP server', lane:'smart', intro:'The tools Claude calls to reach your data.', items:[
+  ['m1','search_names — filters only (gender, language, theme, rarity, letter)','Fast and exact. Claude should use this whenever the question is really just filters.'],
+  ['m2','semantic_search_names — meaning search plus filters','For questions like "a name about longing". Returns ids and short fields, capped at 10–20 results.'],
+  ['m3','similar_sounding — phonetic matches for a name','Reuses the same phonetic keys as the website so both give the same answers.'],
+  ['m4','get_name — full details for one id','Keeps search results small; Claude asks for details only when needed.'],
+  ['m5','Write clear tool descriptions and strict input schemas','Use fixed lists (enums) for gender and language so Claude can\'t pass values your data doesn\'t have.'],
+  ['m6','Make every tool read-only','Nothing a visitor types should be able to change your data.'],
+  ['m7','Add timeouts and plain error messages to each tool','"No names match those filters" helps Claude recover; a stack trace doesn\'t.'],
+  ['m8','Use stdio while developing and Streamable HTTP when hosted','stdio runs locally with Claude Desktop or Claude Code; HTTP is for the live server.'],
+  ['m9','Add authentication and rate limits to the hosted server','Stops strangers running up your costs.'],
+  ['m10','Test every tool with MCP Inspector, then from Claude Desktop','MCP Inspector is the official tool for calling your server by hand and seeing exactly what comes back.'],
+ ]},
+ {t:'5. Ground the AI answers (the G in RAG)', lane:'smart', intro:'Make sure the AI can only show names that are really in your data.', items:[
+  ['g1','Instruct Claude to answer only from names the tools returned','And to say plainly when nothing fits, rather than inventing a name.'],
+  ['g2','Have Claude return name ids, not written-out meanings','The page then shows the meaning from your verified data, never the AI\'s wording.'],
+  ['g3','Drop any returned id that isn\'t in the database','A last safety net against made-up names.'],
+  ['g4','Show fast-path results instantly while the AI is still thinking','The visitor always has something useful on screen.'],
+  ['g5','Stream the AI\'s explanation as it is written','The first words appearing quickly feels far faster than waiting for the whole answer.'],
+ ]},
+ {t:'6. Keep the smart path quick', lane:'smart', intro:'Where the seconds go, and how to get them back.', items:[
+  ['s1','Host the database, MCP server and API in the same region','Every hop between regions adds tens of milliseconds.'],
+  ['s2','Embed the question and parse its filters at the same time','Run independent steps in parallel instead of one after another.'],
+  ['s3','Use a fast model for understanding the question','Save larger models for the rare questions that need them.'],
+  ['s4','Keep connections warm and avoid cold starts','Serverless functions that sleep can add a second or more to the first request.'],
+ ]},
+ {t:'7. Golden questions and the release gate', lane:'both', intro:'A fixed set of test questions that every change must pass before it ships. The eval kit already has 45 of them.', items:[
+  ['e1','Write 50–100 golden questions with the exact names that should come back','Mix the types: filters only, meaning, sound-alike, story or source, and plain-language paraphrases.'],
+  ['e2','Write at least a third of them without looking at the data','People who have read the data reuse its words, and keyword search then looks perfect. Real parents\' phrasing is the test that matters.'],
+  ['e3','Include questions that should get "no match"','For example, a Malayalam boy\'s name meaning thunder when you have none. Checks that the system says so instead of inventing one.'],
+  ['e4','Keep the golden set in the code repository, versioned and reviewed','A change to the test questions is reviewed like a change to the code.'],
+  ['e5','Run the eval on every change — code, prompt, data, model, or embeddings','Put rag_eval.py in CI so it runs on each pull request automatically.'],
+  ['e6','Block the release if a key score drops past its allowed margin','The kit exits with code 1, which fails the CI job. Save a new baseline only when you deliberately accept the new scores.'],
+  ['e7','Turn every production failure into a new golden question','The set grows from real mistakes, so the same bug can\'t come back unnoticed.'],
+ ]},
+ {t:'8. Retrieval quality', lane:'smart', intro:'Before judging answers, check whether search found the right names at all.', items:[
+  ['rq1','Track hit rate@10','The share of questions with at least one right name in the top 10. The baseline is 85%.'],
+  ['rq2','Track recall@10','Of all the names that should come back, how many did. The baseline is 82%.'],
+  ['rq3','Track MRR (mean reciprocal rank)','How high the first right name ranks. 1.0 means first place every time.'],
+  ['rq4','Track context precision','Of the names handed to Claude, how many are relevant. Irrelevant ones cost tokens and can mislead the model.'],
+  ['rq5','Record the retrieval score of every result and set a minimum','Below it, results are dropped and the system says no names fit.'],
+  ['rq6','Break scores down by question type and language','An average hides failures. The baseline scores 100% on meaning questions but 40% on paraphrases.'],
+  ['rq7','Check the model used the best results','Compare the names Claude chose against their rank. If it keeps picking number 9 over number 1, the ranking or the prompt needs work.'],
+ ]},
+ {t:'9. Grounded, cited answers', lane:'smart', intro:'The model may only use what retrieval gave it, and must say where each fact came from.', items:[
+  ['ga1','Check every answer automatically: every name shown must be in the retrieved set','If a name wasn\'t retrieved, the model made it up. The kit\'s check_answer does this.'],
+  ['ga2','Check every name exists in the database','Catches invented names. The kit caught "Tushar" in the sample answers.'],
+  ['ga3','Show a source for every name, taken from the database','The model cites by id; the page fills in the source text from your data.'],
+  ['ga4','Verify citations match the database','The kit caught Gargi cited to the Rigveda instead of the Brihadaranyaka Upanishad.'],
+  ['ga5','Use an AI judge on a sample of answers for what code can\'t check','For example, whether an explanation adds facts that weren\'t in the retrieved text. Check the judge against your own review every so often.'],
+  ['ga6','Target 100% grounded and 100% correct "no match" answers','Any ungrounded answer blocks the release.'],
+  ['ga7','Give the prompt a version number and record it on every trace','So you know which prompt produced a bad answer.'],
+ ]},
+ {t:'10. Embedding version lock', lane:'smart', intro:'Questions and names must be turned into numbers by the same model and version, or search quietly breaks.', items:[
+  ['ev1','Write an index manifest when you build the index','Embedding model name, version, and dimensions. The kit reads index_manifest.json.'],
+  ['ev2','Refuse to start if the query side doesn\'t match the manifest','Fail loudly instead of returning bad results. The kit exits with code 2.'],
+  ['ev3','Store the model and version on every vector row too','Lets you find stragglers after a partial re-index.'],
+  ['ev4','Upgrade by building a new index next to the old one','Run the golden set on the new one, switch only if it passes, and keep the old one for rollback.'],
+  ['ev5','Include the embedding version in traces and in the cache key','Old cached answers never mix with a new index.'],
+ ]},
+ {t:'11. Semantic cache', lane:'smart', intro:'Reuse answers to questions asked before, so the same question isn\'t answered twice — without handing someone the wrong answer.', items:[
+  ['sc1','Match filters exactly and compare only the remaining text by meaning','"Girl name meaning moonlight" and "boy name meaning moonlight" look almost identical to an embedding model. Comparing by meaning alone would give girls\' names to someone asking for a boy.'],
+  ['sc2','Set a high similarity threshold and test it with pairs','The golden set has pairs that must reuse an answer and pairs that must not, like "dawn" and "dusk".'],
+  ['sc3','Include data, prompt and embedding versions in the cache key','A new release starts with a fresh cache.'],
+  ['sc4','Expire cached answers after about 24 hours',''],
+  ['sc5','Record cache hit or miss on every trace, and track the hit rate','Also track "wrong hit" reports from visitors.'],
+ ]},
+ {t:'12. Trace everything', lane:'smart', intro:'When something breaks in production, you need to see exactly what happened to one question.', items:[
+  ['tr1','Give every question a trace id, and show it in "report a problem"','Every user report then links straight to its trace.'],
+  ['tr2','Record each step with its timing','Parsing, embedding, cache check, retrieval, reranking, the model call, the grounding check, and the response.'],
+  ['tr3','Record every retrieved name with its score, before and after reranking','The kit writes these to traces.jsonl.'],
+  ['tr4','Record the token counts and cost of the model call',''],
+  ['tr5','Record all versions on every trace','Data, prompt, model, embedding, golden set, and code commit.'],
+  ['tr6','Use the OpenTelemetry format','A standard format that most tracing tools can read, so you aren\'t locked into one tool.'],
+  ['tr7','Be able to replay a trace','Re-run the same question with the same versions to reproduce a production bug on your machine.'],
+  ['tr8','Keep traces 30 days, with no personal data',''],
+  ['tr9','Alert on any grounding failure, rising errors, or p95 over target',''],
+ ]},
+ {t:'13. Latency, cost and reports', lane:'both', intro:'Know how fast and how expensive it is, and review it on a schedule.', items:[
+  ['lc1','Measure p50, p95 and p99 per step and end to end, for each path separately','The fast path should stay under 200 ms at p95, the smart path under 6 s.'],
+  ['lc2','Work out cost per query on every trace','Input tokens × price + output tokens × price + embedding + reranking. The kit estimates it when you pass your prices.'],
+  ['lc3','Set a monthly budget with an alert at 80%',''],
+  ['lc4','Attach an eval report to every release','New scores next to the previous ones, with every failure listed. The kit writes report.html.'],
+  ['lc5','Send a weekly quality report','Golden-set trends, a per-language breakdown, and new failures.'],
+  ['lc6','Send a weekly production report','Volume, cache hit rate, p95, cost per query, searches with no results, and the top problem reports.'],
+ ]},
+ {t:'14. Quality, care and privacy', lane:'both', intro:'Names matter to families. Get them right.', items:[
+  ['q1','Have a native speaker review each language before it goes live','Meanings and connotations vary by region; one reviewer per language at minimum.'],
+  ['q2','Add a "report a wrong meaning" link on every name','Visitors are your best reviewers.'],
+  ['q3','Never guess religion, caste or community from a name','Don\'t label or filter names this way.'],
+  ['q4','Don\'t store visitors\' questions with anything identifying','Log questions without accounts, emails or IP addresses.'],
+  ['q5','Check keyboard use, screen readers and color contrast','Parents browse one-handed on phones at 3 a.m.'],
+ ]},
+ {t:'15. Launch and watch', lane:'both', intro:'What to measure once people are using it.', items:[
+  ['l1','Log searches that return no names','They tell you exactly which names to add next.'],
+ ]},
+];
+
+const ALL=PHASES.flatMap(p=>p.items.map(i=>i[0]));
+let done={};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=s=>esc(s).replace(/\b([a-z]+_[a-z_]+|pgvector|names\.v12\.json|font-display: swap)\b/g,'<code>$1</code>');
+
+function build(){
+  $('phases').innerHTML=PHASES.map((p,pi)=>{
+    const tag=p.lane==='fast'?'<span class="lane-tag fast">Fast path</span>':p.lane==='smart'?'<span class="lane-tag smart">Smart path</span>':'';
+    return `<section class="phase" aria-labelledby="ph${pi}">
+      <div class="phase-head"><h2 id="ph${pi}">${esc(p.t)}${tag}</h2><span class="n" id="pn${pi}"></span></div>
+      <p class="phase-intro">${esc(p.intro)}</p>
+      <ul class="items">${p.items.map(([id,t,w])=>`<li class="item" id="it-${id}">
+        <input type="checkbox" id="cb-${id}" data-id="${id}"><label for="cb-${id}">${fmt(t)}</label><p class="why">${fmt(w)}</p></li>`).join('')}</ul>
+    </section>`}).join('');
+}
+function paint(){
+  ALL.forEach(id=>{const on=!!done[id];const cb=$('cb-'+id);if(cb)cb.checked=on;$('it-'+id)?.classList.toggle('done',on)});
+  PHASES.forEach((p,pi)=>{const n=p.items.filter(i=>done[i[0]]).length;$('pn'+pi).textContent=`${n} of ${p.items.length}`});
+  const n=ALL.filter(id=>done[id]).length;
+  $('barFill').style.width=(n/ALL.length*100)+'%';
+  $('pct').textContent=`${n} of ${ALL.length} done`;
+}
+
+/* persistence: shared db when available, otherwise this browser */
+let docRef=null, writeTimer=null;
+const LS='naamkaran-rag-checklist';
+function loadLocal(){try{done=JSON.parse(localStorage.getItem(LS)||'{}')||{}}catch(e){done={}}}
+function saveLocal(){try{localStorage.setItem(LS,JSON.stringify(done))}catch(e){}}
+function persist(){
+  saveLocal();
+  if(!docRef) return;
+  clearTimeout(writeTimer);
+  writeTimer=setTimeout(()=>{docRef.set({done}).catch(()=>{$('saveNote').textContent='Couldn\'t save to your account just now — ticks are kept in this browser.'})},400);
+}
+build(); loadLocal(); paint();
+$('phases').addEventListener('change',e=>{const id=e.target.dataset.id;if(!id)return;if(e.target.checked)done[id]=true;else delete done[id];paint();persist()});
+$('resetBtn').addEventListener('click',()=>{if(!confirm('Clear every tick?'))return;done={};paint();persist()});
+
+(async()=>{
+  $('saveNote').textContent='Your ticks are saved in this browser.';
+  if(!(window.claude && typeof window.claude.use==='function')) return;
+  let db=null; try{db=await window.claude.use('db')}catch(e){db=null}
+  if(!db) return;
+  docRef=db.doc('progress/main');
+  $('saveNote').textContent='Your ticks are saved with this page, so they follow you to any device.';
+  let first=true;
+  docRef.onSnapshot(snap=>{
+    const d=snap.exists?snap.data():null;
+    if(d && d.done && typeof d.done==='object'){done={...d.done};saveLocal();paint()}
+    else if(first && Object.keys(done).length){persist()}
+    first=false;
+  },()=>{$('saveNote').textContent='Ticks are saved in this browser.'});
+})();
+</script>
+</body>
+</html>

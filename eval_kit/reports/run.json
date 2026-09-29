@@ -1,0 +1,276 @@
+{
+ "run_id": "20260928-185129",
+ "time": "2026-09-28T18:51:29",
+ "versions": {
+  "retriever": "bm25-baseline",
+  "embed_model": "none",
+  "embed_version": "bm25-v1",
+  "golden": "2026-09-28.2",
+  "data_hash": "5892118ca955bcd6",
+  "prompt": "prompt-2026-09-28.1"
+ },
+ "summary": {
+  "hit_rate": 0.8461538461538461,
+  "recall": 0.8205128205128205,
+  "mrr": 0.7938034188034188,
+  "ctx_precision": 0.32673992673992674,
+  "abstain_accuracy": 1.0,
+  "cache_accuracy": 0.8333333333333334
+ },
+ "baseline": {
+  "hit_rate": 0.8461538461538461,
+  "recall": 0.8205128205128205,
+  "mrr": 0.7938034188034188,
+  "ctx_precision": 0.32673992673992674,
+  "abstain_accuracy": 1.0,
+  "cache_accuracy": 0.8333333333333334
+ },
+ "by_type": {
+  "meaning": {
+   "n": 16,
+   "hit_rate": 1.0,
+   "recall": 1.0,
+   "mrr": 1.0
+  },
+  "story": {
+   "n": 10,
+   "hit_rate": 1.0,
+   "recall": 1.0,
+   "mrr": 0.95
+  },
+  "paraphrase": {
+   "n": 10,
+   "hit_rate": 0.4,
+   "recall": 0.3,
+   "mrr": 0.24583333333333335
+  },
+  "phonetic": {
+   "n": 3,
+   "hit_rate": 1.0,
+   "recall": 1.0,
+   "mrr": 1.0
+  }
+ },
+ "failures": [
+  {
+   "id": "g35",
+   "q": "a name meaning bravery for our son",
+   "expected": [
+    "Shaurya",
+    "Veer"
+   ],
+   "got": [],
+   "why": "nothing retrieved: no words in common with any name, or filters excluded everything (see trace)",
+   "trace_id": "3aa77c893b5b443799ff3abd3dbb047f"
+  },
+  {
+   "id": "g36",
+   "q": "name that means clever or intelligent",
+   "expected": [
+    "Mathi",
+    "Pratibha"
+   ],
+   "got": [],
+   "why": "nothing retrieved: no words in common with any name, or filters excluded everything (see trace)",
+   "trace_id": "7cbead7dce844f27a1a411790356c0d7"
+  },
+  {
+   "id": "g37",
+   "q": "a name for a girl meaning kindness",
+   "expected": [
+    "Maitreyi",
+    "Priyamvada"
+   ],
+   "got": [],
+   "why": "nothing retrieved: no words in common with any name, or filters excluded everything (see trace)",
+   "trace_id": "025f907e843541f48d20281379b09b4e"
+  },
+  {
+   "id": "g38",
+   "q": "boy name meaning tough and powerful",
+   "expected": [
+    "Ojas"
+   ],
+   "got": [],
+   "why": "nothing retrieved: no words in common with any name, or filters excluded everything (see trace)",
+   "trace_id": "79d65f90667f4fc0b7530f41a229d954"
+  },
+  {
+   "id": "g39",
+   "q": "name for a girl meaning heaven",
+   "expected": [
+    "Firdaus"
+   ],
+   "got": [],
+   "why": "nothing retrieved: no words in common with any name, or filters excluded everything (see trace)",
+   "trace_id": "1b6244cb9e9c4b74b6d080fa83642f4e"
+  },
+  {
+   "id": "g40",
+   "q": "baby name inspired by the rainy season",
+   "expected": [
+    "Saavan",
+    "Varsha"
+   ],
+   "got": [
+    [
+     "Ritu",
+     5.777
+    ],
+    [
+     "Ritvik",
+     4.345
+    ],
+    [
+     "Saavan",
+     3.738
+    ],
+    [
+     "Shakuntala",
+     3.532
+    ]
+   ],
+   "why": "missed: Varsha",
+   "trace_id": "bb834f4536754eacb5f88527933fb2a0"
+  },
+  {
+   "id": "g41",
+   "q": "name meaning wealth and good fortune",
+   "expected": [
+    "Selvi"
+   ],
+   "got": [
+    [
+     "Maitreyi",
+     2.893
+    ]
+   ],
+   "why": "no relevant name in top 10",
+   "trace_id": "0bbc914d1c0b44e0a5bfc11a2f2e5e39"
+  },
+  {
+   "id": "g42",
+   "q": "something for a daughter that means the glow of the night sky",
+   "expected": [
+    "Jyotsna",
+    "Chandrika",
+    "Vennela",
+    "Chandni"
+   ],
+   "got": [
+    [
+     "Kanti",
+     4.582
+    ],
+    [
+     "Yamini",
+     3.374
+    ],
+    [
+     "Shabnam",
+     3.056
+    ],
+    [
+     "Tara",
+     3.046
+    ],
+    [
+     "Nakshatra",
+     2.914
+    ],
+    [
+     "Mrinmayi",
+     2.914
+    ],
+    [
+     "Sitara",
+     2.914
+    ],
+    [
+     "Chandrika",
+     2.649
+    ],
+    [
+     "Chandni",
+     2.649
+    ],
+    [
+     "Kumudini",
+     2.627
+    ]
+   ],
+   "why": "missed: Jyotsna, Vennela",
+   "trace_id": "03944743a6b44ffa8dd3d7814e330dfe"
+  }
+ ],
+ "cache": [
+  {
+   "a": "girl name meaning moonlight",
+   "b": "name for a girl that means moonlight",
+   "should_hit": true,
+   "hit": true,
+   "sim": 1.0,
+   "ok": true
+  },
+  {
+   "a": "boy name about rain",
+   "b": "boy name related to rain",
+   "should_hit": true,
+   "hit": false,
+   "sim": 0.707,
+   "ok": false
+  },
+  {
+   "a": "name meaning dawn",
+   "b": "names that mean dawn",
+   "should_hit": true,
+   "hit": true,
+   "sim": 1.0,
+   "ok": true
+  },
+  {
+   "a": "girl name meaning moonlight",
+   "b": "boy name meaning moonlight",
+   "should_hit": false,
+   "why": "Same words, different gender. A meaning-only cache would return girls' names to someone asking for a boy.",
+   "hit": false,
+   "sim": 0.0,
+   "ok": true
+  },
+  {
+   "a": "Tamil name meaning sweet",
+   "b": "Telugu name meaning sweet",
+   "should_hit": false,
+   "why": "Different language filter.",
+   "hit": false,
+   "sim": 0.0,
+   "ok": true
+  },
+  {
+   "a": "name meaning dawn",
+   "b": "name meaning dusk",
+   "should_hit": false,
+   "why": "Close in meaning-space, opposite answer.",
+   "hit": false,
+   "sim": 0.0,
+   "ok": true
+  }
+ ],
+ "latency": {
+  "p50": 0.05856099997458841,
+  "p95": 0.9825420000026952,
+  "p99": 1.6199739999933627
+ },
+ "cost": {
+  "avg_tokens_in": 528.25,
+  "tokens_out": 250,
+  "priced": false,
+  "per_query": null
+ },
+ "answers": null,
+ "manifest_problems": [],
+ "gate": {
+  "passed": true,
+  "reasons": []
+ }
+}

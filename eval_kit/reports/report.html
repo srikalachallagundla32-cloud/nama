@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAG eval report 20260928-185129</title><style>
+body{font-family:system-ui,sans-serif;max-width:1000px;margin:0 auto;padding:24px;color:#221D4E;background:#F3F1F9;line-height:1.5}
+h1{font-weight:500;margin:0 0 4px} h2{margin:32px 0 8px;font-weight:600;font-size:1.15rem}
+.meta{color:#5E5985;font-size:.9rem} .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0}
+.card{background:#fff;border:1px solid #DCD8EC;border-radius:12px;padding:12px 14px} .card b{display:block;font-size:1.5rem;font-weight:600}
+.card span{font-size:.85rem;color:#5E5985} small.down{color:#B8323F} small.up{color:#2F7D6D}
+.scroll{overflow-x:auto} table{border-collapse:collapse;width:100%;background:#fff;font-size:.9rem}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid #DCD8EC;vertical-align:top} th{background:#EAE7F5}
+.ok{color:#2F7D6D} .bad{color:#B8323F} code{background:#FBEBC8;padding:0 4px;border-radius:4px}
+</style></head><body>
+<h1>Retrieval eval report</h1>
+<p class="meta">Run 20260928-185129 · 2026-09-28T18:51:29 · retriever <code>bm25-baseline</code> · embeddings <code>none / bm25-v1</code> · golden set <code>2026-09-28.2</code> · data <code>5892118ca955bcd6</code> · prompt <code>prompt-2026-09-28.1</code></p>
+<p class='ok'>Release gate: <b>passed</b></p>
+<div class="cards">
+<div class="card"><b>85% <small class="">(+0.0 pts)</small></b><span>Hit rate@10 — a right name in the top 10</span></div>
+<div class="card"><b>82% <small class="">(+0.0 pts)</small></b><span>Recall@10 — share of the must-have names found</span></div>
+<div class="card"><b>0.79 <small class="">(+0.0 pts)</small></b><span>MRR — 1.0 means a right name ranks first</span></div>
+<div class="card"><b>33% <small class="">(+0.0 pts)</small></b><span>Context precision — share of retrieved names that are relevant</span></div>
+<div class="card"><b>100% <small class="">(+0.0 pts)</small></b><span>Says "no match" when nothing fits</span></div>
+<div class="card"><b>83% <small class="">(+0.0 pts)</small></b><span>Semantic cache test pairs correct</span></div>
+</div>
+<h2>Embedding lock</h2><p class="ok">Index and query use the same embedding model and version.</p>
+<h2>Latency (retrieval only)</h2><p>p50 0.06 ms · p95 <b>0.98 ms</b> · p99 1.62 ms</p>
+<h2>Cost</h2><p>~528 input tokens per query. Pass <code>--price-in</code>/<code>--price-out</code> (USD per million tokens) to see dollars.</p>
+<h2>Answers: grounded and cited</h2><p>Not run. Pass <code>--answers answers.jsonl</code> from the real system to check grounding and citations.</p>
+<h2>By question type</h2><div class="scroll"><table><tr><th>Type</th><th>Questions</th><th>Hit rate</th><th>Recall</th><th>MRR</th></tr><tr><td>meaning</td><td>16</td><td>100%</td><td>100%</td><td>1.00</td></tr><tr><td>story</td><td>10</td><td>100%</td><td>100%</td><td>0.95</td></tr><tr><td>paraphrase</td><td>10</td><td>40%</td><td>30%</td><td>0.25</td></tr><tr><td>phonetic</td><td>3</td><td>100%</td><td>100%</td><td>1.00</td></tr></table></div>
+<h2>Failures (8)</h2><p class="meta">Each links to a trace id in traces.jsonl. Scores in brackets are retrieval scores.</p>
+<div class="scroll"><table><tr><th>Id</th><th>Question</th><th>Expected</th><th>Top 5 retrieved</th><th>Why it failed</th><th>Trace</th></tr><tr><td>g35</td><td>a name meaning bravery for our son</td><td>Shaurya, Veer</td><td>—</td><td>nothing retrieved: no words in common with any name, or filters excluded everything (see trace)</td><td><code>3aa77c89</code></td></tr><tr><td>g36</td><td>name that means clever or intelligent</td><td>Mathi, Pratibha</td><td>—</td><td>nothing retrieved: no words in common with any name, or filters excluded everything (see trace)</td><td><code>7cbead7d</code></td></tr><tr><td>g37</td><td>a name for a girl meaning kindness</td><td>Maitreyi, Priyamvada</td><td>—</td><td>nothing retrieved: no words in common with any name, or filters excluded everything (see trace)</td><td><code>025f907e</code></td></tr><tr><td>g38</td><td>boy name meaning tough and powerful</td><td>Ojas</td><td>—</td><td>nothing retrieved: no words in common with any name, or filters excluded everything (see trace)</td><td><code>79d65f90</code></td></tr><tr><td>g39</td><td>name for a girl meaning heaven</td><td>Firdaus</td><td>—</td><td>nothing retrieved: no words in common with any name, or filters excluded everything (see trace)</td><td><code>1b6244cb</code></td></tr><tr><td>g40</td><td>baby name inspired by the rainy season</td><td>Saavan, Varsha</td><td>Ritu (5.777), Ritvik (4.345), Saavan (3.738), Shakuntala (3.532)</td><td>missed: Varsha</td><td><code>bb834f45</code></td></tr><tr><td>g41</td><td>name meaning wealth and good fortune</td><td>Selvi</td><td>Maitreyi (2.893)</td><td>no relevant name in top 10</td><td><code>0bbc914d</code></td></tr><tr><td>g42</td><td>something for a daughter that means the glow of the night sky</td><td>Jyotsna, Chandrika, Vennela, Chandni</td><td>Kanti (4.582), Yamini (3.374), Shabnam (3.056), Tara (3.046), Nakshatra (2.914)</td><td>missed: Jyotsna, Vennela</td><td><code>03944743</code></td></tr></table></div>
+<h2>Semantic cache test</h2><div class="scroll"><table><tr><th>Question A</th><th>Question B</th><th>Should</th><th>Did (similarity)</th><th></th></tr><tr><td>girl name meaning moonlight</td><td>name for a girl that means moonlight</td><td>hit</td><td>hit (1.0)</td><td>✓</td></tr><tr><td>boy name about rain</td><td>boy name related to rain</td><td>hit</td><td>miss (0.707)</td><td>✗</td></tr><tr><td>name meaning dawn</td><td>names that mean dawn</td><td>hit</td><td>hit (1.0)</td><td>✓</td></tr><tr><td>girl name meaning moonlight</td><td>boy name meaning moonlight</td><td>miss</td><td>miss (0.0)</td><td>✓</td></tr><tr><td>Tamil name meaning sweet</td><td>Telugu name meaning sweet</td><td>miss</td><td>miss (0.0)</td><td>✓</td></tr><tr><td>name meaning dawn</td><td>name meaning dusk</td><td>miss</td><td>miss (0.0)</td><td>✓</td></tr></table></div>
+</body></html>

@@ -1,0 +1,455 @@
+{
+ "version": "2026-09-28.2",
+ "notes": "Expected answers are name ids from names.json. 'must' = the best answers; 'also' = acceptable but not required. Empty 'must' means the correct behaviour is to say no name fits. Add every real production failure here as a new question. Leakage warning: questions written by someone who has read the data reuse its wording and inflate keyword scores. Keep at least a third of the set as 'paraphrase' questions written without looking at the data, ideally by real parents or from real search logs.",
+ "questions": [
+  {
+   "id": "g01",
+   "type": "meaning",
+   "q": "girl name meaning moonlight",
+   "must": [
+    "Jyotsna",
+    "Kaumudi",
+    "Chandrika",
+    "Vennela",
+    "Chandni"
+   ],
+   "also": [
+    "Mahtab",
+    "Kumudini"
+   ]
+  },
+  {
+   "id": "g02",
+   "type": "meaning",
+   "q": "Telugu word for moonlight as a girl's name",
+   "must": [
+    "Vennela"
+   ]
+  },
+  {
+   "id": "g03",
+   "type": "meaning",
+   "q": "boy name about rain or the monsoon",
+   "must": [
+    "Saavan",
+    "Shravan",
+    "Megh"
+   ],
+   "also": [
+    "Mugil"
+   ]
+  },
+  {
+   "id": "g04",
+   "type": "story",
+   "q": "a woman philosopher from the Upanishads",
+   "must": [
+    "Maitreyi",
+    "Gargi"
+   ]
+  },
+  {
+   "id": "g05",
+   "type": "story",
+   "q": "the boy who went to Death and asked what happens after dying",
+   "must": [
+    "Nachiketa"
+   ]
+  },
+  {
+   "id": "g06",
+   "type": "meaning",
+   "q": "Tamil name meaning waterfall",
+   "must": [
+    "Aruvi"
+   ]
+  },
+  {
+   "id": "g07",
+   "type": "meaning",
+   "q": "name meaning dew",
+   "must": [
+    "Shabnam"
+   ]
+  },
+  {
+   "id": "g08",
+   "type": "story",
+   "q": "flower that blooms at night and falls at dawn in Bengal",
+   "must": [
+    "Shiuli"
+   ]
+  },
+  {
+   "id": "g09",
+   "type": "meaning",
+   "q": "name meaning dawn",
+   "must": [
+    "Usha",
+    "Ahana",
+    "Sahar"
+   ],
+   "also": [
+    "Nishant",
+    "Arun",
+    "Ujas"
+   ]
+  },
+  {
+   "id": "g10",
+   "type": "meaning",
+   "q": "Punjabi name meaning remembrance",
+   "must": [
+    "Simran"
+   ]
+  },
+  {
+   "id": "g11",
+   "type": "story",
+   "q": "a girl who plays the ancient Tamil harp",
+   "must": [
+    "Yazhini"
+   ]
+  },
+  {
+   "id": "g12",
+   "type": "story",
+   "q": "a woman poet whose verses are in the Rigveda",
+   "must": [
+    "Lopamudra",
+    "Ghosha"
+   ]
+  },
+  {
+   "id": "g13",
+   "type": "meaning",
+   "q": "boy name meaning the sun",
+   "must": [
+    "Mihir",
+    "Aftab",
+    "Rabi"
+   ]
+  },
+  {
+   "id": "g14",
+   "type": "meaning",
+   "q": "name meaning star",
+   "must": [
+    "Tara",
+    "Sitara",
+    "Nakshatra"
+   ]
+  },
+  {
+   "id": "g15",
+   "type": "story",
+   "q": "beauty described as saltiness",
+   "must": [
+    "Lavanya"
+   ]
+  },
+  {
+   "id": "g16",
+   "type": "story",
+   "q": "love that colors the heart like dye",
+   "must": [
+    "Anurag"
+   ]
+  },
+  {
+   "id": "g17",
+   "type": "story",
+   "q": "the bird that lives on moonbeams",
+   "must": [
+    "Chakor"
+   ]
+  },
+  {
+   "id": "g18",
+   "type": "meaning",
+   "q": "name meaning firefly",
+   "must": [
+    "Jonaki"
+   ]
+  },
+  {
+   "id": "g19",
+   "type": "meaning",
+   "q": "name meaning pearl",
+   "must": [
+    "Muthu"
+   ],
+   "also": [
+    "Jhinuk"
+   ]
+  },
+  {
+   "id": "g20",
+   "type": "story",
+   "q": "heroine from a Kalidasa play",
+   "must": [
+    "Shakuntala",
+    "Malavika"
+   ],
+   "also": [
+    "Priyamvada",
+    "Anasuya"
+   ]
+  },
+  {
+   "id": "g21",
+   "type": "meaning",
+   "q": "boy name meaning breeze or wind",
+   "must": [
+    "Sameer",
+    "Pavan"
+   ],
+   "also": [
+    "Malay"
+   ]
+  },
+  {
+   "id": "g22",
+   "type": "meaning",
+   "q": "name meaning grace",
+   "must": [
+    "Krupa"
+   ],
+   "also": [
+    "Faiz",
+    "Kavin"
+   ]
+  },
+  {
+   "id": "g23",
+   "type": "meaning",
+   "q": "Tamil girl name meaning sweet",
+   "must": [
+    "Iniya"
+   ],
+   "also": [
+    "Kani"
+   ]
+  },
+  {
+   "id": "g24",
+   "type": "meaning",
+   "q": "a name meaning without sorrow",
+   "must": [
+    "Ashok"
+   ]
+  },
+  {
+   "id": "g25",
+   "type": "story",
+   "q": "the river of Ayodhya in the Ramayana",
+   "must": [
+    "Sarayu"
+   ]
+  },
+  {
+   "id": "g26",
+   "type": "meaning",
+   "q": "name that means the first light of morning",
+   "must": [
+    "Ahana"
+   ],
+   "also": [
+    "Usha",
+    "Arun"
+   ]
+  },
+  {
+   "id": "g27",
+   "type": "paraphrase",
+   "q": "something gentle for a daughter, like the soft wind from the south",
+   "must": [
+    "Thendral"
+   ],
+   "also": [
+    "Malay"
+   ]
+  },
+  {
+   "id": "g28",
+   "type": "paraphrase",
+   "q": "a son's name for a family that loves the night sky and moon",
+   "must": [
+    "Shashank",
+    "Nilavan"
+   ],
+   "also": [
+    "Chakor",
+    "Nishith"
+   ]
+  },
+  {
+   "id": "g29",
+   "type": "phonetic",
+   "q": "boy name that sounds like Savannah",
+   "must": [
+    "Saavan",
+    "Shravan"
+   ]
+  },
+  {
+   "id": "g30",
+   "type": "phonetic",
+   "q": "girl name that sounds like Mia",
+   "must": [
+    "Maya",
+    "Mira"
+   ]
+  },
+  {
+   "id": "g31",
+   "type": "phonetic",
+   "q": "boy name that sounds like Ethan",
+   "must": [
+    "Rehan",
+    "Ishaan"
+   ]
+  },
+  {
+   "id": "g35",
+   "type": "paraphrase",
+   "q": "a name meaning bravery for our son",
+   "must": [
+    "Shaurya",
+    "Veer"
+   ]
+  },
+  {
+   "id": "g36",
+   "type": "paraphrase",
+   "q": "name that means clever or intelligent",
+   "must": [
+    "Mathi",
+    "Pratibha"
+   ]
+  },
+  {
+   "id": "g37",
+   "type": "paraphrase",
+   "q": "a name for a girl meaning kindness",
+   "must": [
+    "Maitreyi",
+    "Priyamvada"
+   ]
+  },
+  {
+   "id": "g38",
+   "type": "paraphrase",
+   "q": "boy name meaning tough and powerful",
+   "must": [
+    "Ojas"
+   ],
+   "also": [
+    "Tejas",
+    "Rudra",
+    "Shaurya",
+    "Veer"
+   ]
+  },
+  {
+   "id": "g39",
+   "type": "paraphrase",
+   "q": "name for a girl meaning heaven",
+   "must": [
+    "Firdaus"
+   ]
+  },
+  {
+   "id": "g40",
+   "type": "paraphrase",
+   "q": "baby name inspired by the rainy season",
+   "must": [
+    "Saavan",
+    "Varsha"
+   ],
+   "also": [
+    "Shraboni",
+    "Barkha",
+    "Rimjhim",
+    "Shravan"
+   ]
+  },
+  {
+   "id": "g41",
+   "type": "paraphrase",
+   "q": "name meaning wealth and good fortune",
+   "must": [
+    "Selvi"
+   ]
+  },
+  {
+   "id": "g42",
+   "type": "paraphrase",
+   "q": "something for a daughter that means the glow of the night sky",
+   "must": [
+    "Jyotsna",
+    "Chandrika",
+    "Vennela",
+    "Chandni"
+   ],
+   "also": [
+    "Kaumudi",
+    "Jonaki",
+    "Mahtab"
+   ]
+  },
+  {
+   "id": "g32",
+   "type": "no_answer",
+   "q": "Malayalam boy name meaning thunder",
+   "must": []
+  },
+  {
+   "id": "g33",
+   "type": "no_answer",
+   "q": "Japanese name meaning cherry blossom",
+   "must": []
+  },
+  {
+   "id": "g34",
+   "type": "no_answer",
+   "q": "Kannada boy name meaning ocean",
+   "must": []
+  }
+ ],
+ "cache_pairs": [
+  {
+   "a": "girl name meaning moonlight",
+   "b": "name for a girl that means moonlight",
+   "should_hit": true
+  },
+  {
+   "a": "boy name about rain",
+   "b": "boy name related to rain",
+   "should_hit": true
+  },
+  {
+   "a": "name meaning dawn",
+   "b": "names that mean dawn",
+   "should_hit": true
+  },
+  {
+   "a": "girl name meaning moonlight",
+   "b": "boy name meaning moonlight",
+   "should_hit": false,
+   "why": "Same words, different gender. A meaning-only cache would return girls' names to someone asking for a boy."
+  },
+  {
+   "a": "Tamil name meaning sweet",
+   "b": "Telugu name meaning sweet",
+   "should_hit": false,
+   "why": "Different language filter."
+  },
+  {
+   "a": "name meaning dawn",
+   "b": "name meaning dusk",
+   "should_hit": false,
+   "why": "Close in meaning-space, opposite answer."
+  }
+ ]
+}

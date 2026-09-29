@@ -1,0 +1,34 @@
+{
+  "_readme": "Candidate public-domain sources. Before ingesting: find the plain-text URL (Project Gutenberg, Wikisource, Internet Archive), confirm the licence where you are publishing, fill in 'url', and set 'confirmed': true. Only confirmed entries are ingested. Modern translations are copyrighted: do not add them.",
+  "texts": [
+    {"id":"kalevala-crawford","title":"The Kalevala","translator":"John Martin Crawford","year":1888,"originalLanguage":"fi","region":"eu","book":"kalevala","sectionPattern":"^RUNE [IVXLC]+\\.?","url":null,"confirmed":false},
+    {"id":"poetic-edda-bellows","title":"The Poetic Edda","translator":"Henry Adams Bellows","year":1923,"originalLanguage":"non","region":"eu","book":"edda","sectionPattern":"^[A-Z][A-Z ,'-]{6,}$","url":null,"confirmed":false},
+    {"id":"prose-edda-brodeur","title":"The Prose Edda","translator":"Arthur Gilchrist Brodeur","year":1916,"originalLanguage":"non","region":"eu","book":"edda","sectionPattern":"^[IVXLC]+\\.?$","url":null,"confirmed":false},
+    {"id":"hesiod-evelyn-white","title":"Hesiod, the Homeric Hymns and Homerica","translator":"Hugh G. Evelyn-White","year":1914,"originalLanguage":"grc","region":"eu","book":"theogony","sectionPattern":"^[A-Z][A-Z ]{3,}$","url":null,"confirmed":false},
+    {"id":"iliad-butler","title":"The Iliad","translator":"Samuel Butler","year":1898,"originalLanguage":"grc","region":"eu","book":"homer","sectionPattern":"^BOOK [IVXLC]+","url":null,"confirmed":false},
+    {"id":"odyssey-butler","title":"The Odyssey","translator":"Samuel Butler","year":1900,"originalLanguage":"grc","region":"eu","book":"homer","sectionPattern":"^BOOK [IVXLC]+","url":null,"confirmed":false},
+    {"id":"metamorphoses-more","title":"Metamorphoses","translator":"Brookes More","year":1922,"originalLanguage":"la","region":"eu","book":"ovid","sectionPattern":"^BOOK [IVXLC]+","url":null,"confirmed":false},
+    {"id":"aeneid-dryden","title":"The Aeneid","translator":"John Dryden","year":1697,"originalLanguage":"la","region":"eu","book":"aeneid","sectionPattern":"^BOOK [IVXLC]+","url":null,"confirmed":false},
+    {"id":"mabinogion-guest","title":"The Mabinogion","translator":"Lady Charlotte Guest","year":1849,"originalLanguage":"cy","region":"eu","book":"mabinogion","sectionPattern":"^[A-Z][A-Z ,'-]{6,}$","url":null,"confirmed":false},
+    {"id":"kojiki-chamberlain","title":"The Kojiki","translator":"Basil Hall Chamberlain","year":1882,"originalLanguage":"ja","region":"ea","book":"kojiki","sectionPattern":"^\\[SECT\\. [IVXLC]+","url":null,"confirmed":false},
+    {"id":"rigveda-griffith","title":"The Hymns of the Rigveda","translator":"Ralph T. H. Griffith","year":1896,"originalLanguage":"sa","region":"sa","book":"rigveda","sectionPattern":"^HYMN [IVXLC]+","url":null,"confirmed":false},
+    {"id":"upanishads-muller","title":"The Upanishads","translator":"F. Max Müller","year":1879,"originalLanguage":"sa","region":"sa","book":"upanishads","sectionPattern":"^[A-Z][A-Z -]{6,}$","url":null,"confirmed":false},
+    {"id":"ramayana-griffith","title":"The Rámáyan of Válmíki","translator":"Ralph T. H. Griffith","year":1870,"originalLanguage":"sa","region":"sa","book":"ramayana","sectionPattern":"^CANTO [IVXLC]+","url":null,"confirmed":false},
+    {"id":"mahabharata-ganguli","title":"The Mahabharata","translator":"Kisari Mohan Ganguli","year":1883,"originalLanguage":"sa","region":"sa","book":"mahabharata","sectionPattern":"^SECTION [IVXLC]+","url":null,"confirmed":false},
+    {"id":"shahnama-warner","title":"The Sháhnáma of Firdausí","translator":"Arthur George Warner and Edmond Warner","year":1905,"originalLanguage":"fa","region":"wa","book":"shahnameh","sectionPattern":"^§ ?\\d+","url":null,"confirmed":false},
+    {"id":"gilgamesh-thompson","title":"The Epic of Gilgamish","translator":"R. Campbell Thompson","year":1928,"originalLanguage":"akk","region":"wa","book":"gilgamesh","sectionPattern":"^TABLET [IVXLC]+","url":null,"confirmed":false}
+  ],
+  "needsWork": [
+    {"book":"korkut","note":"The Oghuz Turkish original is old enough to be public domain, but modern editions and translations are copyrighted. Find a public-domain transcription of the manuscript."},
+    {"book":"popolvuh","note":"Francisco Ximénez's early-1700s Spanish text is public domain; most English translations are not."},
+    {"book":"sangam","note":"Tamil originals are ancient; check the terms of any site you take the text from (e.g. Project Madurai)."},
+    {"book":"silappadikaram","note":"Check the copyright of any English translation before using it."}
+  ],
+  "dictionaries": [
+    {"id":"monier-williams","title":"A Sanskrit–English Dictionary","author":"Monier Monier-Williams","year":1899,"lang":"sa","region":"sa","note":"Use a digital edition whose licence allows reuse.","file":null,"confirmed":false},
+    {"id":"cleasby-vigfusson","title":"An Icelandic–English Dictionary","author":"Richard Cleasby and Gudbrand Vigfusson","year":1874,"lang":"non","region":"eu","file":null,"confirmed":false},
+    {"id":"liddell-scott","title":"An Intermediate Greek–English Lexicon","author":"Henry George Liddell and Robert Scott","year":1889,"lang":"grc","region":"eu","file":null,"confirmed":false},
+    {"id":"lewis-short","title":"A Latin Dictionary","author":"Charlton T. Lewis and Charles Short","year":1879,"lang":"la","region":"eu","file":null,"confirmed":false},
+    {"id":"clark-hall","title":"A Concise Anglo-Saxon Dictionary","author":"John R. Clark Hall","year":1916,"lang":"ang","region":"eu","file":null,"confirmed":false}
+  ]
+}
