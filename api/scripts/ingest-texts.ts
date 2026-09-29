@@ -45,7 +45,7 @@ async function main() {
   const cat = JSON.parse(readFileSync(join(CORPUS_DIR, 'catalog.json'), 'utf8')) as Cat;
   const sources: Source[] = []; const passages: Passage[] = []; const dict: DictEntry[] = [];
   for (const t of cat.texts.filter((x) => x.confirmed && x.url)) {
-    const res = await fetch(t.url!); if (!res.ok) throw new Error(`${t.id}: download failed (${res.status})`);
+    const res = await fetch(t.url!, { headers: { 'user-agent': 'nama-corpus/1.0 (public-domain text ingest)' } }); if (!res.ok) throw new Error(`${t.id}: download failed (${res.status})`);
     const ps = chunk(t.id, stripBoilerplate(await res.text()), t.sectionPattern);
     sources.push({ id: t.id, kind: 'text', title: t.title, translator: t.translator, year: t.year, textLanguage: 'en', originalLanguage: t.originalLanguage, region: t.region, license: 'public-domain', url: t.url!, book: t.book });
     passages.push(...ps); console.log(`${t.id}: ${ps.length} passages`);

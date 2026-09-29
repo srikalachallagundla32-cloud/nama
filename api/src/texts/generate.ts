@@ -132,26 +132,28 @@ export class GenerateService {
       const p = ProposalSchema.safeParse(raw); if (!p.success) { reject('malformed'); continue; }
       const { name, kind, fromText, passageId, lang } = p.data;
       const passage = byId.get(passageId); if (!passage) { reject('passage_not_retrieved'); continue; }
-      const idx = fold(passage.text).indexOf(fold(squash(fromText)));
-      if (idx < 0) { reject('words_not_in_passage'); continue; }
       if (!NAME_SHAPE.test(name) || name.trim().split(/\s+/).length > 3) { reject('not_a_name_shape'); continue; }
       const key = fold(name); if (seen.has(key)) { reject('duplicate'); continue; }
       const src = corpus.sources.get(passage.source)!;
-      const quote = contextAround(passage.text, idx, fromText.length);
       const source = { title: src.title, ref: passage.ref, translator: src.translator, year: src.year, license: src.license };
 
       let item: GeneratedName;
       if (kind === 'found') {
-        if (!fold(fromText).includes(key)) { reject('name_not_in_quoted_words'); continue; }
+        // Certify the claim we actually make: this name literally appears in this passage.
+        const idx = fold(passage.text).indexOf(key);
+        if (idx < 0) { reject('name_not_in_passage'); continue; }
         const dict = corpus.lookup(name, src.originalLanguage);
-        item = { name, status: 'found_in_text', quote, source, note: 'This name appears in the text. Read the passage: a name can belong to a hero or a villain.' };
+        item = { name, status: 'found_in_text', quote: contextAround(passage.text, idx, name.length), source, note: 'This name appears in the text. Read the passage: a name can belong to a hero or a villain.' };
         if (dict) { item.meaning = dict.gloss; item.meaningFrom = 'dictionary'; }
       } else {
+        // Coined: the ROOT WORD must be in the passage, and carry a real dictionary meaning in its language.
+        const idx = fold(passage.text).indexOf(fold(squash(fromText)));
+        if (idx < 0) { reject('words_not_in_passage'); continue; }
         const wordLang = lang ?? src.originalLanguage;
         const dict = corpus.lookup(squash(fromText), wordLang);
         if (!dict) { reject('formed_without_dictionary_meaning'); continue; }
         if (!sharesRoot(key, fold(dict.headword))) { reject('formed_name_not_from_word'); continue; }
-        item = { name, status: 'formed_from_text', quote, source, meaning: dict.gloss, meaningFrom: 'dictionary',
+        item = { name, status: 'formed_from_text', quote: contextAround(passage.text, idx, squash(fromText).length), source, meaning: dict.gloss, meaningFrom: 'dictionary',
           note: `Made from the ${this.d.languages[wordLang] ?? wordLang} word "${dict.headword}". A new name, not one found in records — say it aloud to a speaker of the language before choosing.` };
       }
       const known = knownByName.get(key);
