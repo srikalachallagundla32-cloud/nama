@@ -4,7 +4,7 @@ services:
     runtime: node
     rootDir: api
     buildCommand: npm ci
-    startCommand: npm start
+    startCommand: cd api && npm start
     healthCheckPath: /api/meta
     autoDeploy: true
     envVars:
