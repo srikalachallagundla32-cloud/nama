@@ -56,11 +56,13 @@ export function buildApp(d: AppDeps): FastifyInstance {
     if (config.NODE_ENV === 'production') reply.header('strict-transport-security', 'max-age=63072000; includeSubDomains; preload');
     reply.header('cache-control', 'no-store');
     // CORS: only listed sites get the allow header; everyone else is blocked by the browser.
+    // In development, also allow 'null' origin (emitted by file:// pages for local testing).
     const origin = req.headers.origin;
     if (origin) {
       reply.header('vary', 'Origin');
-      if (config.allowedOrigins.has(origin)) {
-        reply.header('access-control-allow-origin', origin);
+      const devNull = config.NODE_ENV !== 'production' && origin === 'null';
+      if (config.allowedOrigins.has(origin) || devNull) {
+        reply.header('access-control-allow-origin', devNull ? '*' : origin);
         reply.header('access-control-expose-headers', 'x-request-id, retry-after, etag, idempotent-replayed');
       } else if (req.method === 'OPTIONS' || req.method === 'POST') {
         return sendError(reply, err(403, 'origin_not_allowed', 'This site is not allowed to call the API.'));

@@ -90,6 +90,25 @@ details.more-q[open] summary::before{transform:rotate(45deg)}
 .check{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
 .check input{width:20px;height:20px;accent-color:var(--ink)}
 
+/* AI results strip */
+.ai-strip{margin:0 0 18px;padding:14px 18px 12px;background:linear-gradient(135deg,color-mix(in srgb,var(--wa) 8%,var(--card)),color-mix(in srgb,var(--eu) 6%,var(--card)));border-radius:var(--br);border:1.5px solid color-mix(in srgb,var(--eu) 18%,transparent)}
+.ai-strip[hidden]{display:none}
+.ai-strip-head{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft)}
+.ai-strip-head svg{width:14px;height:14px;flex-shrink:0}
+.ai-strip-head .ai-mode{margin-left:auto;font-weight:400;text-transform:none;letter-spacing:0;opacity:.7}
+.ai-cards{display:flex;flex-wrap:wrap;gap:10px 10px}
+.ai-card{background:var(--card);border-radius:calc(var(--br) - 4px);box-shadow:0 1px 6px rgba(0,0,0,.07);padding:10px 14px;min-width:130px;max-width:220px;cursor:pointer;border:1.5px solid transparent;transition:border-color .2s,box-shadow .2s}
+.ai-card:hover,.ai-card:focus{border-color:color-mix(in srgb,var(--eu) 40%,transparent);box-shadow:0 3px 12px rgba(0,0,0,.12);outline:none}
+.ai-card .acn{font-family:var(--display);font-size:1.25rem;font-weight:600;line-height:1.15;color:var(--ink)}
+.ai-card .acl{font-size:.72rem;color:var(--ink-soft);margin:.15em 0 .3em}
+.ai-card .acm{font-size:.78rem;color:var(--ink);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ai-card .acs{font-size:.68rem;color:var(--ink-soft);margin-top:.35em;display:flex;align-items:center;gap:4px}
+.ai-strip-loading{display:flex;align-items:center;gap:8px;color:var(--ink-soft);font-size:.83rem;height:54px}
+.ai-dot{width:6px;height:6px;border-radius:50%;background:var(--eu);animation:aiPulse 1.1s ease-in-out infinite}
+.ai-dot:nth-child(2){animation-delay:.18s}.ai-dot:nth-child(3){animation-delay:.36s}
+@keyframes aiPulse{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+.ai-err{font-size:.8rem;color:var(--ink-soft);padding:10px 0;display:flex;align-items:center;gap:6px}
+
 /* results */
 .results-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;margin:8px 0 18px}
 .results-head h2{margin:0;font-family:var(--hand);font-weight:400;font-size:clamp(2rem,4vw,2.6rem);line-height:1}
@@ -571,6 +590,7 @@ body{overflow:hidden}
           <div class="active-chips" id="activeChips" aria-label="Active filters"></div>
           <div class="chip-groups" id="chipGroups" aria-label="Quick suggestions"></div>
         </div>
+        <div class="ai-strip" id="aiStrip" hidden aria-live="polite" aria-label="AI-suggested names"></div>
         <div class="book-note" id="bookNote" hidden></div>
         <div class="results-head">
           <h2 id="resultTitle" aria-live="polite"></h2>
@@ -691,6 +711,8 @@ body{overflow:hidden}
 <script>
 const DATA=__DATA__;
 const {LANG,REGIONS,THEMES,NAMES,BOOKS}=DATA; const ANCIENT=new Set(DATA.ANCIENT);
+/* API endpoint — set by build.py (env var API_BASE); empty = same-origin */
+const API_BASE='__API_BASE__';
 const bookShort=k=>BOOKS[k][0].split(' — ')[0].replace(/^The /,'');
 const langLabel=x=>LANG[x.l]+(ANCIENT.has(x.l)&&!/Ancient|Old/.test(LANG[x.l])?' (ancient)':'');
 const RARITY={1:'Popular',2:'Uncommon',3:'Rare',4:'Ancient'};
@@ -1185,7 +1207,54 @@ function runCommand(raw){
 }
 let cmdT;
 $('cmd').addEventListener('input',e=>{clearTimeout(cmdT);cmdT=setTimeout(()=>runCommand(e.target.value),220)});
-$('cmdForm').addEventListener('submit',e=>{e.preventDefault();clearTimeout(cmdT);runCommand($('cmd').value);scrollToResults()});
+$('cmdForm').addEventListener('submit',e=>{e.preventDefault();clearTimeout(cmdT);runCommand($('cmd').value);callAI($('cmd').value.trim());scrollToResults()});
+
+/* ---------- AI: call /api/ask and show results above the cloud ---------- */
+let aiCtrl=null;  // AbortController for the current AI request
+function callAI(raw){
+  const strip=$('aiStrip');
+  if(!raw||raw.length<3){strip.hidden=true;return}
+  if(aiCtrl)aiCtrl.abort();
+  aiCtrl=new AbortController();
+  strip.hidden=false;
+  strip.innerHTML=`<div class="ai-strip-loading"><span class="ai-dot"></span><span class="ai-dot"></span><span class="ai-dot"></span><span style="margin-left:4px">Searching across languages…</span></div>`;
+  const body=JSON.stringify({q:raw});
+  fetch(API_BASE+'/api/ask',{method:'POST',headers:{'content-type':'application/json'},body,signal:aiCtrl.signal})
+    .then(r=>{if(!r.ok)return r.json().then(d=>{throw new Error(d?.error?.message||'Server error')});return r.json()})
+    .then(data=>renderAI(data,raw))
+    .catch(e=>{if(e.name==='AbortError')return;renderAIError(e.message)});
+}
+function renderAI(data,q){
+  const strip=$('aiStrip');
+  if(!data?.items?.length){
+    strip.innerHTML=`<div class="ai-strip-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l1.6 5.2L19 8.8l-4.2 3.3L16 18l-4-3.4L8 18l1.2-5.9L5 8.8l5.4-1.6z"/></svg>AI Discoveries</div><div class="ai-err">No close matches for "${esc(q.slice(0,40))}" — try different words.</div>`;
+    return;
+  }
+  const modeLabel={ai:'From texts & dictionaries',search:'From the collection',no_match:''}[data.mode]||'';
+  const cards=data.items.map(x=>{
+    const lang=LANG[x.language]||x.languageName||x.language;
+    const src=x.source?`<span>${esc(x.source)}</span>`:'';
+    return`<button class="ai-card" type="button" data-id="${esc(x.id)}" aria-label="${esc(x.name)}: ${esc(x.meaning)}">
+      <div class="acn">${esc(x.name)}</div>
+      <div class="acl">${esc(lang)}</div>
+      <div class="acm">${esc(x.meaning)}</div>
+      ${src?`<div class="acs"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path fill="currentColor" d="M2 2h8v8H2z" opacity=".25"/><path fill="currentColor" d="M1 1h7v1H2v7H1V1z"/></svg>${src}</div>`:''}
+    </button>`;
+  }).join('');
+  strip.innerHTML=`<div class="ai-strip-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l1.6 5.2L19 8.8l-4.2 3.3L16 18l-4-3.4L8 18l1.2-5.9L5 8.8l5.4-1.6z"/></svg>AI Discoveries${modeLabel?`<span class="ai-mode">${esc(modeLabel)}</span>`:''}</div><div class="ai-cards">${cards}</div>`;
+  strip.querySelectorAll('.ai-card').forEach(card=>{
+    card.addEventListener('click',()=>{
+      // If the name is in our local store, open the postcard; otherwise just highlight
+      const id=card.dataset.id;
+      if(NAMES_BY_ID&&NAMES_BY_ID[id]){openCard(id,card)}
+      else{card.style.setProperty('--c','var(--eu)');card.style.borderColor='color-mix(in srgb,var(--eu) 50%,transparent)';burst(card,'var(--eu)')}
+    });
+  });
+}
+function renderAIError(msg){
+  const strip=$('aiStrip');
+  strip.innerHTML=`<div class="ai-strip-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l1.6 5.2L19 8.8l-4.2 3.3L16 18l-4-3.4L8 18l1.2-5.9L5 8.8l5.4-1.6z"/></svg>AI Discoveries</div><div class="ai-err">⚠ ${esc(msg||'Could not reach the AI service. Make sure the server is running.')} <button class="btn ghost" type="button" onclick="callAI($('cmd').value.trim())" style="font-size:.78rem;padding:4px 10px;margin-left:6px">Retry</button></div>`;
+}
 
 /* ---------- deep-filters drawer (hub + spokes) */
 const drawer=$('drawer');

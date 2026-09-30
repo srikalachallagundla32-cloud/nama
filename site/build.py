@@ -84,7 +84,11 @@ for disp,old in {'Chang\u2019e':'Change','N\u00fcwa':'Nuwa','Zhin\u00fc':'Zhinu'
     for d in names:
         if d['n']==old: d['n']=disp
 data=json.dumps({'LANG':LANG,'REGIONS':REG,'THEMES':THEMES,'NAMES':names,'BOOKS':{k:list(v) for k,v in BOOKS.items()},'ANCIENT':sorted(ANCIENT)},ensure_ascii=False,separators=(',',':'))
-html=open(os.path.join(HERE,'template.html')).read().replace('__DATA__',data)
+# API_BASE: set via env var API_BASE at deploy time (e.g. https://nama-api.onrender.com)
+# Empty string = same-origin (works when site and API share a domain)
+# For local dev: http://localhost:3000
+api_base = os.environ.get('API_BASE','http://localhost:8080')
+html=open(os.path.join(HERE,'template.html')).read().replace('__DATA__',data).replace('__API_BASE__',api_base)
 os.makedirs(os.path.join(HERE,'dist'),exist_ok=True)
 open(os.path.join(HERE,'dist','nama.html'),'w').write(html)
 print(len(names),'names', len(LANG),'languages', round(len(html.encode())/1024),'KB')
