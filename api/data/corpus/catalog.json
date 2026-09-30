@@ -10,8 +10,8 @@
    "region": "eu",
    "book": "kalevala",
    "sectionPattern": "^RUNE [IVXLC]+\\.?",
-   "url": null,
-   "confirmed": false
+   "url": "https://www.gutenberg.org/cache/epub/5186/pg5186.txt",
+   "confirmed": true
   },
   {
    "id": "poetic-edda-bellows",
@@ -22,20 +22,20 @@
    "region": "eu",
    "book": "edda",
    "sectionPattern": "^[A-Z][A-Z ,'-]{6,}$",
-   "url": null,
-   "confirmed": false
+   "url": "https://www.gutenberg.org/cache/epub/73533/pg73533.txt",
+   "confirmed": true
   },
   {
-   "id": "prose-edda-brodeur",
+   "id": "prose-edda-anderson",
    "title": "The Prose Edda",
-   "translator": "Arthur Gilchrist Brodeur",
-   "year": 1916,
+   "translator": "Rasmus Björn Anderson",
+   "year": 1875,
    "originalLanguage": "non",
    "region": "eu",
    "book": "edda",
    "sectionPattern": "^[IVXLC]+\\.?$",
-   "url": null,
-   "confirmed": false
+   "url": "https://www.gutenberg.org/cache/epub/18947/pg18947.txt",
+   "confirmed": true
   },
   {
    "id": "hesiod-evelyn-white",
@@ -74,16 +74,28 @@
    "confirmed": true
   },
   {
-   "id": "metamorphoses-more",
-   "title": "Metamorphoses",
-   "translator": "Brookes More",
-   "year": 1922,
+   "id": "metamorphoses-riley-1",
+   "title": "The Metamorphoses of Ovid, Books I–VII",
+   "translator": "Henry T. Riley",
+   "year": 1876,
    "originalLanguage": "la",
    "region": "eu",
    "book": "ovid",
    "sectionPattern": "^BOOK [IVXLC]+",
-   "url": null,
-   "confirmed": false
+   "url": "https://www.gutenberg.org/cache/epub/21765/pg21765.txt",
+   "confirmed": true
+  },
+  {
+   "id": "metamorphoses-riley-2",
+   "title": "The Metamorphoses of Ovid, Books VIII–XV",
+   "translator": "Henry T. Riley",
+   "year": 1876,
+   "originalLanguage": "la",
+   "region": "eu",
+   "book": "ovid",
+   "sectionPattern": "^BOOK [IVXLC]+",
+   "url": "https://www.gutenberg.org/cache/epub/26073/pg26073.txt",
+   "confirmed": true
   },
   {
    "id": "aeneid-dryden",
@@ -94,8 +106,8 @@
    "region": "eu",
    "book": "aeneid",
    "sectionPattern": "^BOOK [IVXLC]+",
-   "url": null,
-   "confirmed": false
+   "url": "https://www.gutenberg.org/cache/epub/228/pg228.txt",
+   "confirmed": true
   },
   {
    "id": "mabinogion-guest",
@@ -106,20 +118,8 @@
    "region": "eu",
    "book": "mabinogion",
    "sectionPattern": "^[A-Z][A-Z ,'-]{6,}$",
-   "url": null,
-   "confirmed": false
-  },
-  {
-   "id": "kojiki-chamberlain",
-   "title": "The Kojiki",
-   "translator": "Basil Hall Chamberlain",
-   "year": 1882,
-   "originalLanguage": "ja",
-   "region": "ea",
-   "book": "kojiki",
-   "sectionPattern": "^\\[SECT\\. [IVXLC]+",
-   "url": null,
-   "confirmed": false
+   "url": "https://www.gutenberg.org/cache/epub/5160/pg5160.txt",
+   "confirmed": true
   },
   {
    "id": "rigveda-griffith",
@@ -131,19 +131,20 @@
    "book": "rigveda",
    "sectionPattern": "^HYMN [IVXLC]+",
    "url": null,
-   "confirmed": false
+   "confirmed": false,
+   "_note": "Griffith full Rigveda not on Project Gutenberg; Vedic Hymns selections included via sacred-books-east"
   },
   {
-   "id": "upanishads-muller",
-   "title": "The Upanishads",
-   "translator": "F. Max Müller",
-   "year": 1879,
+   "id": "sacred-books-east",
+   "title": "Sacred Books of the East",
+   "translator": "F. Max Müller et al.",
+   "year": 1900,
    "originalLanguage": "sa",
    "region": "sa",
-   "book": "upanishads",
-   "sectionPattern": "^[A-Z][A-Z -]{6,}$",
-   "url": null,
-   "confirmed": false
+   "book": "vedic",
+   "sectionPattern": "^[A-Z][A-Z ,\\-']{6,}$",
+   "url": "https://www.gutenberg.org/cache/epub/12894/pg12894.txt",
+   "confirmed": true
   },
   {
    "id": "ramayana-griffith",
@@ -154,20 +155,20 @@
    "region": "sa",
    "book": "ramayana",
    "sectionPattern": "^CANTO [IVXLC]+",
-   "url": null,
-   "confirmed": false
+   "url": "https://www.gutenberg.org/cache/epub/24869/pg24869.txt",
+   "confirmed": true
   },
   {
    "id": "mahabharata-ganguli",
-   "title": "The Mahabharata",
+   "title": "The Mahabharata of Krishna-Dwaipayana Vyasa, Vol. 1",
    "translator": "Kisari Mohan Ganguli",
    "year": 1883,
    "originalLanguage": "sa",
    "region": "sa",
    "book": "mahabharata",
    "sectionPattern": "^SECTION [IVXLC]+",
-   "url": null,
-   "confirmed": false
+   "url": "https://www.gutenberg.org/cache/epub/15474/pg15474.txt",
+   "confirmed": true
   },
   {
    "id": "shahnama-warner",
@@ -179,19 +180,33 @@
    "book": "shahnameh",
    "sectionPattern": "^§ ?\\d+",
    "url": null,
-   "confirmed": false
+   "confirmed": false,
+   "_note": "Warner Shahnama not on Project Gutenberg; check Wikisource"
   },
   {
-   "id": "gilgamesh-thompson",
-   "title": "The Epic of Gilgamish",
-   "translator": "R. Campbell Thompson",
-   "year": 1928,
+   "id": "gilgamesh-jastrow",
+   "title": "An Old Babylonian Version of the Gilgamesh Epic",
+   "translator": "Morris Jastrow",
+   "year": 1920,
    "originalLanguage": "akk",
    "region": "wa",
    "book": "gilgamesh",
    "sectionPattern": "^TABLET [IVXLC]+",
+   "url": "https://www.gutenberg.org/cache/epub/11000/pg11000.txt",
+   "confirmed": true
+  },
+  {
+   "id": "kojiki-chamberlain",
+   "title": "The Kojiki",
+   "translator": "Basil Hall Chamberlain",
+   "year": 1882,
+   "originalLanguage": "ja",
+   "region": "ea",
+   "book": "kojiki",
+   "sectionPattern": "^\\[SECT\\. [IVXLC]+",
    "url": null,
-   "confirmed": false
+   "confirmed": false,
+   "_note": "Chamberlain Kojiki not on Project Gutenberg; check Wikisource or Internet Archive"
   }
  ],
  "needsWork": [
