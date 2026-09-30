@@ -127,6 +127,39 @@
   "url": "https://www.wiktionary.org/"
  },
  {
+  "id": "wiktionary-id",
+  "kind": "dictionary",
+  "title": "Wiktionary (id)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "id",
+  "region": "sea",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-ja",
+  "kind": "dictionary",
+  "title": "Wiktionary (ja)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "ja",
+  "region": "ea",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-ko",
+  "kind": "dictionary",
+  "title": "Wiktionary (ko)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "ko",
+  "region": "ea",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
   "id": "wiktionary-la",
   "kind": "dictionary",
   "title": "Wiktionary (la)",
@@ -134,6 +167,17 @@
   "textLanguage": "en",
   "originalLanguage": "la",
   "region": "eu",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-mn",
+  "kind": "dictionary",
+  "title": "Wiktionary (mn)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "mn",
+  "region": "ea",
   "license": "cc-by-sa",
   "url": "https://www.wiktionary.org/"
  },
@@ -147,6 +191,29 @@
   "region": "eu",
   "license": "cc-by-sa",
   "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-qu",
+  "kind": "dictionary",
+  "title": "Wiktionary (qu)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "qu",
+  "region": "ams",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "mw",
+  "kind": "dictionary",
+  "title": "Monier-Williams Sanskrit-English Dictionary",
+  "author": "Monier Monier-Williams",
+  "year": 1899,
+  "textLanguage": "en",
+  "originalLanguage": "sa",
+  "region": "sa",
+  "license": "public-domain",
+  "url": "https://www.sanskrit-lexicon.uni-koeln.de/monier/"
  },
  {
   "id": "wiktionary-sa",
@@ -193,6 +260,28 @@
   "url": "https://www.wiktionary.org/"
  },
  {
+  "id": "wiktionary-th",
+  "kind": "dictionary",
+  "title": "Wiktionary (th)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "th",
+  "region": "sea",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-vi",
+  "kind": "dictionary",
+  "title": "Wiktionary (vi)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "vi",
+  "region": "sea",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
   "id": "wiktionary-yo",
   "kind": "dictionary",
   "title": "Wiktionary (yo)",
@@ -200,6 +289,17 @@
   "textLanguage": "en",
   "originalLanguage": "yo",
   "region": "af",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-zh",
+  "kind": "dictionary",
+  "title": "Wiktionary (zh)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "zh",
+  "region": "ea",
   "license": "cc-by-sa",
   "url": "https://www.wiktionary.org/"
  }

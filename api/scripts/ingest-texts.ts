@@ -61,8 +61,13 @@ async function main() {
   const LANG_REGION: Record<string, string> = { te: 'sa', sa: 'sa', ta: 'sa', hi: 'sa', kn: 'sa', ml: 'sa', bn: 'sa', mr: 'sa',
     grc: 'eu', la: 'eu', non: 'eu', ang: 'eu', el: 'eu', it: 'eu', es: 'eu', fr: 'eu', de: 'eu', ga: 'eu', cy: 'eu', fi: 'eu',
     ar: 'wa', fa: 'wa', he: 'wa', tr: 'wa', akk: 'wa', sux: 'wa', egy: 'af', am: 'af', sw: 'af', yo: 'af', ha: 'af',
-    zh: 'ea', lzh: 'ea', ja: 'ea', ko: 'ea', th: 'sea', vi: 'sea', id: 'sea', haw: 'pac', mi: 'pac', qu: 'ams', nah: 'ams' };
-  const MAX_PER_LANG = 30000;
+    zh: 'ea', lzh: 'ea', ja: 'ea', ko: 'ea', th: 'sea', vi: 'sea', id: 'sea', haw: 'pac', mi: 'pac', qu: 'ams', nah: 'ams',
+    mn: 'ea' };
+  // Special handling for scholarly dictionaries (trusted-tier, non-Wiktionary)
+  const SCHOLARLY: Record<string, { srcId: string; title: string; author: string; year: number; lang: string; region: string; license: 'public-domain'; url: string }> = {
+    'sa-mw': { srcId: 'mw', title: 'Monier-Williams Sanskrit-English Dictionary', author: 'Monier Monier-Williams', year: 1899, lang: 'sa', region: 'sa', license: 'public-domain', url: 'https://www.sanskrit-lexicon.uni-koeln.de/monier/' },
+  };
+  const MAX_PER_LANG = 80000;   // deep corpus: keep more per language so the model has richer material to draw from
   const INFLECTION = /^(inflection|inflected form|genitive|dative|accusative|ablative|vocative|nominative|locative|instrumental|plural|singular|comparative|superlative|feminine|masculine|neuter|definite|indefinite|construct form|oblique|absolutive) of\b|\b(first|second|third)[- ]person\b|\b(past|present) participle of\b|\bverbal noun of\b|\balternative (form|spelling) of\b|\bmisspelling of\b|\bromanization of\b|\bsynonym of\b/i;
   const wikDir = join(CORPUS_DIR, 'wik');
   if (existsSync(wikDir)) {
@@ -70,8 +75,14 @@ async function main() {
       const code = f.replace(/\.jsonl$/, '');
       const rows = readFileSync(join(wikDir, f), 'utf8').split('\n').filter((l) => l.trim());
       if (!rows.length) continue;
-      const srcId = `wiktionary-${code}`;
-      sources.push({ id: srcId, kind: 'dictionary', title: `Wiktionary (${code})`, year: 2024, textLanguage: 'en', originalLanguage: code, region: LANG_REGION[code] ?? 'eu', license: 'cc-by-sa', url: 'https://www.wiktionary.org/' });
+      const scholarly = SCHOLARLY[code];
+      const srcId = scholarly ? scholarly.srcId : `wiktionary-${code}`;
+      const langCode = scholarly ? scholarly.lang : code;
+      if (scholarly) {
+        sources.push({ id: srcId, kind: 'dictionary', title: scholarly.title, author: scholarly.author, year: scholarly.year, textLanguage: 'en', originalLanguage: scholarly.lang, region: scholarly.region, license: scholarly.license, url: scholarly.url });
+      } else {
+        sources.push({ id: srcId, kind: 'dictionary', title: `Wiktionary (${code})`, year: 2024, textLanguage: 'en', originalLanguage: code, region: LANG_REGION[code] ?? 'eu', license: 'cc-by-sa', url: 'https://www.wiktionary.org/' });
+      }
       let n = 0, skippedForm = 0;
       for (const l of rows) {
         if (n >= MAX_PER_LANG) break;                     // keep any one language from swamping the corpus
@@ -80,7 +91,7 @@ async function main() {
         const head = (r.roman ?? r.word ?? '').trim(); const gloss = (r.gloss ?? '').trim();
         if (!head || !gloss) continue;
         if (INFLECTION.test(gloss)) { skippedForm++; continue; }   // drop declensions/conjugations, keep lemmas
-        dict.push({ headword: head.slice(0, 60), lang: code, gloss: gloss.slice(0, 300), source: srcId,
+        dict.push({ headword: head.slice(0, 60), lang: langCode, gloss: gloss.slice(0, 300), source: srcId,
           ...(r.word && r.word !== head ? { script: r.word.slice(0, 80) } : {}), ...(r.roman ? { roman: r.roman.slice(0, 60) } : {}), ...(r.pos ? { pos: r.pos.slice(0, 24) } : {}) });
         n++;
       }

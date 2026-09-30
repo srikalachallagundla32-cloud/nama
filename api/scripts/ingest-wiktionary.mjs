@@ -28,7 +28,8 @@ const JUNK_POS = new Set(['character', 'symbol', 'punct', 'punctuation', 'num', 
   'romanization', 'abbrev', 'initialism', 'contraction', 'infix', 'prefix', 'suffix', 'interfix',
   'combining form', 'han character', 'hanzi', 'kanji', 'hanja', 'syllable', 'letter']);
 const ROMAN_TAGS = ['romanization', 'transliteration', 'romanized', 'roman', 'latin'];
-const NAME_SHAPE = /^[\p{L}\p{M}][\p{L}\p{M}'’ʻ-]{1,23}$/u;   // 2–24 letters, one token; keeps macrons/glottal marks
+const NAME_SHAPE = /^[\p{L}\p{M}][\p{L}\p{M}'’ʻ -]{1,31}$/u;   // 2–32 chars; keeps macrons/glottal marks; allows short phrase-names
+const MAX_WORDS = 3;                                          // up to a short phrase (Yoruba-style sentence names)
 
 const args = process.argv.slice(2);
 let max = Infinity;
@@ -89,7 +90,7 @@ for (const { name, code } of langs) {
     if ((rec.senses ?? []).every((s) => (s.tags ?? []).map((t) => String(t).toLowerCase()).some((t) => BAD_TAGS.has(t)))) { dropSafety++; return; }
     const roman = romanOf(rec);
     const shapeSrc = roman ?? rec.word ?? '';
-    if (!NAME_SHAPE.test(shapeSrc)) { dropShape++; return; }
+    if (!NAME_SHAPE.test(shapeSrc) || shapeSrc.trim().split(/\s+/).length > MAX_WORDS) { dropShape++; return; }
     const key = (roman ?? rec.word).toLowerCase();
     if (seen.has(key)) return; seen.add(key);
     kept++;

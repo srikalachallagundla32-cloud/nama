@@ -1,8 +1,11 @@
+import { resolve } from 'node:path';
 import { loadConfig } from '../src/config.ts';
 import { createServices } from '../src/app.ts';
 import { MemoryTraceSink } from '../src/infra/index.ts';
 import { MemoryReportSink } from '../src/http/server.ts';
 import type { Candidate, Generator } from '../src/rag/ask.ts';
+
+export const FIXTURES = resolve(import.meta.dirname, 'fixtures/corpus');
 
 export const testConfig = (extra: Record<string, string> = {}) => loadConfig({
   NODE_ENV: 'test', IP_HASH_SALT: 'test-salt-0123456789', ALLOWED_ORIGINS: 'https://nama.example', ...extra,
@@ -18,10 +21,12 @@ export class FakeGenerator implements Generator {
   }
 }
 
-export function makeApp(opts: { generator?: Generator; limits?: Record<string, [number, number]>; config?: Record<string, string> } = {}) {
+export function makeApp(opts: { generator?: Generator; corpusDir?: string; limits?: Record<string, [number, number]>; config?: Record<string, string> } = {}) {
   const traces = new MemoryTraceSink(); const reports = new MemoryReportSink();
   const config = testConfig(opts.config);
-  const s = createServices(config, { generator: opts.generator, traces, reports });
+  // Default to fixture corpus in tests to keep memory usage small (full corpus is 600k+ entries)
+  const corpusDir = opts.corpusDir ?? FIXTURES;
+  const s = createServices(config, { generator: opts.generator, corpusDir, traces, reports });
   if (opts.limits) {
     // rebuild the app with custom limits for rate-limit tests
     return { ...s, traces, reports, app: rebuild(s, config, traces, reports, opts.limits) };

@@ -10,7 +10,7 @@
     "start": "tsx src/index.ts",
     "mcp": "tsx src/mcp/stdio.ts",
     "typecheck": "tsc --noEmit",
-    "test": "node --import tsx --test test/*.test.ts",
+    "test": "node --max-old-space-size=2048 --import tsx --test test/*.test.ts",
     "eval": "tsx eval/run.ts",
     "eval:baseline": "tsx eval/run.ts --save-baseline",
     "bench": "tsx scripts/bench.ts",
