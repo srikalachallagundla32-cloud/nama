@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: nama-api
+    runtime: node
+    rootDir: api
+    buildCommand: npm ci
+    startCommand: node --import tsx src/index.ts
+    healthCheckPath: /api/meta
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 10000
+      - key: TRUST_PROXY
+        value: "true"
+      - key: ANTHROPIC_MODEL
+        value: claude-haiku-4-5
+      - key: LLM_TIMEOUT_MS
+        value: "10000"
+      # Secrets — set these manually in the Render dashboard (Environment tab):
+      #   IP_HASH_SALT        — generate with: openssl rand -hex 32
+      #   ANTHROPIC_API_KEY   — from console.anthropic.com/settings/keys
+      #   ALLOWED_ORIGINS     — https://YOUR-VERCEL-APP.vercel.app  (add after site is deployed)
+      - key: IP_HASH_SALT
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false

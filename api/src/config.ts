@@ -10,7 +10,7 @@ const Env = z.object({
   TRUST_PROXY: z.enum(['true', 'false']).default('false').transform((v) => v === 'true'),
   IP_HASH_SALT: z.string().min(16, 'must be at least 16 characters'),
   ANTHROPIC_API_KEY: z.string().trim().optional().transform((v) => (v ? v : undefined)),
-  ANTHROPIC_MODEL: z.string().min(1).default('claude-haiku-4-5-20251001'),
+  ANTHROPIC_MODEL: z.string().min(1).default('claude-haiku-4-5'),
   LLM_TIMEOUT_MS: z.coerce.number().int().min(1000).max(30000).default(8000),
   PRICE_IN_PER_MTOK: z.string().optional().transform((v) => (v ? Number(v) : undefined)),
   PRICE_OUT_PER_MTOK: z.string().optional().transform((v) => (v ? Number(v) : undefined)),
