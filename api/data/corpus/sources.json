@@ -338,6 +338,17 @@
   "book": "divine-comedy"
  },
  {
+  "id": "wiktionary-ang",
+  "kind": "dictionary",
+  "title": "Wiktionary (ang)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "ang",
+  "region": "eu",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
   "id": "wiktionary-ar",
   "kind": "dictionary",
   "title": "Wiktionary (ar)",
@@ -345,6 +356,39 @@
   "textLanguage": "en",
   "originalLanguage": "ar",
   "region": "wa",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-bn",
+  "kind": "dictionary",
+  "title": "Wiktionary (bn)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "bn",
+  "region": "sa",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-cs",
+  "kind": "dictionary",
+  "title": "Wiktionary (cs)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "cs",
+  "region": "eu",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-cy",
+  "kind": "dictionary",
+  "title": "Wiktionary (cy)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "cy",
+  "region": "eu",
   "license": "cc-by-sa",
   "url": "https://www.wiktionary.org/"
  },
@@ -470,6 +514,28 @@
   "url": "https://www.wiktionary.org/"
  },
  {
+  "id": "wiktionary-hu",
+  "kind": "dictionary",
+  "title": "Wiktionary (hu)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "hu",
+  "region": "eu",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-hy",
+  "kind": "dictionary",
+  "title": "Wiktionary (hy)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "hy",
+  "region": "eu",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
   "id": "wiktionary-id",
   "kind": "dictionary",
   "title": "Wiktionary (id)",
@@ -477,6 +543,17 @@
   "textLanguage": "en",
   "originalLanguage": "id",
   "region": "sea",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-is",
+  "kind": "dictionary",
+  "title": "Wiktionary (is)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "is",
+  "region": "eu",
   "license": "cc-by-sa",
   "url": "https://www.wiktionary.org/"
  },
@@ -499,6 +576,17 @@
   "textLanguage": "en",
   "originalLanguage": "ja",
   "region": "ea",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-ka",
+  "kind": "dictionary",
+  "title": "Wiktionary (ka)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "ka",
+  "region": "eu",
   "license": "cc-by-sa",
   "url": "https://www.wiktionary.org/"
  },
@@ -536,6 +624,17 @@
   "url": "https://www.wiktionary.org/"
  },
  {
+  "id": "wiktionary-ms",
+  "kind": "dictionary",
+  "title": "Wiktionary (ms)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "ms",
+  "region": "eu",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
   "id": "wiktionary-nl",
   "kind": "dictionary",
   "title": "Wiktionary (nl)",
@@ -553,6 +652,347 @@
   "year": 2024,
   "textLanguage": "en",
   "originalLanguage": "non",
+  "region": "eu",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "omw-arb",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (arb)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "arb",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-bg",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (bg)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "bg",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-ca",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (ca)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "ca",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-cmn-Hans",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (cmn-Hans)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "cmn-Hans",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-da",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (da)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "da",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-el",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (el)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "el",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-es",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (es)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "es",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-eu",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (eu)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "eu",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-fi",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (fi)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "fi",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-fr",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (fr)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "fr",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-gl",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (gl)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "gl",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-he",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (he)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "he",
+  "region": "wa",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-hr",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (hr)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "hr",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-id",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (id)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "id",
+  "region": "sea",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-is",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (is)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "is",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-it",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (it)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "it",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-ja",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (ja)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "ja",
+  "region": "ea",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-lt",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (lt)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "lt",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-nb",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (nb)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "nb",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-nl",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (nl)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "nl",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-nn",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (nn)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "nn",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-pl",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (pl)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "pl",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-pt",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (pt)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "pt",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-ro",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (ro)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "ro",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-sk",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (sk)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "sk",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-sl",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (sl)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "sl",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-sq",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (sq)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "sq",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-sv",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (sv)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "sv",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-th",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (th)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "th",
+  "region": "sea",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "omw-zsm",
+  "kind": "dictionary",
+  "title": "Open Multilingual WordNet (zsm)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "zsm",
+  "region": "eu",
+  "license": "cc-by-4.0",
+  "url": "https://omwn.org/"
+ },
+ {
+  "id": "wiktionary-pa",
+  "kind": "dictionary",
+  "title": "Wiktionary (pa)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "pa",
   "region": "eu",
   "license": "cc-by-sa",
   "url": "https://www.wiktionary.org/"
@@ -587,6 +1027,17 @@
   "textLanguage": "en",
   "originalLanguage": "qu",
   "region": "ams",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-ro",
+  "kind": "dictionary",
+  "title": "Wiktionary (ro)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "ro",
+  "region": "eu",
   "license": "cc-by-sa",
   "url": "https://www.wiktionary.org/"
  },
@@ -676,6 +1127,39 @@
   "textLanguage": "en",
   "originalLanguage": "th",
   "region": "sea",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-tl",
+  "kind": "dictionary",
+  "title": "Wiktionary (tl)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "tl",
+  "region": "eu",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-tr",
+  "kind": "dictionary",
+  "title": "Wiktionary (tr)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "tr",
+  "region": "wa",
+  "license": "cc-by-sa",
+  "url": "https://www.wiktionary.org/"
+ },
+ {
+  "id": "wiktionary-ur",
+  "kind": "dictionary",
+  "title": "Wiktionary (ur)",
+  "year": 2024,
+  "textLanguage": "en",
+  "originalLanguage": "ur",
+  "region": "eu",
   "license": "cc-by-sa",
   "url": "https://www.wiktionary.org/"
  },

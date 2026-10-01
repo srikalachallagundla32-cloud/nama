@@ -76,14 +76,21 @@ async function main() {
       const rows = readFileSync(join(wikDir, f), 'utf8').split('\n').filter((l) => l.trim());
       if (!rows.length) continue;
       const scholarly = SCHOLARLY[code];
-      // wikidata-XX files: strip prefix to get the BCP-47 lang code
+      // wikidata-XX / panlex-XX / omw-XX files: strip prefix to get the BCP-47 lang code
       const isWikidata = code.startsWith('wikidata-');
-      const langCode = scholarly ? scholarly.lang : isWikidata ? code.slice('wikidata-'.length) : code;
-      const srcId = scholarly ? scholarly.srcId : isWikidata ? code : `wiktionary-${code}`;
+      const isPanlex   = code.startsWith('panlex-');
+      const isOmw      = code.startsWith('omw-');
+      const prefix     = isWikidata ? 'wikidata-' : isPanlex ? 'panlex-' : isOmw ? 'omw-' : null;
+      const langCode   = scholarly ? scholarly.lang : prefix ? code.slice(prefix.length) : code;
+      const srcId      = scholarly ? scholarly.srcId : prefix ? code : `wiktionary-${code}`;
       if (scholarly) {
         sources.push({ id: srcId, kind: 'dictionary', title: scholarly.title, author: scholarly.author, year: scholarly.year, textLanguage: 'en', originalLanguage: scholarly.lang, region: scholarly.region, license: scholarly.license, url: scholarly.url });
       } else if (isWikidata) {
         sources.push({ id: srcId, kind: 'dictionary', title: `Wikidata (${langCode})`, year: 2024, textLanguage: 'en', originalLanguage: langCode, region: LANG_REGION[langCode] ?? 'eu', license: 'cc0', url: 'https://www.wikidata.org/' });
+      } else if (isPanlex) {
+        sources.push({ id: srcId, kind: 'dictionary', title: `PanLex (${langCode})`, year: 2024, textLanguage: 'en', originalLanguage: langCode, region: LANG_REGION[langCode] ?? 'eu', license: 'cc-by-4.0', url: 'https://panlex.org/' });
+      } else if (isOmw) {
+        sources.push({ id: srcId, kind: 'dictionary', title: `Open Multilingual WordNet (${langCode})`, year: 2024, textLanguage: 'en', originalLanguage: langCode, region: LANG_REGION[langCode] ?? 'eu', license: 'cc-by-4.0', url: 'https://omwn.org/' });
       } else {
         sources.push({ id: srcId, kind: 'dictionary', title: `Wiktionary (${code})`, year: 2024, textLanguage: 'en', originalLanguage: code, region: LANG_REGION[code] ?? 'eu', license: 'cc-by-sa', url: 'https://www.wiktionary.org/' });
       }
