@@ -10,16 +10,16 @@ import { tokens } from '../rag/retriever.ts';
  * store facts and citations from them, never their text.
  */
 export const SourceSchema = z.object({
-  id: z.string().regex(/^[a-z0-9-]{2,40}$/),
+  id: z.string().regex(/^[a-zA-Z0-9._-]{2,50}$/),
   kind: z.enum(['text', 'dictionary']),
   title: z.string().min(1).max(160),
   author: z.string().max(120).optional(),
   translator: z.string().max(120).optional(),
   year: z.number().int().min(-3000).max(2100),
-  textLanguage: z.string().min(2).max(8),          // language the stored text is written in, e.g. 'en' for a translation
-  originalLanguage: z.string().min(2).max(8),      // language code used in the names data, e.g. 'fi' for the Kalevala
+  textLanguage: z.string().min(2).max(12),         // language the stored text is written in, e.g. 'en' for a translation
+  originalLanguage: z.string().min(2).max(12),     // language code used in the names data, e.g. 'fi' for the Kalevala
   region: z.string().min(2).max(4),
-  license: z.enum(['public-domain', 'cc-by', 'cc-by-sa', 'own-work', 'test-fixture']),
+  license: z.enum(['public-domain', 'cc-by', 'cc-by-4.0', 'cc-by-sa', 'cc0', 'own-work', 'test-fixture']),
   url: z.string().url().optional(),
   book: z.string().optional(),                     // key in the site's BOOKS table, when there is one
 }).strict();
@@ -33,7 +33,7 @@ export const PassageSchema = z.object({
 
 export const DictEntrySchema = z.object({
   headword: z.string().min(1).max(60),             // the romanized/searchable form, used as the coined name
-  lang: z.string().min(2).max(8),
+  lang: z.string().min(2).max(12),
   gloss: z.string().min(1).max(300),
   source: z.string(),
   ref: z.string().max(80).optional(),
