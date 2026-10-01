@@ -710,7 +710,8 @@ body{overflow:hidden}
 
 <script>
 const DATA=__DATA__;
-const {LANG,REGIONS,THEMES,NAMES,BOOKS}=DATA; const ANCIENT=new Set(DATA.ANCIENT);
+const {LANG,REGIONS,THEMES,BOOKS,BOOK_COUNTS,LANG_REGION,NAMES_SEED}=DATA;
+const ANCIENT=new Set(DATA.ANCIENT||[]);
 /* API endpoint — set by build.py (env var API_BASE); empty = same-origin */
 const API_BASE='__API_BASE__';
 const bookShort=k=>BOOKS[k][0].split(' — ')[0].replace(/^The /,'');
@@ -788,23 +789,37 @@ function simKey(a,b){if(!a||!b)return 0;const r=(x,y)=>1-lev(x,y)/Math.max(x.len
   return .22*r(a,b)+.28*cons+.15*(a[0]===b[0]?1:0)+.15*e2+.1*sy+.1*r(a.replace(/[^aeiou]/g,''),b.replace(/[^aeiou]/g,''))}
 
 function hash(s){let h=2166136261;for(const ch of s){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return (h>>>0)/4294967295}
-NAMES.forEach(x=>{
-  x.k=pkey(x.n); x.syl=syll(x.k); x.len=x.syl<=2?'short':x.syl===3?'medium':'long';
-  const h=hash(x.id); x.rot=+((h*4.4)-2.2).toFixed(2);
-  const a=18+Math.round(hash(x.id+'a')*12), b=18+Math.round(hash(x.id+'b')*12), c=18+Math.round(hash(x.id+'c')*12), d=18+Math.round(hash(x.id+'d')*12);
-  x.br=`${a}px ${b}px ${c}px ${d}px / ${d}px ${a}px ${b}px ${c}px`;
-});
+/* Enrich a name object with derived display fields (works on both seed format and API PublicName) */
+function normName(x){
+  if(x.name!==undefined){
+    /* PublicName from API: long field names → internal short names */
+    const n=x.name, k=pkey(n), sy=syll(k);
+    const h=hash(x.id);
+    const rot=+((h*4.4)-2.2).toFixed(2);
+    const a=18+Math.round(hash(x.id+'a')*12),b=18+Math.round(hash(x.id+'b')*12),c=18+Math.round(hash(x.id+'c')*12),d=18+Math.round(hash(x.id+'d')*12);
+    return{id:x.id,n,s:x.script||n,g:x.gender,l:x.language,m:x.meaning,p:x.pronunciation,
+      t:Array.isArray(x.themes)?x.themes:[],r:x.rarity,e:2,i:x.story,src:x.source,book:(x.book?.key??x.book)||null,
+      reg:Array.isArray(x.regions)?x.regions:[],k2:[],
+      k,syl:sy,len:sy<=2?'short':sy===3?'medium':'long',rot,br:`${a}px ${b}px ${c}px ${d}px / ${d}px ${a}px ${b}px ${c}px`};
+  }
+  /* Already internal/seed format — just compute derived fields if missing */
+  if(!x.k){x.k=pkey(x.n);x.syl=syll(x.k);x.len=x.syl<=2?'short':x.syl===3?'medium':'long'}
+  if(x.rot===undefined){const h=hash(x.id);x.rot=+((h*4.4)-2.2).toFixed(2);const a=18+Math.round(hash(x.id+'a')*12),b=18+Math.round(hash(x.id+'b')*12),c=18+Math.round(hash(x.id+'c')*12),d=18+Math.round(hash(x.id+'d')*12);x.br=`${a}px ${b}px ${c}px ${d}px / ${d}px ${a}px ${b}px ${c}px`}
+  return x;
+}
+(NAMES_SEED||[]).forEach(x=>normName(x));
 
 /* ---------- state ---------- */
-const INIT_LIMIT=24;
-const st={gender:'any',kind:'any',book:null,region:'any',themes:new Set(),langs:new Set(),rarity:new Set(),len:new Set(),easy:false,letter:'',seed:'',query:'',sort:'best',limit:INIT_LIMIT};
-let list=[]; try{list=JSON.parse(localStorage.getItem('nama-list')||'[]')}catch(e){list=[]}
-const saveList=()=>{try{localStorage.setItem('nama-list',JSON.stringify(list))}catch(e){}};
+const st={gender:'any',kind:'any',book:null,region:'any',themes:new Set(),langs:new Set(),rarity:new Set(),len:new Set(),easy:false,letter:'',seed:'',query:'',sort:'best'};
+/* saved list: {ids:[...], cache:{id:{n,s,m,l,reg,id}}} — backwards-compat with old plain array */
+let list=[],listCache={};
+try{const sv=JSON.parse(localStorage.getItem('nama-list')||'[]');if(Array.isArray(sv)){list=sv}else{list=sv.ids||[];listCache=sv.cache||{}}}catch(e){list=[];listCache={}}
+const saveList=()=>{try{localStorage.setItem('nama-list',JSON.stringify({ids:list,cache:listCache}))}catch(e){}};
 
 /* ---------- controls ---------- */
 function pills(el,items,{single,get,set,dot}){
   el.innerHTML=items.map(([k,v])=>`<button type="button" class="pill" data-k="${esc(k)}" aria-pressed="false">${dot?`<span class="dot" style="background-color:color-mix(in srgb,${regColor(k)} 20%,transparent);background-image:${k==='any'?`conic-gradient(${Object.keys(REGIONS).map(r=>regColor(r)).join(',')},${regColor('sa')})`:MOTIF[k]}"></span>`:''}${esc(v)}</button>`).join('');
-  el.addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;set(b.dataset.k);syncPills();st.limit=INIT_LIMIT;render()});
+  el.addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;set(b.dataset.k);syncPills();render()});
   el._get=get;
 }
 function syncPills(){
@@ -814,6 +829,7 @@ function syncPills(){
 pills($('kindPills'),[['any','Anywhere'],['myth','Myths, epics & old books'],['ancient','Ancient & lost languages'],['today','Languages spoken today']],{get:k=>st.kind===k,set:k=>st.kind=k});
 pills($('genderPills'),[['any','Anyone'],['f','Girls'],['m','Boys']],{get:k=>st.gender===k,set:k=>st.gender=k});
 pills($('regionPills'),[['any','Anywhere'],...Object.entries(REGIONS)],{dot:true,get:k=>st.region===k,set:k=>{st.region=k;st.langs.clear();buildLangs()}});
+
 const themeEntries=Object.entries(THEMES);
 function buildThemes(showAll){
   const shown=showAll?themeEntries:themeEntries.slice(0,8);
@@ -821,28 +837,29 @@ function buildThemes(showAll){
 }
 $('themePills')._get=k=>st.themes.has(k);
 $('themePills').addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;if(b.dataset.more!==undefined){buildThemes(true);$('themePills').querySelector('.pill:nth-child(9)')?.focus();return}
-  const k=b.dataset.k;st.themes.has(k)?st.themes.delete(k):st.themes.add(k);syncPills();st.limit=INIT_LIMIT;render()});
+  const k=b.dataset.k;st.themes.has(k)?st.themes.delete(k):st.themes.add(k);syncPills();render()});
 buildThemes(true);
 function buildLangs(){
-  const codes=[...new Set(NAMES.filter(x=>st.region==='any'||x.reg.includes(st.region)).map(x=>x.l))].sort((a,b)=>LANG[a].localeCompare(LANG[b]));
+  /* Use LANG_REGION map (baked from names.json at build time) instead of scanning all names */
+  const codes=Object.keys(LANG).filter(c=>st.region==='any'||(LANG_REGION[c]||[]).includes(st.region)).sort((a,b)=>LANG[a].localeCompare(LANG[b]));
   $('langHelp').textContent=st.region==='any'?'All languages. Pick a region above to narrow this list.':`Languages from ${REGIONS[st.region]}.`;
   $('langPills').innerHTML=codes.map(c=>`<button type="button" class="pill" data-k="${c}" aria-pressed="${st.langs.has(c)}">${esc(LANG[c])}</button>`).join('');
 }
 $('langPills')._get=k=>st.langs.has(k);
-$('langPills').addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;const k=b.dataset.k;st.langs.has(k)?st.langs.delete(k):st.langs.add(k);syncPills();st.limit=INIT_LIMIT;render()});
+$('langPills').addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;const k=b.dataset.k;st.langs.has(k)?st.langs.delete(k):st.langs.add(k);syncPills();render()});
 buildLangs();
 pills($('rarePills'),Object.entries(RARITY),{get:k=>st.rarity.has(k),set:k=>st.rarity.has(k)?st.rarity.delete(k):st.rarity.add(k)});
 pills($('lenPills'),[['short','Short'],['medium','Medium'],['long','Long']],{get:k=>st.len.has(k),set:k=>st.len.has(k)?st.len.delete(k):st.len.add(k)});
-let seedT; $('seed').addEventListener('input',e=>{clearTimeout(seedT);seedT=setTimeout(()=>{st.seed=e.target.value.trim();if(st.seed)st.sort='best';syncPills();st.limit=INIT_LIMIT;render()},140)});
+let seedT; $('seed').addEventListener('input',e=>{clearTimeout(seedT);seedT=setTimeout(()=>{st.seed=e.target.value.trim();if(st.seed)st.sort='best';syncPills();render()},140)});
 $('easy').addEventListener('change',e=>{st.easy=e.target.checked;render()});
 $('letter').addEventListener('input',e=>{st.letter=e.target.value.trim().toLowerCase();render()});
 document.querySelectorAll('[data-sort]').forEach(b=>b.addEventListener('click',()=>{st.sort=b.dataset.sort;syncPills();render()}));
-$('moreBtn').addEventListener('click',()=>{st.limit+=INIT_LIMIT;render()});
+$('moreBtn').addEventListener('click',()=>{if(_apiNext&&!_apiLoading)loadPage(_apiNext,true)});
 syncPills();
 
-/* ---------- filtering ---------- */
-/* free-text query: match on meaning/story/language/book/name tokens, all words must hit */
+/* ---------- API pagination ---------- */
 const qFold=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+/* used only for PAL_IDX scoring on the seed names */
 function queryScore(x,words){
   if(!words.length)return 0;
   const mean=qFold(x.m), hay=qFold([x.n,x.m,x.i||'',LANG[x.l],x.book?BOOKS[x.book][0]:'',x.t.map(t=>THEMES[t]).join(' ')].join(' '));
@@ -850,29 +867,59 @@ function queryScore(x,words){
   let s=1; if(words.every(w=>mean.includes(w)))s+=2; if(qFold(x.n).startsWith(words[0]))s+=1;
   return s;
 }
-function filtered(){
-  const sk=pkey(st.seed);
-  const qwords=qFold(st.query).split(/\s+/).filter(w=>w.length>1);
-  let out=NAMES.filter(x=>{
-    if(st.gender!=='any'&&!(x.g===st.gender||x.g==='u'))return false;
-    if(st.region!=='any'&&!x.reg.includes(st.region))return false;
-    if(st.kind!=='any'&&!x.k2.includes(st.kind))return false;
-    if(st.book&&x.book!==st.book)return false;
-    if(st.themes.size&&!x.t.some(t=>st.themes.has(t)))return false;
-    if(st.langs.size&&!st.langs.has(x.l))return false;
-    if(st.rarity.size&&!st.rarity.has(String(x.r)))return false;
-    if(st.len.size&&!st.len.has(x.len))return false;
-    if(st.easy&&x.e>1)return false;
-    if(st.letter&&!x.n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').startsWith(st.letter))return false;
-    if(qwords.length&&queryScore(x,qwords)<0)return false;
-    return true;
-  });
-  out.forEach(x=>x.score=sk?simKey(sk,x.k):(qwords.length?queryScore(x,qwords):0));
-  if(st.sort==='az')out.sort((a,b)=>a.n.localeCompare(b.n));
-  else if(st.sort==='rare')out.sort((a,b)=>b.r-a.r||a.n.localeCompare(b.n));
-  else if(sk||qwords.length)out.sort((a,b)=>b.score-a.score||a.n.localeCompare(b.n));
-  else out.sort((a,b)=>hash(a.id+'mix')-hash(b.id+'mix'));
-  return out;
+
+let _apiNext=null, _apiTotal=0, _apiLoading=false, _renderTimer=null;
+
+function stateToParams(){
+  const p=new URLSearchParams();
+  if(st.gender!=='any')p.set('gender',st.gender);
+  if(st.region!=='any')p.set('region',st.region);
+  if(st.kind!=='any')p.set('kind',st.kind);
+  if(st.book)p.set('book',st.book);
+  st.themes.forEach(t=>p.append('theme[]',t));
+  st.langs.forEach(l=>p.append('lang[]',l));
+  st.rarity.forEach(r=>p.append('rarity[]',String(r)));
+  st.len.forEach(l=>p.append('len[]',l));
+  if(st.easy)p.set('easy','1');
+  if(st.letter)p.set('letter',st.letter);
+  if(st.seed)p.set('soundsLike',st.seed);
+  p.set('sort',st.sort);
+  p.set('limit','48');
+  return p;
+}
+
+async function loadPage(cursor,append){
+  const cloud=$('cloud');
+  if(!append){
+    _apiNext=null; _apiTotal=0;
+    cloud.innerHTML=`<div class="empty"><span class="hand" style="display:block;margin-bottom:8px">Finding names\u2026</span></div>`;
+  }
+  _apiLoading=true;
+  const p=stateToParams();
+  if(cursor)p.set('cursor',String(cursor));
+  try{
+    const r=await fetch(API_BASE+'/api/names?'+p.toString());
+    if(!r.ok)throw new Error('Server error '+r.status);
+    const {total,nextCursor,items}=await r.json();
+    _apiTotal=total; _apiNext=nextCursor||null;
+    const norms=items.map(x=>{const n=normName(x);NAMES_BY_ID.set(n.id,n);return n});
+    if(!norms.length&&!append){
+      cloud.innerHTML=`<div class="empty"><span class="hand">Hmm, nothing fits all of that.</span>Try fewer feelings, or pick "Anywhere".</div>`;
+    } else {
+      const els=norms.map(tagEl);
+      if(append){els.forEach(el=>cloud.appendChild(el))}
+      else{
+        cloud.replaceChildren(...els);
+        if(!reduced)els.forEach((el,i)=>{const x=NAMES_BY_ID.get(el.dataset.id);el.animate([{opacity:0,transform:`translateY(24px) scale(.7) rotate(${x.rot*3}deg)`},{opacity:1,transform:`rotate(${x.rot}deg)`}],{duration:680,delay:Math.min(i*14,300),easing:SPRING,fill:'backwards'})});
+      }
+    }
+    $('resultTitle').innerHTML=total?`<span class="count">${total}</span> ${total===1?'name':'names'} for you`:'No names yet';
+    $('moreWrap').hidden=!nextCursor;
+    $('listN').textContent=list.length;
+  }catch(e){
+    if(!append)cloud.innerHTML=`<div class="empty"><span class="hand">Couldn't load names.</span>${esc(e.message)}</div>`;
+  }
+  _apiLoading=false;
 }
 
 /* ---------- tags ---------- */
@@ -897,27 +944,15 @@ function tagEl(x){
   else if(badge) badge.remove();
   return el;
 }
-let firstRender=true;
+/* NAMES_BY_ID cache: populated with seed, grows as user browses */
+const NAMES_BY_ID=new Map((NAMES_SEED||[]).map(x=>[x.id,x]));
+/* Also populate listCache entries that might already be in seed */
+for(const [id,n] of NAMES_BY_ID) if(list.includes(id)&&!listCache[id]) listCache[id]={id:n.id,n:n.n,s:n.s,m:n.m,l:n.l,reg:n.reg};
+
 function render(){
-  const all=filtered(); const shown=all.slice(0,st.limit); const cloud=$('cloud');
-  const before=new Map(); if(!reduced&&!firstRender) cloud.querySelectorAll('.tag').forEach(el=>before.set(el.dataset.id,el.getBoundingClientRect()));
-  const els=shown.map(tagEl);
-  if(!shown.length){cloud.innerHTML=`<div class="empty"><span class="hand">Hmm, nothing fits all of that.</span>Try fewer feelings, or pick "Anywhere".</div>`}
-  else cloud.replaceChildren(...els);
-  $('resultTitle').innerHTML=all.length?`<span class="count">${all.length}</span> ${all.length===1?'name':'names'} for you`:'No names yet';
-  $('moreWrap').hidden=all.length<=st.limit;
-  $('listN').textContent=list.length;
-  if(!reduced){
-    els.forEach((el,i)=>{
-      const x=NAMES_BY_ID[el.dataset.id]; const rot=`rotate(${x.rot}deg)`; const f=before.get(el.dataset.id);
-      if(f){const l=el.getBoundingClientRect();const dx=f.left-l.left,dy=f.top-l.top;
-        if(Math.abs(dx)+Math.abs(dy)>1) el.animate([{transform:`translate(${dx}px,${dy}px) ${rot}`},{transform:rot}],{duration:620,easing:SPRING});}
-      else if(i<60) el.animate([{opacity:0,transform:`translateY(24px) scale(.7) rotate(${x.rot*3}deg)`},{opacity:1,transform:rot}],{duration:680,delay:firstRender?Math.min(i*28,700):Math.min(i*14,300),easing:SPRING,fill:'backwards'});
-    });
-  }
-  firstRender=false;
+  clearTimeout(_renderTimer);
+  _renderTimer=setTimeout(()=>loadPage(null,false),50);
 }
-const NAMES_BY_ID=Object.fromEntries(NAMES.map(x=>[x.id,x]));
 
 $('cloud').addEventListener('click',e=>{
   const tag=e.target.closest('.tag'); if(!tag) return;
@@ -939,19 +974,30 @@ function burst(fromEl,color){
 }
 function toggleList(id,btn){
   const i=list.indexOf(id); const adding=i<0;
-  adding?list.push(id):list.splice(i,1); saveList();
-  const x=NAMES_BY_ID[id]; if(adding) burst(btn,regColor(x.reg[0]));
+  adding?list.push(id):list.splice(i,1);
+  const x=NAMES_BY_ID.get(id);
+  if(adding&&x){listCache[id]={id:x.id,n:x.n,s:x.s,m:x.m,l:x.l,reg:x.reg}}
+  else if(!adding){delete listCache[id]}
+  saveList();
+  if(x){if(adding) burst(btn,regColor(x.reg[0]))}
   if(btn&&!reduced) btn.animate([{transform:'scale(1)'},{transform:'scale(1.45)'},{transform:'scale(1)'}],{duration:450,easing:SPRING});
   if(!reduced) $('listFab').animate([{transform:'scale(1)'},{transform:'scale(1.12) rotate(-3deg)'},{transform:'scale(1)'}],{duration:500,easing:SPRING});
-  const el=cache.get(id); if(el) tagEl(x);
+  const el=cache.get(id); if(el&&x) tagEl(x);
   $('listN').textContent=list.length;
   if($('ld').open) renderList();
-  if($('pc').open&&$('pcCard').dataset.id===id) fillCard(x);
+  if($('pc').open&&$('pcCard').dataset.id===id&&x) fillCard(x);
 }
 
 /* ---------- postcard ---------- */
-function similar(x){return NAMES.filter(y=>y.id!==x.id).map(y=>[y,simKey(x.k,y.k)]).sort((a,b)=>b[1]-a[1]).slice(0,6).map(a=>a[0])}
-function fillCard(x){
+async function similar(x){
+  try{
+    const r=await fetch(API_BASE+'/api/names/'+encodeURIComponent(x.id)+'/similar');
+    if(!r.ok)return [];
+    const items=await r.json();
+    return items.map(y=>{const n=normName(y);NAMES_BY_ID.set(n.id,n);return n});
+  }catch(e){return []}
+}
+async function fillCard(x){
   const reg=x.reg[0], card=$('pcCard'); card.dataset.id=x.id; card.style.setProperty('--c',`var(--${reg})`);
   const on=list.includes(x.id);
   const scriptLine=x.s&&x.s!==x.n?`<p class="pc-script" lang="${esc(x.l)}" dir="auto">${esc(x.s)}</p>`:'';
@@ -970,12 +1016,16 @@ function fillCard(x){
       ${x.i?`<h3>The story</h3><p class="pc-story">${esc(x.i)}</p>`:''}
       ${x.book?`<h3>Found in</h3><p class="pc-story"><b>${esc(BOOKS[x.book][0])}</b> — ${esc(BOOKS[x.book][1])}, ${esc(BOOKS[x.book][2])}. ${esc(BOOKS[x.book][3])}</p><p style="margin:6px 0 0"><button class="linkish" type="button" data-book="${esc(x.book)}">More names from this book</button></p>`:''}
       ${x.src?`<h3>Where it's from</h3><p class="pc-story">${esc(x.src)}</p>`:''}
-      <h3>Sounds a little like</h3><div class="sim">${similar(x).map(y=>`<button type="button" data-go="${esc(y.id)}">${esc(y.n)}</button>`).join('')}</div>
+      <h3>Sounds a little like</h3><div class="sim" id="simSection" data-for="${esc(x.id)}"><span style="color:var(--ink-soft);font-size:.85rem">Loading…</span></div>
       <div class="pc-actions"><button class="btn" type="button" data-keep>${on?'On your list ♥':'Add to your list'}</button><button class="btn ghost" type="button" data-close>Keep looking</button></div>
     </div>`;
+  /* load similar names async */
+  similar(x).then(sims=>{const el=$('simSection');if(el&&el.dataset.for===x.id)el.innerHTML=sims.map(y=>`<button type="button" data-go="${esc(y.id)}">${esc(y.n)}</button>`).join('')||'<span style="color:var(--ink-soft);font-size:.85rem">None found.</span>'});
 }
-function openCard(id,fromTag){
-  const x=NAMES_BY_ID[id]; if(!x) return; fillCard(x);
+async function openCard(id,fromTag){
+  let x=NAMES_BY_ID.get(id);
+  if(!x) return;
+  await fillCard(x);
   const dlg=$('pc'); if(!dlg.open) dlg.showModal();
   $('pcCard').scrollTop=0;
   if(reduced) return;
@@ -1001,12 +1051,23 @@ function closeCard(){
 }
 $('pc').addEventListener('cancel',e=>{e.preventDefault();closeCard()});
 
-$('surprise').addEventListener('click',()=>{const a=filtered();const pool=a.length?a:NAMES;openCard(pool[Math.floor(Math.random()*pool.length)].id,null)});
+$('surprise').addEventListener('click',async()=>{
+  /* fetch a random name from current filters */
+  try{
+    const p=stateToParams(); p.set('limit','1');
+    /* pick random offset using total count */
+    if(_apiTotal>1)p.set('cursor',String(Math.floor(Math.random()*Math.max(1,_apiTotal-1))));
+    const r=await fetch(API_BASE+'/api/names?'+p.toString());
+    if(r.ok){const {items}=await r.json();if(items&&items.length){const n=normName(items[0]);NAMES_BY_ID.set(n.id,n);openCard(n.id,null);return}}
+  }catch(e){}
+  /* fallback to seed */
+  const pool=NAMES_SEED.length?NAMES_SEED:[];if(pool.length)openCard(pool[Math.floor(Math.random()*pool.length)].id,null);
+});
 
 /* ---------- list dialog ---------- */
 function renderList(){
   const card=$('ldCard');
-  const items=list.map(id=>NAMES_BY_ID[id]).filter(Boolean);
+  const items=list.map(id=>NAMES_BY_ID.get(id)||(listCache[id]?normName(Object.assign({},listCache[id])):null)).filter(Boolean);
   card.innerHTML=`<h2 id="ldTitle">Your list</h2>
     ${items.length?`<p class="small-help">Say each one out loud, with your surname. Twice.</p><ul>${items.map(x=>`<li><span class="sw" style="background-color:color-mix(in srgb,var(--${x.reg[0]}) 25%,transparent);background-image:${MOTIF[x.reg[0]]}"></span>
       <button class="n" type="button" data-go="${esc(x.id)}"><b>${esc(x.n)}</b>${x.s&&x.s!==x.n?` <span style="display:inline;font-family:var(--script);color:var(--${x.reg[0]})" dir="auto">${esc(x.s)}</span>`:''}<span>${esc(x.m)} · ${esc(langLabel(x))}</span></button>
@@ -1022,12 +1083,12 @@ $('ld').addEventListener('click',e=>{
 
 /* ---------- shelf ---------- */
 const REG_ORDER=Object.keys(REGIONS);
-const bookCounts={}; NAMES.forEach(x=>{if(x.book)bookCounts[x.book]=(bookCounts[x.book]||0)+1});
+const bookCounts=BOOK_COUNTS||{};
 const bookKeys=Object.keys(BOOKS).filter(k=>bookCounts[k]).sort((a,b)=>REG_ORDER.indexOf(BOOKS[a][4])-REG_ORDER.indexOf(BOOKS[b][4]));
 $('shelf').innerHTML=bookKeys.map(k=>{const r=BOOKS[k][4];const h=Math.round(175+hash(k)*55), w=Math.round(46+hash(k+'w')*16);
   return `<button type="button" class="spine" data-book="${k}" aria-pressed="false" title="${esc(BOOKS[k][0])} — ${esc(BOOKS[k][1])}" style="--c:var(--${r});--h:${h}px;--w:${w}px"><span class="band" style="background-image:${MOTIF[r]}"></span><span class="t">${esc(bookShort(k))}</span><span class="n">${bookCounts[k]}</span></button>`}).join('');
 function chooseBook(k,scroll){
-  st.book=(st.book===k&&!scroll)?null:k; st.limit=INIT_LIMIT;
+  st.book=(st.book===k&&!scroll)?null:k;
   $('shelf').querySelectorAll('.spine').forEach(b=>b.setAttribute('aria-pressed',b.dataset.book===st.book));
   const note=$('bookNote');
   if(st.book){const b=BOOKS[st.book];note.style.setProperty('--c',`var(--${b[4]})`);
@@ -1072,7 +1133,7 @@ modeBtn.addEventListener('click',()=>{const dark=modeBtn.getAttribute('aria-pres
   try{localStorage.setItem('nama-mode',dark?'dark':'light')}catch(e){}});
 
 /* ---------- hero buttons */
-$('ctaSurprise')?.addEventListener('click',()=>{const pool=NAMES.filter(x=>x.i);openCard(pool[Math.floor(Math.random()*pool.length)].id,null)});
+$('ctaSurprise')?.addEventListener('click',()=>{const pool=(NAMES_SEED||[]).filter(x=>x.i);if(pool.length)openCard(pool[Math.floor(Math.random()*pool.length)].id,null)});
 if(!reduced&&$('hlStory')){const hl=$('hlStory');hl.style.setProperty('--hl','0');setTimeout(()=>hl.animate([{'--hl':0},{'--hl':1}],{duration:900,easing:'cubic-bezier(.6,.05,.3,1)',fill:'forwards'}),700);}
 
 /* ---------- how one word travelled (scroll story) */
@@ -1107,7 +1168,7 @@ if(!reduced&&matchMedia('(pointer: fine)').matches){
 
 
 /* ---------- name of the day: same for everyone on a given date */
-if($('today'))(()=>{const pool=NAMES.filter(x=>x.i&&x.s).sort((a,b)=>a.id.localeCompare(b.id));
+if($('today'))(()=>{const pool=(NAMES_SEED||[]).filter(x=>x.i&&x.s).sort((a,b)=>a.id.localeCompare(b.id));
   const d=new Date();const day=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5);
   const x=pool[Math.floor(hash('day'+day)*pool.length)];
   $('todayName').textContent=x.n;$('today').addEventListener('click',()=>openCard(x.id,null));})();
@@ -1116,7 +1177,7 @@ if($('today'))(()=>{const pool=NAMES.filter(x=>x.i&&x.s).sort((a,b)=>a.id.locale
 const isMac=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent);
 $('kbdHint').textContent=isMac?'⌘K':'Ctrl K';
 const foldT=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-const PAL_IDX=NAMES.map(x=>({x,n:foldT(x.n),s:x.s||'',m:foldT(x.m),rest:foldT([LANG[x.l],x.book?BOOKS[x.book][0]:'',x.i||'',REGIONS[x.reg[0]]].join(' '))}));
+const PAL_IDX=(NAMES_SEED||[]).map(x=>({x,n:foldT(x.n),s:x.s||'',m:foldT(x.m),rest:foldT([LANG[x.l],x.book?BOOKS[x.book][0]:'',x.i||'',REGIONS[x.reg[0]]].join(' '))}));
 const BOOK_IDX=Object.entries(BOOKS).filter(([k])=>bookCounts[k]).map(([k,b])=>({k,b,t:foldT(b[0]+' '+b[1])}));
 let palItems=[],palSel=0;
 function palSearch(q){
@@ -1132,7 +1193,7 @@ function palSearch(q){
   }
   for(const b of BOOK_IDX){ if(words.every(w=>b.t.includes(w))) scored.push([b.t.startsWith(f)?130:60,{type:'book',k:b.k}]); }
   if(scored.length<3&&/^[a-z' -]{2,}$/.test(f)){ const sk=pkey(f);
-    NAMES.map(x=>[simKey(sk,x.k),x]).filter(([v])=>v>.62).sort((a,b)=>b[0]-a[0]).slice(0,5).forEach(([v,x])=>{if(!scored.some(s=>s[1].x===x))scored.push([v*30,{type:'name',x,sounds:true}])}); }
+    (NAMES_SEED||[]).map(x=>[simKey(sk,x.k),x]).filter(([v])=>v>.62).sort((a,b)=>b[0]-a[0]).slice(0,5).forEach(([v,x])=>{if(!scored.some(s=>s[1].x===x))scored.push([v*30,{type:'name',x,sounds:true}])}); }
   return scored.sort((a,b)=>b[0]-a[0]).slice(0,9).map(s=>s[1]);
 }
 function palRender(){
@@ -1188,7 +1249,7 @@ $('chipGroups').addEventListener('click',e=>{const c=e.target.closest('.chip');i
   if(c.dataset.chip==='theme'){st.themes.has(k)?st.themes.delete(k):st.themes.add(k)}
   else if(c.dataset.chip==='region'){st.region=st.region===k?'any':k;st.langs.clear();buildLangs()}
   else if(c.dataset.chip==='book'){st.book=st.book===k?null:k}
-  syncPills();st.limit=INIT_LIMIT;render();scrollToResults();});
+  syncPills();render();scrollToResults();});
 
 /* ---------- command bar: natural-language-ish search over meanings (client-side, names only) */
 function scrollToResults(){document.querySelector('.results-head')?.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'})}
@@ -1203,7 +1264,7 @@ function runCommand(raw){
   const raw2=qFold(q).split(/\s+/).filter(Boolean);
   if(raw2.some(w=>Q_GIRL.has(w)))st.gender='f'; else if(raw2.some(w=>Q_BOY.has(w)))st.gender='m';
   const kept=raw2.filter(w=>w.length>1&&!Q_STOP.has(w)&&!Q_GIRL.has(w)&&!Q_BOY.has(w));
-  st.query=kept.join(' '); st.sort='best'; st.limit=INIT_LIMIT; syncPills(); render();
+  st.query=kept.join(' '); st.sort='best'; syncPills(); render();
 }
 let cmdT;
 $('cmd').addEventListener('input',e=>{clearTimeout(cmdT);cmdT=setTimeout(()=>runCommand(e.target.value),220)});
@@ -1246,7 +1307,7 @@ function renderAI(data,q){
     card.addEventListener('click',()=>{
       // If the name is in our local store, open the postcard; otherwise just highlight
       const id=card.dataset.id;
-      if(NAMES_BY_ID&&NAMES_BY_ID[id]){openCard(id,card)}
+      if(NAMES_BY_ID&&NAMES_BY_ID.get(id)){openCard(id,card)}
       else{card.style.setProperty('--c','var(--eu)');card.style.borderColor='color-mix(in srgb,var(--eu) 50%,transparent)';burst(card,'var(--eu)')}
     });
   });
@@ -1293,7 +1354,7 @@ function updateFilterUI(){
   document.querySelectorAll('[data-badge]').forEach(b=>{const c=catCount(b.dataset.badge);b.hidden=!c;b.textContent=c});
 }
 function resetAll(){
-  Object.assign(st,{gender:'any',kind:'any',book:null,region:'any',easy:false,letter:'',seed:'',query:'',sort:'best',limit:INIT_LIMIT});
+  Object.assign(st,{gender:'any',kind:'any',book:null,region:'any',easy:false,letter:'',seed:'',query:'',sort:'best'});
   st.themes.clear();st.langs.clear();st.rarity.clear();st.len.clear();
   ['cmd','seed','letter'].forEach(id=>{const el=$(id);if(el)el.value=''});$('easy').checked=false;
   buildLangs();$('shelf').querySelectorAll('.spine').forEach(s=>s.setAttribute('aria-pressed','false'));$('bookNote').hidden=true;
@@ -1311,45 +1372,8 @@ function switchTab(t){
 }
 $('tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(b)switchTab(b.dataset.tab)});
 
-/* ---------- dynamic pill counts + gray-out at zero (never a dead end) ---------- */
-function pass(x,skip){
-  if(skip!=='gender'&&st.gender!=='any'&&!(x.g===st.gender||x.g==='u'))return false;
-  if(skip!=='region'&&st.region!=='any'&&!x.reg.includes(st.region))return false;
-  if(skip!=='kind'&&st.kind!=='any'&&!x.k2.includes(st.kind))return false;
-  if(skip!=='book'&&st.book&&x.book!==st.book)return false;
-  if(skip!=='themes'&&st.themes.size&&!x.t.some(t=>st.themes.has(t)))return false;
-  if(skip!=='langs'&&st.langs.size&&!st.langs.has(x.l))return false;
-  if(skip!=='rarity'&&st.rarity.size&&!st.rarity.has(String(x.r)))return false;
-  if(skip!=='len'&&st.len.size&&!st.len.has(x.len))return false;
-  if(st.easy&&x.e>1)return false;
-  if(st.letter&&!qFold(x.n).startsWith(st.letter))return false;
-  const qw=qFold(st.query).split(/\s+/).filter(w=>w.length>1);
-  if(qw.length&&queryScore(x,qw)<0)return false;
-  return true;
-}
-function setCounts(id,dim,match,{showCt=true}={}){
-  const el=$(id); if(!el)return; const base=NAMES.filter(x=>pass(x,dim));
-  el.querySelectorAll('.pill').forEach(b=>{
-    const k=b.dataset.k; if(k===undefined)return;
-    const n=(k===''||k==='any')?base.length:base.filter(x=>match(x,k)).length;
-    if(showCt){let ct=b.querySelector('.ct');if(!ct){ct=document.createElement('span');ct.className='ct';b.appendChild(ct)}ct.textContent=n}
-    const on=b.getAttribute('aria-pressed')==='true';
-    b.dataset.zero=(n===0&&!on)?'true':'false';
-    b.setAttribute('aria-disabled',(n===0&&!on)?'true':'false');
-  });
-}
-function updatePillCounts(){
-  setCounts('regionPills','region',(x,k)=>x.reg.includes(k));
-  setCounts('themePills','themes',(x,k)=>x.t.includes(k));
-  setCounts('langPills','langs',(x,k)=>x.l===k);
-  setCounts('kindPills','kind',(x,k)=>x.k2.includes(k));
-  setCounts('genderPills','gender',(x,k)=>x.g===k||x.g==='u');
-  setCounts('rarePills','rarity',(x,k)=>String(x.r)===k);
-  setCounts('lenPills','len',(x,k)=>x.len===k);
-  setCounts('bookPills','book',(x,k)=>x.book===k,{showCt:false});
-}
-/* block clicks on grayed-out (zero) pills before their handler runs */
-document.addEventListener('click',e=>{const p=e.target.closest?.('.pill[data-zero="true"]');if(p){e.stopPropagation();e.preventDefault()}},true);
+/* ---------- pill counts removed (live API — counts come from the result total) ---------- */
+function updatePillCounts(){/* no-op: pill graying requires full-corpus scan, not available with live API */}
 
 /* ---------- persistent active-filter chips (why the results look this way) ---------- */
 function chip(label,clearKey,c){return `<span class="achip"${c?` style="--c:var(--${c})"`:''}>${esc(label)}<button class="x" type="button" data-clear="${esc(clearKey)}" aria-label="Remove ${esc(label)}">×</button></span>`}
@@ -1384,7 +1408,7 @@ $('activeChips').addEventListener('click',e=>{
   else if(c.startsWith('lang:'))st.langs.delete(c.slice(5));
   else if(c.startsWith('rarity:'))st.rarity.delete(c.slice(7));
   else if(c.startsWith('len:'))st.len.delete(c.slice(4));
-  syncPills();st.limit=INIT_LIMIT;render();
+  syncPills();render();
 });
 
 /* ---------- about / care-notes dialog (kept reachable in the app) ---------- */
@@ -1425,7 +1449,7 @@ function harmonyUpdate(){
   // suggestions: first names whose syllable count best balances the last name
   if(s2){
     const want=[s2,s2-1,s2+1];
-    const picks=NAMES.filter(x=>x.i||true).map(x=>({x,d:Math.min(...want.map(w=>Math.abs(x.syl-w)))}))
+    const picks=(NAMES_SEED||[]).map(x=>({x,d:Math.min(...want.map(w=>Math.abs(x.syl-w)))}))
       .filter(o=>o.d===0).sort((a,b)=>a.x.r-b.x.r||hash(a.x.id)-hash(b.x.id));
     const seen=new Set(),six=[];for(const o of picks){if(seen.has(o.x.n))continue;seen.add(o.x.n);six.push(o.x);if(six.length>=8)break}
     $('hSugg').innerHTML=`<span class="cat">first names that balance “${esc(l||'your surname')}”</span><div class="sim">${six.map(x=>`<button type="button" data-go="${esc(x.id)}">${esc(x.n)}</button>`).join('')}</div>`;
@@ -1433,7 +1457,7 @@ function harmonyUpdate(){
 }
 $('hFirst').addEventListener('input',harmonyUpdate);
 $('hLast').addEventListener('input',harmonyUpdate);
-$('hSugg').addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){$('hFirst').value=NAMES_BY_ID[g.dataset.go].n;harmonyUpdate();openCard(g.dataset.go,null)}});
+$('hSugg').addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){const x=NAMES_BY_ID.get(g.dataset.go);if(x){$('hFirst').value=x.n;harmonyUpdate();}openCard(g.dataset.go,null)}});
 
 const _render=render; render=function(){_render.apply(this,arguments);updateFilterUI();updatePillCounts();renderActiveChips()};
 
