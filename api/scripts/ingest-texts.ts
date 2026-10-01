@@ -76,10 +76,14 @@ async function main() {
       const rows = readFileSync(join(wikDir, f), 'utf8').split('\n').filter((l) => l.trim());
       if (!rows.length) continue;
       const scholarly = SCHOLARLY[code];
-      const srcId = scholarly ? scholarly.srcId : `wiktionary-${code}`;
-      const langCode = scholarly ? scholarly.lang : code;
+      // wikidata-XX files: strip prefix to get the BCP-47 lang code
+      const isWikidata = code.startsWith('wikidata-');
+      const langCode = scholarly ? scholarly.lang : isWikidata ? code.slice('wikidata-'.length) : code;
+      const srcId = scholarly ? scholarly.srcId : isWikidata ? code : `wiktionary-${code}`;
       if (scholarly) {
         sources.push({ id: srcId, kind: 'dictionary', title: scholarly.title, author: scholarly.author, year: scholarly.year, textLanguage: 'en', originalLanguage: scholarly.lang, region: scholarly.region, license: scholarly.license, url: scholarly.url });
+      } else if (isWikidata) {
+        sources.push({ id: srcId, kind: 'dictionary', title: `Wikidata (${langCode})`, year: 2024, textLanguage: 'en', originalLanguage: langCode, region: LANG_REGION[langCode] ?? 'eu', license: 'cc0', url: 'https://www.wikidata.org/' });
       } else {
         sources.push({ id: srcId, kind: 'dictionary', title: `Wiktionary (${code})`, year: 2024, textLanguage: 'en', originalLanguage: code, region: LANG_REGION[code] ?? 'eu', license: 'cc-by-sa', url: 'https://www.wiktionary.org/' });
       }
