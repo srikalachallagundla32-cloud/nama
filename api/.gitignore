@@ -3,3 +3,4 @@ node_modules
 traces.jsonl
 reports.jsonl
 data/corpus/_omw_cache/
+data/corpus/_panlex_cache/
