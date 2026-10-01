@@ -1,42 +1,43 @@
 /**
- * PanLex harvester — name-appropriate vocabulary from 5,700+ languages.
- *
- * PanLex (panlex.org) is the world's most comprehensive lexical translation database,
- * covering over 5,700 languages including indigenous and oral languages not on Wikidata.
+ * PanLex harvester via Hugging Face panlex-definitions dataset.
  *
  * Strategy:
- *   1. Look up each concept word (cloud, dawn, star…) in English via PanLex API
- *   2. Get all expressions sharing that meaning across all languages
- *   3. Apply the same phonotactic filter as ingest-wikidata.mjs
- *   4. Write wik/panlex-{lang}.jsonl (same format as existing wik/ files)
+ *   Uses cointegrated/panlex-definitions (CC0), data_def/eng.tsv —
+ *   a file of English concept words paired with their translations
+ *   in hundreds of other languages (each row: English txt + example word
+ *   in a non-English language).
+ *
+ *   1. Download data_def/eng.tsv (~25MB)
+ *   2. For rows where txt matches our concept list AND example is non-English,
+ *      collect: word (example), lang (from example_langvar_uid), gloss (txt)
+ *   3. Apply phonotactic filter; write wik/panlex-{lang}.jsonl
+ *
+ * Dataset: https://huggingface.co/datasets/cointegrated/panlex-definitions
+ * License: CC0 (public domain)
  *
  * Usage:
- *   node scripts/ingest-panlex.mjs             # all concepts, all langs
+ *   node scripts/ingest-panlex.mjs             # full run
  *   node scripts/ingest-panlex.mjs --dry-run   # print counts, no writes
- *
- * API docs: https://dev.panlex.org/
  */
 
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, existsSync, statSync, unlinkSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createInterface } from 'node:readline';
+import { createReadStream } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = join(HERE, '..', 'data', 'corpus', 'wik');
+const CACHE_DIR = join(HERE, '..', 'data', 'corpus', '_panlex_cache');
 mkdirSync(OUT_DIR, { recursive: true });
+mkdirSync(CACHE_DIR, { recursive: true });
 
-// PanLex API endpoint — api.panlex.org may not resolve on all networks.
-// If you get "fetch failed" / DNS errors, try:
-//   1. Test: curl https://api.panlex.org/v2/langvar?uid=eng-000&limit=1
-//   2. If DNS fails, use a VPN or run this script from a machine with full DNS.
-//   3. Alternative: download the PanLex lite SQLite dump from db.panlex.org
-//      and adapt this script to query it locally.
-const BASE = 'https://api.panlex.org/v2';
-const DELAY_MS = 800;
-const USER_AGENT = 'nama-corpus/1.0 (baby-name app; contact via github.com/srikalachallagundla32-cloud/nama)';
+const HF_DEF_BASE = 'https://huggingface.co/datasets/cointegrated/panlex-definitions/resolve/main/data_def';
+const ENG_DEF_CACHE = join(CACHE_DIR, 'eng_def.tsv');
 
-// ─── Same concept list as ingest-wikidata.mjs ─────────────────────────────────
-const CONCEPTS = [
+// ─── Concept words ────────────────────────────────────────────────────────────
+const CONCEPTS = new Set([
   'star', 'moon', 'sun', 'dawn', 'dusk', 'aurora', 'sky', 'crescent',
   'rain', 'river', 'cloud', 'ocean', 'sea', 'lake', 'waterfall', 'mountain',
   'forest', 'desert', 'meadow', 'island', 'stone', 'leaf', 'flower', 'blossom',
@@ -46,119 +47,107 @@ const CONCEPTS = [
   'spring', 'summer', 'autumn', 'winter', 'morning', 'evening',
   'strength', 'courage', 'wisdom', 'grace', 'truth', 'hope', 'joy',
   'peace', 'love', 'kindness', 'beauty', 'freedom', 'dream', 'spirit', 'life', 'soul',
-];
+]);
 
-// ─── Phonotactic filter (same as ingest-wikidata.mjs) ────────────────────────
+// ─── Phonotactic filter ────────────────────────────────────────────────────────
 const IPA_VOWELS = /[aeiouàáâäåæèéêëìíîïòóôöùúûüāēīōūăĕĭŏŭ]/gi;
 const HARSH_CLUSTERS = /[^aeiouàáâäåæèéêëìíîïòóôöùúûüāēīōūăĕĭŏŭ]{3,}/i;
 
 function isNameFriendly(word) {
   if (!word || word.length < 3 || word.length > 20) return false;
-  if (!/^[\p{L}\p{M}''ʻ -]+$/u.test(word)) return false;
-  const latin = /[a-zA-Zàáâäåæèéêëìíîïòóôöùúûüāēīōūăĕĭŏŭ]/.test(word) ? word : null;
-  if (!latin) return true;
-  const syllables = (latin.match(IPA_VOWELS) ?? []).length;
+  if (word.includes(' ')) return false;  // single-token only
+  if (!/^[\p{L}\p{M}''ʻ-]+$/u.test(word)) return false;
+  const hasLatin = /[a-zA-Zàáâäåæèéêëìíîïòóôöùúûüāēīōūăĕĭŏŭ]/.test(word);
+  if (!hasLatin) return true;  // non-Latin: accept by default
+  const syllables = (word.match(IPA_VOWELS) ?? []).length;
   if (syllables < 2 || syllables > 5) return false;
-  if (HARSH_CLUSTERS.test(latin)) return false;
+  if (HARSH_CLUSTERS.test(word)) return false;
   return true;
 }
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-async function apiPost(path, body) {
-  const res = await fetch(`${BASE}${path}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'User-Agent': USER_AGENT },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) throw new Error(`PanLex API ${res.status} at ${path}`);
-  return res.json();
+// ─── Download eng_def.tsv if not cached ───────────────────────────────────────
+function ensureCached(url, cachePath) {
+  if (existsSync(cachePath)) {
+    try { if (statSync(cachePath).size > 1000) return; } catch {}
+    unlinkSync(cachePath);
+  }
+  console.log(`Downloading ${cachePath.split('/').pop()}…`);
+  const result = spawnSync('curl', [
+    '-sL', '--max-time', '600', '--connect-timeout', '15',
+    '-o', cachePath, url,
+  ], { encoding: 'utf8', timeout: 620_000 });
+  if (result.status !== 0 && result.status !== 28) {
+    const ok = existsSync(cachePath) && (() => { try { return statSync(cachePath).size > 1000; } catch { return false; } })();
+    if (!ok) throw new Error(`Download failed (${result.status}): ${url}`);
+  }
 }
 
-// Step 1: resolve English expression → meaning IDs
-async function getMeaningIds(txt) {
-  const data = await apiPost('/expr', {
-    uid: 'eng-000',
-    txt,
-    limit: 10,
-    include: ['uid', 'txt'],
-  });
-  if (!data.result?.length) return [];
-  // Each result has an id; now look up meanings for those expression IDs
-  const exprIds = data.result.map(r => r.id);
-  const meanings = await apiPost('/meaning', {
-    expr: exprIds,
-    limit: 50,
-    include: ['id'],
-  });
-  return (meanings.result ?? []).map(m => m.id);
-}
+// ─── Parse TSV line by line ────────────────────────────────────────────────────
+// Columns (data_def/eng.tsv):
+//   id  meaning  langvar  txt  langvar_uid  example  example_langvar  example_langvar_uid
+//    0      1        2     3       4            5            6                 7
+async function parseEngDef(filePath) {
+  const byLang = {};   // langCode → Map<word, gloss>
+  let total = 0;
 
-// Step 2: given meaning IDs, get all translations (expressions in other languages)
-async function getTranslations(meaningIds) {
-  if (!meaningIds.length) return [];
-  const data = await apiPost('/expr', {
-    meaning: meaningIds,
-    limit: 2000,
-    include: ['uid', 'txt', 'langvar'],
+  const rl = createInterface({
+    input: createReadStream(filePath, { encoding: 'utf8' }),
+    crlfDelay: Infinity,
   });
-  return data.result ?? [];
+
+  let first = true;
+  for await (const line of rl) {
+    if (first) { first = false; continue; }
+    const cols = line.split('\t');
+    if (cols.length < 8) continue;
+
+    const txt = cols[3];                   // English concept word
+    const langvarUid = cols[7];            // e.g. "dhg-000" or "fra-000"
+    const example = cols[5];              // translation word
+
+    if (!CONCEPTS.has(txt)) continue;
+    if (!langvarUid || langvarUid.startsWith('eng-')) continue;  // skip English
+    if (!example || !isNameFriendly(example)) continue;
+
+    // langCode = ISO-like code from PanLex UID (e.g., "dhg" from "dhg-000")
+    const langCode = langvarUid.replace(/-\d+$/, '');
+    if (!byLang[langCode]) byLang[langCode] = new Map();
+    const key = example.toLowerCase();
+    if (!byLang[langCode].has(key)) {
+      byLang[langCode].set(key, txt);
+      total++;
+    }
+  }
+
+  return { byLang, total };
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 
-const byLang = {};   // { 'swa-000': [{word, gloss}] }
-let totalConcepts = 0, totalEntries = 0;
+ensureCached(`${HF_DEF_BASE}/eng.tsv`, ENG_DEF_CACHE);
+console.log('Parsing eng definitions…');
+const { byLang, total } = await parseEngDef(ENG_DEF_CACHE);
 
-console.log(`Querying ${CONCEPTS.length} concepts from PanLex API...`);
-if (DRY_RUN) console.log('(dry-run — no files written)\n');
+const langs = Object.keys(byLang).sort();
+console.log(`Found ${total} entries across ${langs.length} languages.\n`);
 
-for (const concept of CONCEPTS) {
-  process.stdout.write(`  ${concept.padEnd(16)}`);
-  let translations = [];
-  try {
-    const meaningIds = await getMeaningIds(concept);
-    if (!meaningIds.length) { console.log(` → no meanings found`); await sleep(DELAY_MS); continue; }
-    translations = await getTranslations(meaningIds);
-  } catch (e) {
-    console.log(`  ERROR: ${e.message}`);
-    await sleep(DELAY_MS * 4);
-    continue;
-  }
-  // Filter out English itself and non-name-friendly words
-  const kept = translations.filter(t => !t.uid?.startsWith('eng-') && isNameFriendly(t.txt));
-  console.log(` → ${translations.length} translations, ${kept.length} name-friendly`);
-  for (const t of kept) {
-    const lang = t.uid ?? t.langvar ?? 'unknown';
-    if (!byLang[lang]) byLang[lang] = [];
-    byLang[lang].push({ word: t.txt, gloss: concept });
-  }
-  totalConcepts++;
-  await sleep(DELAY_MS);
-}
+let writtenLangs = 0, writtenEntries = 0;
+for (const lang of langs) {
+  const entries = [...byLang[lang].entries()].map(([word, gloss]) =>
+    ({ word, gloss, pos: 'noun', source: `panlex-${lang}` }));
+  writtenEntries += entries.length;
+  writtenLangs++;
 
-// ─── Write output ─────────────────────────────────────────────────────────────
-console.log(`\nResults: ${totalConcepts} concepts, ${Object.keys(byLang).length} language variants`);
-
-for (const [langUid, entries] of Object.entries(byLang).sort()) {
-  totalEntries += entries.length;
-  // PanLex UIDs are like "swa-000" — strip the variety suffix for our lang code
-  const langCode = langUid.replace(/-\d+$/, '');
   if (DRY_RUN) {
-    console.log(`  ${langUid} (${langCode}): ${entries.length} entries`);
+    console.log(`  ${lang.padEnd(8)} ${entries.length} entries`);
     continue;
   }
-  const outPath = join(OUT_DIR, `panlex-${langCode}.jsonl`);
-  // Deduplicate by word within this lang
-  const seen = new Set();
-  const lines = entries
-    .filter(e => { const k = e.word.toLowerCase(); if (seen.has(k)) return false; seen.add(k); return true; })
-    .map(e => JSON.stringify({ word: e.word, gloss: e.gloss, pos: 'noun', source: `panlex-${langCode}` }))
-    .join('\n');
-  if (lines) writeFileSync(outPath, lines + '\n', 'utf8');
+
+  const outPath = join(OUT_DIR, `panlex-${lang}.jsonl`);
+  writeFileSync(outPath, entries.map(e => JSON.stringify(e)).join('\n') + '\n', 'utf8');
 }
 
-console.log(`\nDone: ${totalEntries} name-friendly entries across ${Object.keys(byLang).length} PanLex language variants.`);
-if (!DRY_RUN && totalEntries > 0) console.log(`Written to ${OUT_DIR}/panlex-*.jsonl`);
+console.log(`\nDone: ${writtenEntries} entries across ${writtenLangs} languages.`);
+if (!DRY_RUN && writtenEntries > 0) console.log(`Written to ${OUT_DIR}/panlex-*.jsonl`);

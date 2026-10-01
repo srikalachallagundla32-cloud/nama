@@ -338,6 +338,19 @@
   "book": "divine-comedy"
  },
  {
+  "id": "gitanjali-tagore",
+  "kind": "text",
+  "title": "Gitanjali (Song Offerings)",
+  "translator": "Rabindranath Tagore",
+  "year": 1912,
+  "textLanguage": "en",
+  "originalLanguage": "bn",
+  "region": "sa",
+  "license": "public-domain",
+  "url": "https://www.gutenberg.org/cache/epub/7164/pg7164.txt",
+  "book": "gitanjali"
+ },
+ {
   "id": "wiktionary-ang",
   "kind": "dictionary",
   "title": "Wiktionary (ang)",
