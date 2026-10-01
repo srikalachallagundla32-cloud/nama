@@ -363,6 +363,90 @@
    "sectionPattern": "^\\d+\\.$",
    "url": "https://www.gutenberg.org/cache/epub/7164/pg7164.txt",
    "confirmed": true
+  },
+  {
+   "id": "bhagavad-gita-arnold",
+   "title": "The Song Celestial; or, Bhagavad-Gîtâ",
+   "translator": "Edwin Arnold",
+   "year": 1885,
+   "originalLanguage": "sa",
+   "region": "sa",
+   "book": "mahabharata",
+   "sectionPattern": "^CHAPTER [IVXLC]+",
+   "url": "https://www.gutenberg.org/cache/epub/2388/pg2388.txt",
+   "confirmed": true
+  },
+  {
+   "id": "tao-te-ching-legge",
+   "title": "The Tao Teh King, or the Tao and its Characteristics",
+   "translator": "James Legge",
+   "year": 1891,
+   "originalLanguage": "zh",
+   "region": "ea",
+   "book": "chinese",
+   "sectionPattern": "^[0-9]+\\.? [A-Z]|^[0-9]+\\.?$",
+   "url": "https://www.gutenberg.org/cache/epub/216/pg216.txt",
+   "confirmed": true
+  },
+  {
+   "id": "quran-rodwell",
+   "title": "The Koran (Al-Qur'an)",
+   "translator": "J. M. Rodwell",
+   "year": 1876,
+   "originalLanguage": "ar",
+   "region": "wa",
+   "book": "bible",
+   "sectionPattern": "^SURA[1]? [IVXLC]+",
+   "url": "https://www.gutenberg.org/cache/epub/3434/pg3434.txt",
+   "confirmed": true
+  },
+  {
+   "id": "popol-vuh-spence",
+   "title": "The Popol Vuh: The Mythic and Heroic Sagas of the Kichés",
+   "translator": "Lewis Spence",
+   "year": 1908,
+   "originalLanguage": "quc",
+   "region": "ams",
+   "book": "popolvuh",
+   "sectionPattern": "^BOOK [IVXLC]+",
+   "url": "https://www.gutenberg.org/cache/epub/56550/pg56550.txt",
+   "confirmed": true
+  },
+  {
+   "id": "dhammapada-muller",
+   "title": "Dhammapada, a Collection of Verses",
+   "translator": "F. Max Müller",
+   "year": 1881,
+   "originalLanguage": "pi",
+   "region": "sa",
+   "book": "pali",
+   "sectionPattern": "^Chapter [IVXLC]+",
+   "url": "https://www.gutenberg.org/cache/epub/2017/pg2017.txt",
+   "confirmed": true
+  },
+  {
+   "id": "analects-legge",
+   "title": "The Chinese Classics — Volume 1: Confucian Analects",
+   "translator": "James Legge",
+   "year": 1861,
+   "originalLanguage": "lzh",
+   "region": "ea",
+   "book": "chinese",
+   "sectionPattern": "^BOOK [IVXLC]+",
+   "url": "https://www.gutenberg.org/cache/epub/4094/pg4094.txt",
+   "confirmed": true
+  },
+  {
+   "id": "west-african-folk-nassau",
+   "title": "Where Animals Talk: West African Folk Lore Tales",
+   "translator": "Robert Hamill Nassau",
+   "year": 1912,
+   "originalLanguage": "yo",
+   "region": "af",
+   "book": "yoruba",
+   "sectionPattern": "^[A-Z][A-Z '-]{6,}$",
+   "url": "https://www.gutenberg.org/cache/epub/58900/pg58900.txt",
+   "confirmed": true
   }
  ],
  "needsWork": [
