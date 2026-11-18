@@ -954,6 +954,7 @@ async function loadPage(cursor,append){
   const cloud=$('cloud');
   if(!append){
     _apiNext=null; _apiTotal=0;
+    $('moreWrap').hidden=true; /* hide immediately so stale button can't be clicked during load */
     cloud.innerHTML=`<div class="empty"><span class="hand" style="display:block;margin-bottom:8px">Finding names\u2026</span></div>`;
   }
   _apiLoading=true;
@@ -979,6 +980,7 @@ async function loadPage(cursor,append){
     $('resultTitle').innerHTML=total?`<span class="count">${total}</span> ${total===1?'name':'names'}${_hasFilters?' found':' for you'}`:'No names yet';
     $('moreWrap').hidden=!nextCursor;
     if(nextCursor){const loaded=$('cloud').children.length;$('moreBtn').textContent=`Show more · ${loaded} of ${total}`;}
+    else{$('moreBtn').textContent='Show more';} /* reset text when hidden */
     $('listN').textContent=list.length;
   }catch(e){
     if(!append)cloud.innerHTML=`<div class="empty"><span class="hand">Couldn't load names.</span>${esc(e.message)}</div>`;
@@ -1015,6 +1017,7 @@ for(const [id,n] of NAMES_BY_ID) if(list.includes(id)&&!listCache[id]) listCache
 
 function render(){
   clearTimeout(_renderTimer);
+  $('moreWrap').hidden=true; /* prevent stale "Show more" click during 50 ms debounce */
   _renderTimer=setTimeout(()=>loadPage(null,false),50);
 }
 
