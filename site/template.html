@@ -75,7 +75,8 @@ button,input{font:inherit;color:inherit}
 .pill:active{transform:scale(.95)}
 .pill[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .pill .dot{width:18px;height:18px;border-radius:50%;flex:none;background-size:9px 9px}
-.pill.more{border-style:dashed;color:var(--ink-soft)}
+.pill.more{border-style:dashed;color:var(--ink-soft);transition:transform .35s var(--spring),background .2s,border-color .2s,color .2s}
+.pill.more:hover{color:var(--ink);border-color:var(--ink);border-style:solid}
 .sound-in{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .sound-in input{font-family:var(--display);font-variation-settings:"SOFT" 100,"WONK" 1;font-size:1.6rem;border:0;border-bottom:3px solid var(--line);background:transparent;padding:2px 4px;width:min(320px,100%);transition:border-color .2s}
 .sound-in input:focus{outline:none;border-color:var(--ea)}
@@ -108,6 +109,16 @@ details.more-q[open] summary::before{transform:rotate(45deg)}
 .ai-dot:nth-child(2){animation-delay:.18s}.ai-dot:nth-child(3){animation-delay:.36s}
 @keyframes aiPulse{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
 .ai-err{font-size:.8rem;color:var(--ink-soft);padding:10px 0;display:flex;align-items:center;gap:6px}
+/* stage AI-active mode: collapse suggestion chips to give the name grid room */
+.stage.ai-active .chip-groups{display:none}
+.stage.ai-active .stage-top{padding-bottom:6px}
+/* cap AI strip so .cloud (flex:1) still gets usable height */
+.stage .ai-strip{flex:none;max-height:210px;overflow-y:auto;scroll-behavior:smooth}
+/* dismiss (×) button inside ai-strip-head */
+.ai-dismiss{margin-left:auto;border:0;background:none;cursor:pointer;color:var(--ink-soft);font-size:1rem;line-height:1;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:4px;padding:0;transition:color .15s,background .15s;flex-shrink:0}
+.ai-dismiss:hover{color:var(--ink);background:color-mix(in srgb,var(--ink) 10%,transparent)}
+/* results count note */
+.results-count{font-size:.75rem;color:var(--ink-soft);margin-left:8px;font-weight:400;font-family:var(--sans)}
 
 /* results */
 .results-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;margin:8px 0 18px}
@@ -258,15 +269,43 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 }
 
 /* shelf */
-.shelf-sec{margin:0 0 40px}
-.shelf-sec .hand{font-size:clamp(1.8rem,3.4vw,2.3rem);font-weight:400;margin:0 0 4px;color:var(--ink-soft)}
-.shelf{display:flex;align-items:flex-end;gap:5px;overflow-x:auto;padding:30px 10px 0;border-bottom:12px solid #7A5238;border-radius:0 0 6px 6px;scrollbar-width:thin;overscroll-behavior-x:contain}
-.spine{--c:var(--sa);flex:none;width:var(--w);height:var(--h);border:0;border-radius:5px 5px 2px 2px;background:color-mix(in srgb,var(--c) 70%,#2E1F3E);color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;padding:0 0 8px;transition:transform .45s var(--spring);box-shadow:inset -5px 0 0 rgba(0,0,0,.18),inset 3px 0 0 rgba(255,255,255,.14);overflow:hidden}
-.spine .band{width:100%;height:18px;flex:none;background-color:color-mix(in srgb,var(--c) 22%,#FFFBF8);background-size:10px 10px;border-bottom:2px solid rgba(0,0,0,.2)}
-.spine .t{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-variation-settings:"SOFT" 100,"WONK" 1;font-weight:600;font-size:.92rem;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-height:0}
-.spine .n{font-family:var(--hand);font-size:1.15rem;line-height:1}
-.spine:hover{transform:translateY(-12px) rotate(-2deg)}
-.spine[aria-pressed="true"]{transform:translateY(-26px);box-shadow:inset -5px 0 0 rgba(0,0,0,.18),0 0 0 3px var(--paper),0 0 0 6px var(--c)}
+.shelf-panel{padding:clamp(20px,4vw,40px) clamp(16px,4vw,36px)}
+.shelf-panel>h2{font-family:var(--display);font-variation-settings:"SOFT" 100,"WONK" 1;font-weight:560;font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.02em;margin:0 0 4px}
+.shelf-panel>.lead{color:var(--ink-soft);margin:0 0 32px;font-size:.95rem}
+.shelf{display:flex;flex-direction:column;gap:32px}
+.shelf-row{display:flex;flex-direction:column}
+.shelf-region-label{font-family:var(--hand);font-size:1rem;color:var(--ink-soft);padding:0 4px 10px;display:flex;align-items:center;gap:12px;letter-spacing:.02em}
+.shelf-region-label::after{content:'';flex:1;height:1px;background:color-mix(in srgb,var(--c,var(--ink)) 20%,var(--line))}
+.shelf-books{display:flex;align-items:flex-end;gap:4px;padding:18px 10px 0;min-height:100px;flex-wrap:wrap;position:relative;border-radius:4px 4px 0 0}
+.shelf-plank{height:14px;background:linear-gradient(to bottom,#9B6E42 0%,#6B3D18 60%,#4A2810 100%);border-radius:0 0 5px 5px;box-shadow:0 5px 14px rgba(0,0,0,.3),inset 0 2px 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(0,0,0,.2)}
+.spine{--c:var(--sa);flex:none;width:var(--w);height:var(--h);border:0;border-radius:5px 5px 2px 2px;background:color-mix(in srgb,var(--c) 70%,#2E1F3E);color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;padding:0 0 8px;transition:transform .45s var(--spring),box-shadow .3s;box-shadow:inset -5px 0 0 rgba(0,0,0,.18),inset 3px 0 0 rgba(255,255,255,.14),2px 4px 10px rgba(0,0,0,.2);overflow:hidden}
+.spine .band{width:100%;height:18px;flex:none;padding:0;margin:0;background-color:color-mix(in srgb,var(--c) 22%,#FFFBF8);background-size:10px 10px;border-bottom:2px solid rgba(0,0,0,.2)}
+.spine .t{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-variation-settings:"SOFT" 100,"WONK" 1;font-weight:600;font-size:.88rem;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-height:0;padding:0 2px}
+.spine .n{font-family:var(--hand);font-size:1.1rem;line-height:1;opacity:.85}
+.spine:hover{transform:translateY(-14px) rotate(-1.5deg);box-shadow:inset -5px 0 0 rgba(0,0,0,.18),inset 3px 0 0 rgba(255,255,255,.14),4px 12px 24px rgba(0,0,0,.35)}
+.spine[aria-pressed="true"]{transform:translateY(-28px) rotate(0deg);box-shadow:inset -5px 0 0 rgba(0,0,0,.18),0 0 0 3px var(--paper),0 0 0 6px var(--c),4px 16px 32px rgba(0,0,0,.4)}
+/* Book detail panel — slides open below the shelf */
+.shelf-detail{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--spring);width:100%}
+.shelf-detail.open{grid-template-rows:1fr}
+.shelf-detail-inner{min-height:0;overflow:hidden}
+.shelf-detail-card{--c:var(--sa);background:color-mix(in srgb,var(--c) 6%,var(--card));border:2px solid color-mix(in srgb,var(--c) 30%,var(--line));border-top:4px solid var(--c);border-radius:0 0 24px 24px;padding:28px 24px 32px;margin-top:0}
+.shelf-detail-header{display:flex;gap:20px;align-items:flex-start;margin-bottom:28px;flex-wrap:wrap}
+.shelf-cover{width:56px;height:76px;border-radius:5px 2px 2px 5px;flex:none;position:relative;overflow:hidden;background:color-mix(in srgb,var(--c,var(--sa)) 70%,#2E1F3E);box-shadow:inset -4px 0 0 rgba(0,0,0,.2),4px 6px 16px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center}
+.shelf-cover .cover-band{position:absolute;top:0;width:100%;height:16px;background-color:color-mix(in srgb,var(--c,var(--sa)) 22%,#FFFBF8);background-size:8px 8px;border-bottom:2px solid rgba(0,0,0,.2)}
+.shelf-cover .cover-label{font-family:var(--display);font-size:.5rem;color:rgba(255,255,255,.7);writing-mode:vertical-rl;transform:rotate(180deg);text-transform:uppercase;letter-spacing:.12em;padding-top:20px}
+.shelf-detail-info{flex:1;min-width:200px}
+.shelf-detail-info h3{font-family:var(--display);font-variation-settings:"SOFT" 100,"WONK" 1;font-weight:620;font-size:1.35rem;letter-spacing:-.02em;margin:0 0 4px;color:var(--ink)}
+.shelf-meta{color:var(--ink-soft);font-size:.88rem;margin:0 0 10px;font-family:var(--hand)}
+.shelf-desc{font-size:.93rem;line-height:1.55;color:var(--ink-soft);margin:0}
+.shelf-names-label{font-family:var(--hand);font-size:1.05rem;color:var(--ink-soft);margin:0 0 16px;display:flex;align-items:center;gap:12px}
+.shelf-names-label::after{content:'';flex:1;height:1px;background:var(--line)}
+.shelf-names-grid{display:flex;flex-wrap:wrap;gap:14px 10px;min-height:60px}
+.shelf-names-loading{color:var(--ink-soft);font-style:italic;font-size:.9rem;padding:10px 0}
+.shelf-close-row{margin-top:28px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.shelf-close-row .btn-ghost{background:none;border:2px solid var(--line);border-radius:999px;padding:9px 18px;cursor:pointer;font-weight:500;font-size:.9rem;color:var(--ink);transition:border-color .2s,background .2s}
+.shelf-close-row .btn-ghost:hover{border-color:var(--ink);background:var(--card)}
+.shelf-close-row .btn-primary{background:var(--c,var(--sa));color:#fff;border:0;border-radius:999px;padding:9px 20px;cursor:pointer;font-weight:600;font-size:.9rem;transition:opacity .2s}
+.shelf-close-row .btn-primary:hover{opacity:.85}
 .book-note[hidden]{display:none}
 .book-note{--c:var(--sa);display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;justify-content:space-between;background:var(--card);border-radius:26px 20px 28px 18px;padding:16px 20px;box-shadow:var(--shadow);margin:0 0 20px;border-left:12px solid var(--c)}
 .book-note b{font-family:var(--display);font-variation-settings:"SOFT" 100,"WONK" 1;font-size:1.3rem;font-weight:620}
@@ -513,7 +552,7 @@ body{overflow:hidden}
 .shelf-panel{display:flex;flex-direction:column;min-height:0;flex:1;padding:clamp(16px,3vw,30px);overflow:hidden}
 .shelf-panel h2{font-family:var(--display);font-variation-settings:"SOFT" 100,"WONK" 1;font-weight:600;font-size:clamp(1.4rem,3vw,2rem);margin:0 0 2px}
 .shelf-panel .lead{color:var(--ink-soft);margin:0 0 18px}
-.shelf-panel .shelf{flex:1;min-height:0;align-items:flex-start;flex-wrap:wrap;overflow-y:auto;border-bottom:0;padding:10px 4px}
+.shelf-panel .shelf{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;flex-direction:column;flex-wrap:nowrap;padding:10px 4px;gap:0}
 @media (max-width:820px){
   .panel[data-tab="finder"]{flex-direction:column}
   .side{width:auto;flex:none;max-height:none}
@@ -597,7 +636,7 @@ body{overflow:hidden}
           <div class="sorts" role="group" aria-label="Order" style="display:none">
             <button class="pill" data-sort="best" aria-pressed="true" type="button">Best</button>
           </div>
-          <button class="pill more" id="surprise" type="button">Surprise me</button>
+          <button class="pill more" id="surprise" type="button">✦ Surprise me</button>
         </div>
         <div class="cloud" id="cloud"></div>
         <div class="show-more" id="moreWrap" hidden><button class="btn ghost" id="moreBtn" type="button">Show more names</button></div>
@@ -624,8 +663,11 @@ body{overflow:hidden}
     <section class="panel" data-tab="shelf" role="tabpanel" aria-label="Book shelf">
       <div class="shelf-panel frost">
         <h2>Pull a book off the shelf</h2>
-        <p class="lead">Every name here was drawn straight from one of these texts. Pick one to see its names.</p>
+        <p class="lead">Every name here was drawn straight from one of these texts. Pick one to explore its names.</p>
         <div class="shelf" id="shelf" role="group" aria-label="Books the names come from"></div>
+        <div class="shelf-detail" id="shelfDetail">
+          <div class="shelf-detail-inner" id="shelfDetailInner"></div>
+        </div>
       </div>
     </section>
   </main>
@@ -857,6 +899,26 @@ document.querySelectorAll('[data-sort]').forEach(b=>b.addEventListener('click',(
 $('moreBtn').addEventListener('click',()=>{if(_apiNext&&!_apiLoading)loadPage(_apiNext,true)});
 syncPills();
 
+/* ---------- search placeholder rotation — sparks curiosity ---------- */
+const CMD_HINTS=[
+  'a Telugu boy’s name about the first rain…',
+  'a Sanskrit name meaning gentle light…',
+  'a Tamil name drawn from an ancient epic…',
+  'a Bengali name that flows like a river…',
+  'a name that sounds like a morning prayer…',
+  'a Kannada name about blossoming flowers…',
+  'a Malayalam girl’s name full of grace…',
+  'a name as rare as a desert rain…',
+  'a Marathi name tied to the monsoon sky…',
+  'a name from the Mahabharata, but soft…',
+];
+let _phIdx=0;
+setInterval(()=>{
+  _phIdx=(_phIdx+1)%CMD_HINTS.length;
+  const inp=$('cmd');
+  if(inp&&!inp.value&&document.activeElement!==inp)inp.placeholder=CMD_HINTS[_phIdx];
+},3600);
+
 /* ---------- API pagination ---------- */
 const qFold=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 /* used only for PAL_IDX scoring on the seed names */
@@ -876,8 +938,8 @@ function stateToParams(){
   if(st.region!=='any')p.set('region',st.region);
   if(st.kind!=='any')p.set('kind',st.kind);
   if(st.book)p.set('book',st.book);
-  st.themes.forEach(t=>p.append('theme[]',t));
-  st.langs.forEach(l=>p.append('lang[]',l));
+  st.themes.forEach(t=>p.append('theme',t));
+  st.langs.forEach(l=>p.append('lang',l));
   st.rarity.forEach(r=>p.append('rarity[]',String(r)));
   st.len.forEach(l=>p.append('len[]',l));
   if(st.easy)p.set('easy','1');
@@ -913,8 +975,10 @@ async function loadPage(cursor,append){
         if(!reduced)els.forEach((el,i)=>{const x=NAMES_BY_ID.get(el.dataset.id);el.animate([{opacity:0,transform:`translateY(24px) scale(.7) rotate(${x.rot*3}deg)`},{opacity:1,transform:`rotate(${x.rot}deg)`}],{duration:680,delay:Math.min(i*14,300),easing:SPRING,fill:'backwards'})});
       }
     }
-    $('resultTitle').innerHTML=total?`<span class="count">${total}</span> ${total===1?'name':'names'} for you`:'No names yet';
+    const _hasFilters=st.query||st.region!=='any'||st.themes.size||st.langs.size||st.book||st.gender!=='any'||st.kind!=='any'||st.seed||st.easy||st.rarity.size||st.len.size||st.letter;
+    $('resultTitle').innerHTML=total?`<span class="count">${total}</span> ${total===1?'name':'names'}${_hasFilters?' found':' for you'}`:'No names yet';
     $('moreWrap').hidden=!nextCursor;
+    if(nextCursor){const loaded=$('cloud').children.length;$('moreBtn').textContent=`Show more · ${loaded} of ${total}`;}
     $('listN').textContent=list.length;
   }catch(e){
     if(!append)cloud.innerHTML=`<div class="empty"><span class="hand">Couldn't load names.</span>${esc(e.message)}</div>`;
@@ -1016,11 +1080,20 @@ async function fillCard(x){
       ${x.i?`<h3>The story</h3><p class="pc-story">${esc(x.i)}</p>`:''}
       ${x.book?`<h3>Found in</h3><p class="pc-story"><b>${esc(BOOKS[x.book][0])}</b> — ${esc(BOOKS[x.book][1])}, ${esc(BOOKS[x.book][2])}. ${esc(BOOKS[x.book][3])}</p><p style="margin:6px 0 0"><button class="linkish" type="button" data-book="${esc(x.book)}">More names from this book</button></p>`:''}
       ${x.src?`<h3>Where it's from</h3><p class="pc-story">${esc(x.src)}</p>`:''}
-      <h3>Sounds a little like</h3><div class="sim" id="simSection" data-for="${esc(x.id)}"><span style="color:var(--ink-soft);font-size:.85rem">Loading…</span></div>
-      <div class="pc-actions"><button class="btn" type="button" data-keep>${on?'On your list ♥':'Add to your list'}</button><button class="btn ghost" type="button" data-close>Keep looking</button></div>
+      <div id="simWrap" data-for="${esc(x.id)}"><h3>Sounds a little like</h3><div class="sim" id="simSection" data-for="${esc(x.id)}"><span style="color:var(--ink-soft);font-size:.85rem">Loading…</span></div></div>
+      <div class="pc-actions"><button class="btn" type="button" data-keep>${on?'On your list ♥':'Add to your list'}</button><button class="btn ghost" type="button" data-close>← Back</button></div>
     </div>`;
-  /* load similar names async */
-  similar(x).then(sims=>{const el=$('simSection');if(el&&el.dataset.for===x.id)el.innerHTML=sims.map(y=>`<button type="button" data-go="${esc(y.id)}">${esc(y.n)}</button>`).join('')||'<span style="color:var(--ink-soft);font-size:.85rem">None found.</span>'});
+  /* load similar names async; hide section entirely when no results */
+  similar(x).then(sims=>{
+    const el=$('simSection');
+    if(el&&el.dataset.for===x.id){
+      if(sims.length){
+        el.innerHTML=sims.map(y=>`<button type="button" data-go="${esc(y.id)}">${esc(y.n)}</button>`).join('');
+      } else {
+        const wrap=$('simWrap');if(wrap&&wrap.dataset.for===x.id)wrap.hidden=true;
+      }
+    }
+  });
 }
 async function openCard(id,fromTag){
   let x=NAMES_BY_ID.get(id);
@@ -1085,20 +1158,113 @@ $('ld').addEventListener('click',e=>{
 const REG_ORDER=Object.keys(REGIONS);
 const bookCounts=BOOK_COUNTS||{};
 const bookKeys=Object.keys(BOOKS).filter(k=>bookCounts[k]).sort((a,b)=>REG_ORDER.indexOf(BOOKS[a][4])-REG_ORDER.indexOf(BOOKS[b][4]));
-$('shelf').innerHTML=bookKeys.map(k=>{const r=BOOKS[k][4];const h=Math.round(175+hash(k)*55), w=Math.round(46+hash(k+'w')*16);
-  return `<button type="button" class="spine" data-book="${k}" aria-pressed="false" title="${esc(BOOKS[k][0])} — ${esc(BOOKS[k][1])}" style="--c:var(--${r});--h:${h}px;--w:${w}px"><span class="band" style="background-image:${MOTIF[r]}"></span><span class="t">${esc(bookShort(k))}</span><span class="n">${bookCounts[k]}</span></button>`}).join('');
+
+/* Build shelf grouped by region */
+(function buildShelf(){
+  const rows={};
+  bookKeys.forEach(k=>{const r=BOOKS[k][4];(rows[r]=rows[r]||[]).push(k);});
+  const REG_ICONS={'sa':'🌏','ea':'🌸','sea':'🌴','wa':'🌙','af':'🌍','eu':'🏛️','ams':'🌎','ca':'🏔️','pac':'🌊'};
+  $('shelf').innerHTML=Object.entries(rows).map(([r,keys])=>{
+    const spines=keys.map(k=>{
+      const h=Math.round(175+hash(k)*55),w=Math.round(46+hash(k+'w')*16);
+      return `<button type="button" class="spine" data-book="${k}" aria-pressed="false" title="${esc(BOOKS[k][0])} — ${esc(BOOKS[k][1])}" style="--c:var(--${r});--h:${h}px;--w:${w}px"><span class="band" style="background-image:${MOTIF[r]}"></span><span class="t">${esc(bookShort(k))}</span><span class="n">${bookCounts[k]}</span></button>`;
+    }).join('');
+    const icon=REG_ICONS[r]||'📖';
+    return `<div class="shelf-row" data-region="${r}">
+      <div class="shelf-region-label" style="--c:var(--${r})">${icon} ${esc(REGIONS[r]||r)}</div>
+      <div class="shelf-books">${spines}</div>
+      <div class="shelf-plank"></div>
+    </div>`;
+  }).join('');
+})();
+
+/* Show inline names when a book is chosen on the Shelf tab */
+async function showShelfDetail(bookKey){
+  const detail=$('shelfDetail'), inner=$('shelfDetailInner');
+  if(!detail||!inner) return;
+  const b=BOOKS[bookKey], r=b[4];
+
+  /* Move the detail panel to sit directly after the clicked book's row */
+  const spine=document.querySelector(`.spine[data-book="${bookKey}"]`);
+  const row=spine&&spine.closest('.shelf-row');
+  if(row) row.insertAdjacentElement('afterend',detail);
+
+  detail.style.setProperty('--c',`var(--${r})`);
+  inner.innerHTML=`<div class="shelf-detail-card" style="--c:var(--${r})">
+    <div class="shelf-detail-header">
+      <div class="shelf-cover" style="--c:var(--${r})">
+        <span class="cover-band" style="background-image:${MOTIF[r]}"></span>
+        <span class="cover-label">${esc(bookShort(bookKey))}</span>
+      </div>
+      <div class="shelf-detail-info">
+        <h3>${esc(b[0])}</h3>
+        <p class="shelf-meta">${esc(b[1])} · ${esc(b[2])}</p>
+        <p class="shelf-desc">${esc(b[3])}</p>
+      </div>
+    </div>
+    <div class="shelf-names-label">${bookCounts[bookKey]||''} names from this text</div>
+    <div class="shelf-names-grid" id="shelfNamesGrid"><p class="shelf-names-loading">Loading names…</p></div>
+    <div class="shelf-close-row">
+      <button class="btn-ghost" type="button" data-clearbook>← Put it back</button>
+      <button class="btn-primary" type="button" data-shelftofindedr style="--c:var(--${r})">Browse all in Finder →</button>
+    </div>
+  </div>`;
+  detail.classList.add('open');
+  /* Scroll so both the row and the detail panel are visible */
+  requestAnimationFrame(()=>detail.scrollIntoView({behavior:'smooth',block:'nearest'}));
+  /* fetch names for this book */
+  try{
+    const res=await fetch(`${API_BASE}/api/names?book=${encodeURIComponent(bookKey)}&sort=best&limit=24`);
+    const data=await res.json();
+    const grid=$('shelfNamesGrid');
+    const items=data.items||data.names||[];
+    if(grid&&items.length){
+      grid.innerHTML='';
+      items.forEach(x=>{
+        /* normalize API long-form → tagEl short-form via the same function used everywhere else */
+        const nx=normName(x);
+        NAMES_BY_ID.set(nx.id,nx);
+        nx.rot=(Math.random()*6-3).toFixed(1);
+        nx.br=Math.random()>.5?'999px':'8px 24px 24px 8px';
+        grid.appendChild(tagEl(nx));
+      });
+    }else if(grid){grid.innerHTML='<p class="shelf-names-loading">No names found.</p>';}
+  }catch(e){const g=$('shelfNamesGrid');if(g)g.innerHTML='<p class="shelf-names-loading">Could not load names.</p>';}
+}
+function hideShelfDetail(){
+  const d=$('shelfDetail');
+  if(!d)return;
+  /* Scroll back to the row that was open before collapsing */
+  const prevRow=d.previousElementSibling;
+  d.classList.remove('open');
+  if(prevRow&&prevRow.classList.contains('shelf-row')){
+    requestAnimationFrame(()=>prevRow.scrollIntoView({behavior:'smooth',block:'nearest'}));
+  }
+}
+
 function chooseBook(k,scroll){
   st.book=(st.book===k&&!scroll)?null:k;
   $('shelf').querySelectorAll('.spine').forEach(b=>b.setAttribute('aria-pressed',b.dataset.book===st.book));
   const note=$('bookNote');
   if(st.book){const b=BOOKS[st.book];note.style.setProperty('--c',`var(--${b[4]})`);
-    note.innerHTML=`<div><b>${esc(b[0])}</b><p>${esc(b[1])}, ${esc(b[2])}. ${esc(b[3])}</p></div><button class="linkish" type="button" data-clearbook>Put it back on the shelf</button>`;note.hidden=false}
-  else note.hidden=true;
-  render();
-  if(st.book&&typeof switchTab==='function'&&document.querySelector('.tab[data-tab="shelf"][aria-selected="true"]'))switchTab('finder');
+    note.innerHTML=`<div><b>${esc(b[0])}</b><p>${esc(b[1])}, ${esc(b[2])}. ${esc(b[3])}</p></div><button class="linkish" type="button" data-clearbook>Put it back on the shelf</button>`;note.hidden=false;}
+  else{note.hidden=true;hideShelfDetail();}
+  /* On shelf tab: show inline names; elsewhere: render in Finder */
+  if(st.book&&document.querySelector('[data-tab="shelf"][aria-selected="true"]')){
+    showShelfDetail(st.book);
+  }else{
+    hideShelfDetail();render();
+  }
 }
 $('shelf').addEventListener('click',e=>{const b=e.target.closest('.spine');if(b)chooseBook(b.dataset.book,false)});
 $('bookNote').addEventListener('click',e=>{if(e.target.closest('[data-clearbook]'))chooseBook(null,false)});
+$('shelfDetail').addEventListener('click',e=>{
+  if(e.target.closest('[data-clearbook]')){chooseBook(null,false);return;}
+  if(e.target.closest('[data-shelftofindedr]')&&typeof switchTab==='function'){switchTab('finder');render();return;}
+  const tag=e.target.closest('.tag');if(!tag)return;
+  if(e.target.closest('.heart')){toggleList(tag.dataset.id,e.target.closest('.heart'));return;}
+  if(e.target.closest('.open'))openCard(tag.dataset.id,tag);
+});
 
 /* ---------- quilt ---------- */
 const QUILT=[
@@ -1278,6 +1444,7 @@ function callAI(raw){
   if(aiCtrl)aiCtrl.abort();
   aiCtrl=new AbortController();
   strip.hidden=false;
+  document.querySelector('.stage')?.classList.add('ai-active');
   strip.innerHTML=`<div class="ai-strip-loading"><span class="ai-dot"></span><span class="ai-dot"></span><span class="ai-dot"></span><span style="margin-left:4px">Searching across languages…</span></div>`;
   const body=JSON.stringify({q:raw});
   fetch(API_BASE+'/api/ask',{method:'POST',headers:{'content-type':'application/json'},body,signal:aiCtrl.signal})
@@ -1302,7 +1469,7 @@ function renderAI(data,q){
       ${src?`<div class="acs"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path fill="currentColor" d="M2 2h8v8H2z" opacity=".25"/><path fill="currentColor" d="M1 1h7v1H2v7H1V1z"/></svg>${src}</div>`:''}
     </button>`;
   }).join('');
-  strip.innerHTML=`<div class="ai-strip-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l1.6 5.2L19 8.8l-4.2 3.3L16 18l-4-3.4L8 18l1.2-5.9L5 8.8l5.4-1.6z"/></svg>AI Discoveries${modeLabel?`<span class="ai-mode">${esc(modeLabel)}</span>`:''}</div><div class="ai-cards">${cards}</div>`;
+  strip.innerHTML=`<div class="ai-strip-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l1.6 5.2L19 8.8l-4.2 3.3L16 18l-4-3.4L8 18l1.2-5.9L5 8.8l5.4-1.6z"/></svg>AI Discoveries${modeLabel?`<span class="ai-mode">${esc(modeLabel)}</span>`:''}<button class="ai-dismiss" type="button" onclick="dismissAI()" title="Dismiss" aria-label="Dismiss AI results">×</button></div><div class="ai-cards">${cards}</div>`;
   strip.querySelectorAll('.ai-card').forEach(card=>{
     card.addEventListener('click',()=>{
       // If the name is in our local store, open the postcard; otherwise just highlight
@@ -1314,7 +1481,17 @@ function renderAI(data,q){
 }
 function renderAIError(msg){
   const strip=$('aiStrip');
-  strip.innerHTML=`<div class="ai-strip-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l1.6 5.2L19 8.8l-4.2 3.3L16 18l-4-3.4L8 18l1.2-5.9L5 8.8l5.4-1.6z"/></svg>AI Discoveries</div><div class="ai-err">⚠ ${esc(msg||'Could not reach the AI service. Make sure the server is running.')} <button class="btn ghost" type="button" onclick="callAI($('cmd').value.trim())" style="font-size:.78rem;padding:4px 10px;margin-left:6px">Retry</button></div>`;
+  strip.innerHTML=`<div class="ai-strip-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l1.6 5.2L19 8.8l-4.2 3.3L16 18l-4-3.4L8 18l1.2-5.9L5 8.8l5.4-1.6z"/></svg>AI Discoveries<button class="ai-dismiss" type="button" onclick="dismissAI()" title="Dismiss" aria-label="Dismiss AI results">×</button></div><div class="ai-err">⚠ ${esc(msg||'Could not reach the AI service. Make sure the server is running.')} <button class="btn ghost" type="button" onclick="callAI($('cmd').value.trim())" style="font-size:.78rem;padding:4px 10px;margin-left:6px">Retry</button></div>`;
+}
+function dismissAI(){
+  /* Hide the AI strip and restore chip-groups so users can browse normally */
+  const strip=$('aiStrip');
+  strip.hidden=true;
+  document.querySelector('.stage')?.classList.remove('ai-active');
+  /* Clear the search input so the filter grid comes back clean */
+  const cmd=$('cmd');
+  if(cmd){cmd.value='';runCommand('');}
+  if(aiCtrl){aiCtrl.abort();aiCtrl=null;}
 }
 
 /* ---------- deep-filters drawer (hub + spokes) */
@@ -1358,6 +1535,8 @@ function resetAll(){
   st.themes.clear();st.langs.clear();st.rarity.clear();st.len.clear();
   ['cmd','seed','letter'].forEach(id=>{const el=$(id);if(el)el.value=''});$('easy').checked=false;
   buildLangs();$('shelf').querySelectorAll('.spine').forEach(s=>s.setAttribute('aria-pressed','false'));$('bookNote').hidden=true;
+  /* also dismiss AI strip if visible */
+  const strip=$('aiStrip');if(strip&&!strip.hidden){strip.hidden=true;document.querySelector('.stage')?.classList.remove('ai-active');if(aiCtrl){aiCtrl.abort();aiCtrl=null;}}
   syncPills();render();
 }
 $('railReset').addEventListener('click',resetAll);
@@ -1368,7 +1547,11 @@ $('drawerReset').addEventListener('click',resetAll);
 function switchTab(t){
   document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t?'true':'false'));
   document.querySelectorAll('.panel').forEach(p=>p.dataset.on=(p.dataset.tab===t)?'true':'false');
-  if(t==='harmony'){harmonyUpdate();setTimeout(()=>$('hFirst')?.focus({preventScroll:true}),reduced?0:60)}
+  if(t==='harmony'){
+    /* auto-demo: pre-fill the example names when both fields are still empty */
+    const hFirst=$('hFirst'),hLast=$('hLast');
+    if(hFirst&&hLast&&!hFirst.value&&!hLast.value){hFirst.value='Vennela';hLast.value='Reddy';}
+    harmonyUpdate();setTimeout(()=>$('hFirst')?.focus({preventScroll:true}),reduced?0:60)}
 }
 $('tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(b)switchTab(b.dataset.tab)});
 
