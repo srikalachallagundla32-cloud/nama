@@ -1249,8 +1249,10 @@ function chooseBook(k,scroll){
   if(st.book){const b=BOOKS[st.book];note.style.setProperty('--c',`var(--${b[4]})`);
     note.innerHTML=`<div><b>${esc(b[0])}</b><p>${esc(b[1])}, ${esc(b[2])}. ${esc(b[3])}</p></div><button class="linkish" type="button" data-clearbook>Put it back on the shelf</button>`;note.hidden=false;}
   else{note.hidden=true;hideShelfDetail();}
-  /* On shelf tab: show inline names; elsewhere: render in Finder */
-  if(st.book&&document.querySelector('[data-tab="shelf"][aria-selected="true"]')){
+  /* When explicitly navigating (scroll=true) always go to shelf tab + show detail;
+     on shelf tab already: show inline; elsewhere: render in Finder */
+  if(st.book&&(scroll||document.querySelector('[data-tab="shelf"][aria-selected="true"]'))){
+    if(scroll&&typeof switchTab==='function') switchTab('shelf');
     showShelfDetail(st.book);
   }else{
     hideShelfDetail();render();
@@ -1629,13 +1631,23 @@ function harmonyUpdate(){
   if(!s1&&!s2){v.innerHTML='<small>Type a first and last name to see how they flow.</small>';$('hSugg').innerHTML='';return}
   const label=!s2?`${s1}-syllable first name`:!s1?`type a first name`:balanced?'Balanced cadence':diff>=2?'Uneven — one name is much longer':'Gently front- or back-weighted';
   v.innerHTML=`${esc(label)}<small>${s1?s1+'-syllable first name':''}${s1&&s2?' + ':''}${s2?s2+'-syllable last name':''}</small>`;
-  // suggestions: first names whose syllable count best balances the last name
+  // suggestions: use ALL loaded names (not just seeds), with region diversity
   if(s2){
     const want=[s2,s2-1,s2+1];
-    const picks=(NAMES_SEED||[]).map(x=>({x,d:Math.min(...want.map(w=>Math.abs(x.syl-w)))}))
-      .filter(o=>o.d===0).sort((a,b)=>a.x.r-b.x.r||hash(a.x.id)-hash(b.x.id));
-    const seen=new Set(),six=[];for(const o of picks){if(seen.has(o.x.n))continue;seen.add(o.x.n);six.push(o.x);if(six.length>=8)break}
-    $('hSugg').innerHTML=`<span class="cat">first names that balance “${esc(l||'your surname')}”</span><div class="sim">${six.map(x=>`<button type="button" data-go="${esc(x.id)}">${esc(x.n)}</button>`).join('')}</div>`;
+    // use full NAMES_BY_ID pool so suggestions grow as the user explores
+    const pool=[...NAMES_BY_ID.values()];
+    const picks=pool.map(x=>({x,d:Math.min(...want.map(w=>Math.abs(x.syl-w)))}))
+      .filter(o=>o.d===0).sort((a,b)=>a.d-b.d||(a.x.r||2)-(b.x.r||2)||hash(a.x.id)-hash(b.x.id));
+    // cap at 2 per region so suggestions span the world, not just one culture
+    const seen=new Set(),regionCount={},eight=[];
+    for(const o of picks){
+      if(seen.has(o.x.n))continue;
+      const reg=(o.x.reg&&o.x.reg[0])||'?';
+      regionCount[reg]=(regionCount[reg]||0)+1;
+      if(regionCount[reg]>2)continue;
+      seen.add(o.x.n);eight.push(o.x);if(eight.length>=8)break;
+    }
+    $('hSugg').innerHTML=`<span class=”cat”>first names that balance “${esc(l||'your surname')}”</span><div class=”sim”>${eight.map(x=>`<button type=”button” data-go=”${esc(x.id)}”>${esc(x.n)}</button>`).join('')}</div>`;
   } else $('hSugg').innerHTML='';
 }
 $('hFirst').addEventListener('input',harmonyUpdate);
