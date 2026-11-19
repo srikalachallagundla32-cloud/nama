@@ -48,7 +48,7 @@ test('a proposal must quote words that are really in a retrieved passage', async
 test('meanings never come from the model: formed names take the dictionary gloss, or are dropped', async () => {
   const gen = new FakeTextGen(() => [
     { name: 'Kuutar', kind: 'formed', fromText: 'kuu', passageId: 'north-1', lang: 'fi', meaning: 'goddess of moonlight' },   // extra field → malformed
-    { name: 'Kuutar', kind: 'formed', fromText: 'kuu', passageId: 'north-1', lang: 'fi' },
+    { name: 'Kuutamo', kind: 'formed', fromText: 'kuu', passageId: 'north-1', lang: 'fi' },
     { name: 'Tähti', kind: 'formed', fromText: 'tähti', passageId: 'north-1', lang: 'fi' },
     { name: 'Talvi', kind: 'formed', fromText: 'winter', passageId: 'north-1', lang: 'fi' },       // no dictionary entry
     { name: 'Starla', kind: 'formed', fromText: 'tähti', passageId: 'north-1', lang: 'fi' },       // not built from the word
@@ -56,7 +56,7 @@ test('meanings never come from the model: formed names take the dictionary gloss
   const { generate } = make(gen);
   const r = await generate.generate({ q: 'winter moon star names' }, trace());
   const byName = Object.fromEntries(r.items.map((x) => [x.name, x]));
-  assert.equal(byName.Kuutar?.meaning, 'moon; also month'); assert.equal(byName.Kuutar?.meaningFrom, 'dictionary');
+  assert.equal(byName.Kuutamo?.meaning, 'moon; also month'); assert.equal(byName.Kuutamo?.meaningFrom, 'dictionary');
   assert.equal(byName['Tähti']?.meaning, 'star');
   assert.equal(byName.Talvi, undefined); assert.equal(byName.Starla, undefined);
   assert.equal(r.rejected.malformed, 1);

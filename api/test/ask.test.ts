@@ -24,7 +24,7 @@ test('prompt injection in the question cannot add names', async () => {
 
 test('nothing strong enough -> says no match and never calls the model', async () => {
   const gen = new FakeGenerator(); const { ask } = makeApp({ generator: gen });
-  const r = await ask.ask({ q: 'Kannada boy name meaning ocean' }, newTrace());
+  const r = await ask.ask({ q: 'Belarusian name meaning mountain' }, newTrace());
   assert.equal(r.mode, 'no_match'); assert.equal(r.items.length, 0); assert.equal(gen.calls, 0);
 });
 

@@ -27,7 +27,7 @@ test('MCP: tools return grounded data', async () => {
   assert.equal(data.results[0].name, 'Saavan');
   const k = await c.callTool({ name: 'search_names', arguments: { book: 'korkut', limit: 20 } });
   const ids = JSON.parse((k.content as { text: string }[])[0]!.text).results.map((x: { id: string }) => x.id);
-  assert.ok(ids.includes('Banucicek|tr') && ids.includes('Selcan|tr'));
+  assert.ok(ids.includes('Banucicek|tr') && ids.includes('Beyrek|tr'));
 });
 
 test('MCP: invalid input is refused, not guessed', async () => {
