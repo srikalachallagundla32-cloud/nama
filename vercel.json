@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd site && python3 build.py",
+  "buildCommand": "cd site && node build.mjs",
   "outputDirectory": "site/dist",
   "framework": null,
   "rewrites": [{ "source": "/(.*)", "destination": "/nama.html" }],
